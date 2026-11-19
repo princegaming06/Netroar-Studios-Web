@@ -510,8 +510,195 @@ body {
 }
 
 /* ==========================================================================
+   POPULAR APPLICATION SPOTLIGHT (HOME SCREEN)
+   Rockstar Games-inspired flagship showcase featuring Netroar TaskFlow
+   ========================================================================== */
+.popular-app-section {
+  position: relative;
+  z-index: 10;
+  max-width: 1320px;
+  margin: 0 auto 100px;
+  padding: 0 20px;
+}
+
+.popular-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 16px;
+}
+
+.popular-section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  color: var(--neon-mint);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.popular-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.popular-spotlight-monolith {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(36px) saturate(190%);
+  -webkit-backdrop-filter: blur(36px) saturate(190%);
+  padding: 48px;
+  box-shadow: var(--shadow-spatial);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.popular-spotlight-monolith:hover {
+  border-color: rgba(0, 245, 184, 0.35);
+}
+
+.popular-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+.popular-app-icon-link {
+  display: block;
+  width: 104px;
+  height: 104px;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.7) 100%);
+  border: 1px solid var(--border-glass);
+  padding: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 245, 184, 0.15);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+}
+
+.popular-app-icon-link:hover {
+  transform: scale(1.06) rotate(-2deg);
+  border-color: var(--neon-mint);
+}
+
+.popular-app-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.popular-meta-info {
+  flex: 1;
+}
+
+.popular-app-heading-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-decoration: none;
+  line-height: 1.1;
+  transition: color 0.2s ease;
+}
+
+.popular-app-heading-link:hover {
+  color: var(--neon-mint);
+}
+
+.popular-tagline-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--neon-mint);
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+}
+
+.popular-author-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+
+.popular-app-narrative {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.popular-feature-quad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.popular-quad-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-ultra-subtle);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  transition: all 0.25s ease;
+}
+
+.popular-quad-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-glass);
+  transform: translateY(-2px);
+}
+
+.popular-quad-icon {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.popular-quad-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.popular-quad-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.popular-actions-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-ultra-subtle);
+}
+
+/* ==========================================================================
    MINIMALIST APPS SECTION (ICON + NAME ONLY)
-   Tapping an app card navigates to its flagship console rig!
+   Dedicated Apps catalog view on /apps:
+   Shows ONLY the app icon and name; tap opens flagship console rig!
    ========================================================================== */
 .studio-apps-section {
   position: relative;
@@ -553,7 +740,7 @@ body {
   border-radius: var(--radius-xl);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-  padding: 38px 24px 32px;
+  padding: 40px 24px 36px;
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -564,6 +751,7 @@ body {
   box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+  user-select: none;
 }
 
 .app-minimal-card::before {
@@ -579,7 +767,7 @@ body {
 }
 
 .app-minimal-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-8px) scale(1.03);
   border-color: var(--neon-mint);
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px var(--neon-mint-glow);
   background: var(--bg-surface-elevated);
@@ -590,13 +778,13 @@ body {
 }
 
 .app-minimal-icon-box {
-  width: 96px;
-  height: 96px;
+  width: 104px;
+  height: 104px;
   border-radius: var(--radius-lg);
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.6) 100%);
   border: 1px solid var(--border-glass);
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -618,7 +806,7 @@ body {
 
 .app-minimal-name {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #ffffff;
@@ -629,20 +817,25 @@ body {
   color: var(--neon-mint);
 }
 
-.app-minimal-hint {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-top: 8px;
-  opacity: 0.8;
-  transition: color 0.2s ease, opacity 0.2s ease;
+/* App view toggling on /apps */
+.view-hidden {
+  display: none !important;
 }
 
-.app-minimal-card:hover .app-minimal-hint {
-  color: var(--neon-mint);
-  opacity: 1;
+.view-visible {
+  display: block !important;
+  animation: fadeInSpatial 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSpatial {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================

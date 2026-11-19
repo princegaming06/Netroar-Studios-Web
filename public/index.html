@@ -79,7 +79,7 @@
       <nav>
         <ul class="spatial-nav-dock">
           <li><a href="/" class="active">STUDIO</a></li>
-          <li><a href="#apps" class="highlight-pill">APPS</a></li>
+          <li><a href="/apps" class="highlight-pill">APPS</a></li>
           <li><a href="#chronicles">NEWSWIRE</a></li>
           <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED</a></li>
         </ul>
@@ -120,7 +120,7 @@
         </p>
 
         <div class="hero-action-rail">
-          <a href="#apps" class="btn-hyper-primary">
+          <a href="/apps" class="btn-hyper-primary">
             <span>EXPLORE STUDIO APPS ❯</span>
           </a>
           <a href="https://netroar-to-do.onrender.com" target="_blank" class="btn-hyper-glass">
@@ -130,23 +130,130 @@
       </div>
     </section>
 
-    <!-- 6. Minimalist Apps Section (Icon + Name Only) -->
-    <section class="studio-apps-section" id="apps">
-      <div class="apps-section-header-bar">
-        <h2 class="apps-section-heading">STUDIO APPS</h2>
-        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">
-          Tap app card to enter dedicated flagship console
-        </span>
+    <!-- 6. Popular Application Details Spotlight (Netroar TaskFlow) -->
+    <section class="popular-app-section" id="popular">
+      <div class="popular-section-header">
+        <div>
+          <div class="popular-section-badge">
+            <span class="live-beacon"></span>
+            <span>POPULAR APPLICATION // STUDIO FLAGSHIP</span>
+          </div>
+          <h2 class="popular-section-title">FEATURED APPLICATION</h2>
+        </div>
+        <a href="/apps" class="btn-hyper-glass" style="font-size: 0.82rem; padding: 10px 20px; text-decoration: none;">
+          <span>VIEW IN APPS CATALOG ❯</span>
+        </a>
       </div>
 
-      <div class="apps-minimal-grid" id="apps-minimal-grid">
-        <a href="/apps" class="app-minimal-card" title="Enter Netroar TaskFlow Flagship Console">
-          <div class="app-minimal-icon-box">
-            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow Icon" class="app-minimal-icon-img">
+      <div class="popular-spotlight-monolith">
+        <!-- Corner Brackets -->
+        <span class="console-corner-bracket bracket-tl"></span>
+        <span class="console-corner-bracket bracket-tr"></span>
+        <span class="console-corner-bracket bracket-bl"></span>
+        <span class="console-corner-bracket bracket-br"></span>
+
+        <!-- Top Bar: Icon + Title + Meta -->
+        <div class="popular-top-bar">
+          <a href="/apps" class="popular-app-icon-link" title="Open Netroar TaskFlow Console">
+            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow Icon" class="popular-app-icon-img">
+          </a>
+
+          <div class="popular-meta-info">
+            <a href="https://netroar-to-do.onrender.com" target="_blank" class="popular-app-heading-link" title="Tap to launch official website">
+              <span>Netroar TaskFlow</span>
+              <span class="teleport-arrow-indicator">↗</span>
+            </a>
+            <div class="popular-tagline-text">
+              The Next-Gen Cyber-Acrylic Productivity &amp; Gamified Task Ecosystem
+            </div>
+            <div class="popular-author-text">
+              By Netroar Studios · Engineered by Prince Singh · ★ 4.9 (142 Verified Reviews) · Windows · Android · Web
+            </div>
           </div>
-          <h3 class="app-minimal-name">Netroar TaskFlow</h3>
-          <span class="app-minimal-hint">ENTER FLAGSHIP CONSOLE ❯</span>
-        </a>
+        </div>
+
+        <!-- Full Narrative Description -->
+        <p class="popular-app-narrative">
+          Netroar TaskFlow is an ultra-fast, cyber-acrylic task management suite engineered for power users, developers, and creators. It combines precision countdown timers, an RPG gamification engine with XP gain and milestone rewards, seamless cloud synchronization, and native performance across Windows desktop and Android devices.
+        </p>
+
+        <!-- Feature Capabilities Quad -->
+        <div class="popular-feature-quad">
+          <div class="popular-quad-card">
+            <span class="popular-quad-icon">⚡</span>
+            <div class="popular-quad-title">144Hz Cyber-Acrylic HUD</div>
+            <p class="popular-quad-desc">Ultra-responsive blur aesthetics with system-level global hotkey summon (Shift+Esc) for zero-friction workflows.</p>
+          </div>
+
+          <div class="popular-quad-card">
+            <span class="popular-quad-icon">🎮</span>
+            <div class="popular-quad-title">RPG Gamification Engine</div>
+            <p class="popular-quad-desc">Level up your productivity tier, earn milestone XP, unlock focus streaks, and maintain immutable task accountability.</p>
+          </div>
+
+          <div class="popular-quad-card">
+            <span class="popular-quad-icon">☁️</span>
+            <div class="popular-quad-title">Real-Time Cloud Sync</div>
+            <p class="popular-quad-desc">Instant bi-directional state synchronization powered by Cloud Firestore between your Windows workstation and Android mobile.</p>
+          </div>
+
+          <div class="popular-quad-card">
+            <span class="popular-quad-icon">🛡️</span>
+            <div class="popular-quad-title">100% Free &amp; Offline-First</div>
+            <p class="popular-quad-desc">Encrypted local storage with zero tracking, completely independent software engineering crafted with pride.</p>
+          </div>
+        </div>
+
+        <!-- Interactive Media Showcase Bay -->
+        <div class="spatial-showcase-bay">
+          <div class="viewport-stage" id="viewport-stage" title="Click to inspect in Full HD Lightbox">
+            <!-- Previous Button Arrow -->
+            <button class="bay-nav-trigger btn-bay-prev" id="btn-bay-prev" aria-label="Previous Screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Active Large Screenshot -->
+            <img src="/assets/screenshots/01_Desktop_Overview.png" 
+                 alt="Netroar TaskFlow Screenshot" 
+                 class="active-screenshot-lens" 
+                 id="active-screenshot-img">
+
+            <!-- Next Button Arrow -->
+            <button class="bay-nav-trigger btn-bay-next" id="btn-bay-next" aria-label="Next Screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Bottom Telemetry Caption & Step Counter Dock -->
+          <div class="bay-telemetry-dock">
+            <div class="bay-caption-title" id="bay-caption-text">
+              Desktop Cyber Matrix &amp; HUD [Windows Desktop]
+            </div>
+            <div class="bay-counter-chip" id="bay-counter-display">
+              01 / 14
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions Toolbar -->
+        <div class="popular-actions-toolbar">
+          <a href="https://netroar-to-do.onrender.com" target="_blank" class="btn-hyper-primary">
+            <span>LAUNCH WEB APP ↗</span>
+          </a>
+          <a href="https://netroar-to-do.onrender.com/#download" target="_blank" class="btn-hyper-glass">
+            <span>DOWNLOAD WINDOWS (.EXE)</span>
+          </a>
+          <a href="https://netroar-to-do.onrender.com/#download" target="_blank" class="btn-hyper-glass">
+            <span>ANDROID COMPANION APK</span>
+          </a>
+          <a href="/apps" class="btn-hyper-glass" style="border-color: var(--neon-mint); color: var(--neon-mint);">
+            <span>OPEN CONSOLE IN APPS ❯</span>
+          </a>
+        </div>
       </div>
     </section>
 

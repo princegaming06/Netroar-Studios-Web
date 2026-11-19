@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Studios Console — Netroar Studios</title>
-  <meta name="description" content="Netroar TaskFlow Flagship Console. The Next-Gen Cyber-Acrylic Productivity &amp; Gamified Task Ecosystem.">
+  <title>Apps — Netroar Studios</title>
+  <meta name="description" content="Netroar Studios Apps. Explore Netroar TaskFlow and dedicated flagship consoles.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png">
@@ -46,7 +46,7 @@
       <nav>
         <ul class="spatial-nav-dock">
           <li><a href="/">STUDIO</a></li>
-          <li><a href="/apps" class="active highlight-pill">TASKFLOW CONSOLE</a></li>
+          <li><a href="/apps" class="active highlight-pill">APPS</a></li>
           <li><a href="/#chronicles">NEWSWIRE</a></li>
           <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED</a></li>
         </ul>
@@ -68,15 +68,37 @@
   </header>
 
   <main style="position: relative; z-index: 20; padding: 40px 0 100px;">
-    <!-- Back to Apps Catalog Navigation -->
-    <div style="max-width: 1320px; margin: 0 auto 20px; padding: 0 20px;">
-      <a href="/#apps" class="btn-hyper-glass" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 0.82rem; text-decoration: none;">
-        <span>❮ BACK TO ALL APPS</span>
-      </a>
-    </div>
+    <!-- 1. Minimalist Apps Section (Icon + Name Only) -->
+    <section class="studio-apps-section view-visible" id="apps-catalog-view">
+      <div class="apps-section-header-bar">
+        <div>
+          <h1 class="apps-section-heading">STUDIO APPS</h1>
+          <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; margin-top: 6px; display: inline-block;">
+            Tap app card to enter dedicated flagship console
+          </span>
+        </div>
+      </div>
 
-    <!-- Flagship Console Wireframe -->
-    <section class="flagship-console-wrapper" id="console">
+      <div class="apps-minimal-grid" id="apps-minimal-grid">
+        <div class="app-minimal-card" id="taskflow-card" role="button" tabindex="0" title="Tap to enter Netroar TaskFlow Console">
+          <div class="app-minimal-icon-box">
+            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow" class="app-minimal-icon-img">
+          </div>
+          <h3 class="app-minimal-name">Netroar TaskFlow</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Flagship Console View (Revealed when card is tapped) -->
+    <section class="flagship-console-wrapper view-hidden" id="flagship-console-view">
+      <!-- Back to Apps Catalog Navigation -->
+      <div style="margin-bottom: 24px;">
+        <button class="btn-hyper-glass" id="btn-back-to-catalog" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 0.82rem; cursor: pointer; border: 1px solid var(--border-glass);">
+          <span>❮ BACK TO ALL APPS</span>
+        </button>
+      </div>
+
+      <!-- Flagship Console Wireframe Rig -->
       <div class="flagship-console-rig" id="flagship-console-rig">
         <span class="console-corner-bracket bracket-tl"></span>
         <span class="console-corner-bracket bracket-tr"></span>

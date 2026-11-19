@@ -90,9 +90,13 @@ async function runTests() {
     // Test 2: Public static HTML
     const index = await request('GET', '/');
     assert(index.status === 200 && index.data.includes('Netroar Studios'), '2.1 GET / serves Rockstar style index.html');
+    assert(index.data.includes('POPULAR APPLICATION') && index.data.includes('Netroar TaskFlow') && index.data.includes('Cyber-Acrylic'), 
+      '2.1b GET / prominently features popular app details (Netroar TaskFlow)');
 
     const appStudios = await request('GET', '/apps');
     assert(appStudios.status === 200 && appStudios.data.includes('APP STUDIOS SPOTLIGHT'), '2.2 GET /apps serves App Studios showcase');
+    assert(appStudios.data.includes('STUDIO APPS') && appStudios.data.includes('flagship-console-rig') && appStudios.data.includes('app-minimal-card'),
+      '2.2b GET /apps includes minimal icon+name apps section and flagship console rig');
 
     const admin = await request('GET', '/admin');
     assert(admin.status === 200 && admin.data.includes('Admin Control Panel'), '2.3 GET /admin serves admin.html');

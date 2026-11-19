@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuantumCanvas();
   initAudioSystem();
   initTelemetryClock();
+  initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
   initTerminal();
@@ -27,7 +28,83 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================================================
-// 0. MINIMAL APPS GRID (ICON + NAME ONLY)
+// 0. APPS PAGE DUAL-VIEW ROUTER & CONTROLLER
+// Seamless transition: Minimal Card (Icon + Name Only) -> Flagship Console Rig
+// ==========================================================================
+function initAppsPageRouting() {
+  const catalogView = document.getElementById('apps-catalog-view');
+  const consoleView = document.getElementById('flagship-console-view');
+  const backBtn = document.getElementById('btn-back-to-catalog');
+  const taskflowCard = document.getElementById('taskflow-card');
+
+  if (!catalogView || !consoleView) return;
+
+  function showConsole() {
+    catalogView.classList.remove('view-visible');
+    catalogView.classList.add('view-hidden');
+    consoleView.classList.remove('view-hidden');
+    consoleView.classList.add('view-visible');
+    playLaserBeep(620, 0.08, 'triangle');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showCatalog() {
+    consoleView.classList.remove('view-visible');
+    consoleView.classList.add('view-hidden');
+    catalogView.classList.remove('view-hidden');
+    catalogView.classList.add('view-visible');
+    playSlideSound();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Check URL state on load
+  const hash = window.location.hash;
+  const path = window.location.pathname;
+  if (hash === '#taskflow' || hash === '#console' || path.startsWith('/app/')) {
+    showConsole();
+  } else {
+    showCatalog();
+  }
+
+  // Wire initial static card
+  if (taskflowCard) {
+    taskflowCard.addEventListener('click', () => {
+      history.pushState(null, '', '/apps#taskflow');
+      showConsole();
+    });
+    taskflowCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        history.pushState(null, '', '/apps#taskflow');
+        showConsole();
+      }
+    });
+  }
+
+  // Wire back button
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      history.pushState(null, '', '/apps');
+      showCatalog();
+    });
+  }
+
+  // Support browser back/forward buttons
+  window.addEventListener('popstate', () => {
+    if (window.location.hash === '#taskflow' || window.location.pathname.startsWith('/app/')) {
+      showConsole();
+    } else {
+      showCatalog();
+    }
+  });
+
+  // Expose switcher to window
+  window.netroarShowConsole = showConsole;
+  window.netroarShowCatalog = showCatalog;
+}
+
+// ==========================================================================
+// 0.1 MINIMAL APPS GRID (ICON + NAME ONLY)
 // ==========================================================================
 async function initMinimalAppsGrid() {
   const grid = document.getElementById('apps-minimal-grid');
@@ -38,19 +115,30 @@ async function initMinimalAppsGrid() {
     const data = await res.json();
     if (data.success && Array.isArray(data.apps) && data.apps.length > 0) {
       grid.innerHTML = data.apps.map(app => `
-        <a href="/apps" class="app-minimal-card" title="Enter ${app.name} Flagship Console">
+        <div class="app-minimal-card" role="button" tabindex="0" title="Tap to enter ${app.name} Console">
           <div class="app-minimal-icon-box">
             <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" alt="${app.name} Icon" class="app-minimal-icon-img" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
           </div>
           <h3 class="app-minimal-name">${app.name}</h3>
-          <span class="app-minimal-hint">ENTER FLAGSHIP CONSOLE ❯</span>
-        </a>
+        </div>
       `).join('');
 
-      // Wire tactile audio on click
+      // Wire tap-to-open console on cards
       grid.querySelectorAll('.app-minimal-card').forEach(card => {
-        card.addEventListener('click', () => {
-          playLaserBeep(640, 0.08, 'sine');
+        function activate() {
+          if (window.netroarShowConsole) {
+            history.pushState(null, '', '/apps#taskflow');
+            window.netroarShowConsole();
+          } else {
+            window.location.href = '/apps#taskflow';
+          }
+        }
+        card.addEventListener('click', activate);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+          }
         });
       });
     }

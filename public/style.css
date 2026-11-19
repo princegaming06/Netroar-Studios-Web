@@ -2254,11 +2254,12 @@ select.form-control option {
   z-index: 950;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0;
-  padding: 6px;
+  padding: 0;
   width: 52px;
   height: 52px;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   background: linear-gradient(135deg, rgba(16, 24, 40, 0.88) 0%, rgba(8, 12, 22, 0.96) 100%);
   border: 1px solid rgba(0, 245, 184, 0.3);
   backdrop-filter: blur(28px) saturate(190%);
@@ -2268,16 +2269,27 @@ select.form-control option {
               inset 0 1px 1px rgba(255, 255, 255, 0.2);
   color: #ffffff;
   text-decoration: none;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              gap 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.9);
+  transition: opacity 0.4s ease,
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              gap 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s ease,
               box-shadow 0.3s ease;
   cursor: pointer;
   outline: none;
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* Shown during scrolling and for 3 seconds after scrolling stops */
+.bottom-auth-dock.dock-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
 }
 
 /* Subtle continuous ambient breathing glow */
@@ -2296,7 +2308,7 @@ select.form-control option {
   }
 }
 
-.bottom-auth-dock {
+.bottom-auth-dock.dock-visible {
   animation: authDockBreathe 4s infinite ease-in-out;
 }
 
@@ -2319,11 +2331,15 @@ select.form-control option {
 
 .bottom-auth-dock:hover {
   width: auto;
+  border-radius: var(--radius-full);
   gap: 12px;
-  padding: 6px 20px 6px 6px;
+  padding: 6px 20px 6px 7px;
+  justify-content: flex-start;
   border-color: var(--neon-mint);
   box-shadow: 0 0 35px var(--neon-mint-glow), 0 20px 48px rgba(0, 0, 0, 0.95);
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-3px) scale(1.04) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 .auth-dock-avatar-slot {
@@ -2410,28 +2426,32 @@ select.form-control option {
   text-shadow: 0 0 8px rgba(0, 245, 184, 0.7);
 }
 
-/* Two-Line Micro-HUD Typography: Hidden at rest, revealed smoothly on hover */
+/* Two-Line Micro-HUD Typography: Strictly hidden at rest, revealed smoothly on hover */
 .auth-dock-text-wrap {
-  display: flex;
+  display: none;
   flex-direction: column;
   text-align: left;
   gap: 2px;
-  max-width: 0;
-  opacity: 0;
-  transform: translateX(-8px);
-  pointer-events: none;
-  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 0.25s ease,
-              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
   white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
 
 .bottom-auth-dock:hover .auth-dock-text-wrap {
-  max-width: 240px;
-  opacity: 1;
-  transform: translateX(0);
+  display: flex;
   pointer-events: auto;
+  animation: authTextGlissade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes authTextGlissade {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .auth-dock-kicker {

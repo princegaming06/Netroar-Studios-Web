@@ -132,7 +132,57 @@ function syncBottomAuthDock(user) {
 }
 window.syncBottomAuthDock = syncBottomAuthDock;
 
+let authDockHideTimer = null;
+let isHoveringAuthDock = false;
+
+function initAuthDockScrollWatcher() {
+  const dock = document.getElementById('bottom-auth-dock');
+  if (!dock) return;
+
+  function showDock() {
+    dock.classList.add('dock-visible');
+    if (authDockHideTimer) {
+      clearTimeout(authDockHideTimer);
+      authDockHideTimer = null;
+    }
+    authDockHideTimer = setTimeout(() => {
+      if (!isHoveringAuthDock) {
+        dock.classList.remove('dock-visible');
+      }
+    }, 3000);
+  }
+
+  // Initial appearance for 3 seconds on page load
+  showDock();
+
+  // Scroll listener: shows on scroll, auto-hides after 3s of scroll inactivity
+  window.addEventListener('scroll', showDock, { passive: true });
+
+  // Hover preservation: stays visible while mouse is over it
+  dock.addEventListener('mouseenter', () => {
+    isHoveringAuthDock = true;
+    dock.classList.add('dock-visible');
+    if (authDockHideTimer) {
+      clearTimeout(authDockHideTimer);
+      authDockHideTimer = null;
+    }
+  });
+
+  dock.addEventListener('mouseleave', () => {
+    isHoveringAuthDock = false;
+    if (authDockHideTimer) {
+      clearTimeout(authDockHideTimer);
+    }
+    authDockHideTimer = setTimeout(() => {
+      if (!isHoveringAuthDock) {
+        dock.classList.remove('dock-visible');
+      }
+    }, 3000);
+  });
+}
+
 function initBottomAuthDock() {
+  initAuthDockScrollWatcher();
   try {
     const raw = localStorage.getItem('netroar_auth_user');
     if (raw) {

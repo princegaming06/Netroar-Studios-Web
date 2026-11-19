@@ -42,20 +42,30 @@ function syncActiveNav() {
   const appsLinks = document.querySelectorAll('.spatial-nav-dock a[href="/apps"]');
   const newswireLinks = document.querySelectorAll('.spatial-nav-dock a[href*="chronicles"]');
   const adminLinks = document.querySelectorAll('.admin-suite-pill');
+  const activePageDisplay = document.getElementById('telemetry-active-page-name');
 
   // Reset active classes
   document.querySelectorAll('.spatial-nav-dock a, .admin-suite-pill').forEach(el => {
     el.classList.remove('active');
   });
 
+  let activeTitle = 'STUDIO';
   if (path === '/admin' || path === '/admin.html' || path.startsWith('/admin/')) {
     adminLinks.forEach(el => el.classList.add('active'));
+    activeTitle = 'ADMIN CONTROL PANEL';
   } else if (path.startsWith('/apps') || path.startsWith('/app/')) {
     appsLinks.forEach(el => el.classList.add('active'));
+    activeTitle = (hash === '#taskflow' || path.includes('taskflow')) ? 'APPS // TASKFLOW' : 'STUDIO APPS';
   } else if (hash === '#chronicles' || hash === '#newswire') {
     newswireLinks.forEach(el => el.classList.add('active'));
+    activeTitle = 'NEWSWIRE';
   } else {
     studioLinks.forEach(el => el.classList.add('active'));
+    activeTitle = 'STUDIO';
+  }
+
+  if (activePageDisplay) {
+    activePageDisplay.textContent = activeTitle;
   }
 }
 
@@ -79,6 +89,8 @@ function initAppsPageRouting() {
     catalogView.classList.add('view-hidden');
     consoleView.classList.remove('view-hidden');
     consoleView.classList.add('view-visible');
+    const activePageDisplay = document.getElementById('telemetry-active-page-name');
+    if (activePageDisplay) activePageDisplay.textContent = 'APPS // TASKFLOW';
     playLaserBeep(620, 0.08, 'triangle');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -88,6 +100,8 @@ function initAppsPageRouting() {
     consoleView.classList.add('view-hidden');
     catalogView.classList.remove('view-hidden');
     catalogView.classList.add('view-visible');
+    const activePageDisplay = document.getElementById('telemetry-active-page-name');
+    if (activePageDisplay) activePageDisplay.textContent = 'STUDIO APPS';
     playSlideSound();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -895,12 +909,15 @@ function initScrollEngine() {
         // Dynamic Section Scrollspy on Home
         if (chroniclesSection && studioNav && newswireNav && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
           const rect = chroniclesSection.getBoundingClientRect();
+          const activePageDisplay = document.getElementById('telemetry-active-page-name');
           if (rect.top <= 200 && rect.bottom >= 150) {
             studioNav.classList.remove('active');
             newswireNav.classList.add('active');
+            if (activePageDisplay) activePageDisplay.textContent = 'NEWSWIRE';
           } else if (rect.top > 200) {
             newswireNav.classList.remove('active');
             studioNav.classList.add('active');
+            if (activePageDisplay) activePageDisplay.textContent = 'STUDIO';
           }
         }
 

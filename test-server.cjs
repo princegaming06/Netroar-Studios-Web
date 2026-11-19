@@ -94,13 +94,13 @@ async function runTests() {
       '2.1b GET / prominently features popular app details (Netroar TaskFlow)');
     assert(!index.data.includes('quantum-kinetic-dock') && index.data.includes('monolith-optical-glare') && index.data.includes('beacon-dial-progress'),
       '2.1c GET / includes continuous cinematic optical glare, circular beacon progress dial, and no kinetic dock');
-    assert(!index.data.includes('hero-scroll-cue') && !index.data.includes('scroll-laser-track'),
-      '2.1d GET / has removed scroll-laser-track and hero-scroll-cue per user specification');
+    assert(!index.data.includes('hero-scroll-cue') && !index.data.includes('scroll-laser-track') && !index.data.includes('NETROAR KERNEL: ONLINE') && index.data.includes('telemetry-active-page-name'),
+      '2.1d GET / displays persistent active page telemetry status and removes static kernel ticker');
 
     const appStudios = await request('GET', '/apps');
-    assert(appStudios.status === 200 && appStudios.data.includes('APP STUDIOS SPOTLIGHT'), '2.2 GET /apps serves App Studios showcase');
-    assert(appStudios.data.includes('STUDIO APPS') && appStudios.data.includes('flagship-console-rig') && appStudios.data.includes('app-minimal-card'),
-      '2.2b GET /apps includes minimal icon+name apps section and flagship console rig');
+    assert(appStudios.status === 200 && appStudios.data.includes('STUDIO APPS'), '2.2 GET /apps serves App Studios showcase');
+    assert(appStudios.data.includes('STUDIO APPS') && appStudios.data.includes('flagship-console-rig') && appStudios.data.includes('app-minimal-card') && !appStudios.data.includes('NETROAR KERNEL: ONLINE'),
+      '2.2b GET /apps includes minimal icon+name apps section, flagship console rig, and active page telemetry');
     assert(!appStudios.data.includes('quantum-kinetic-dock') && appStudios.data.includes('console-optical-glare'),
       '2.2c GET /apps includes flagship console continuous optical glare and clean layout without kinetic dock');
 

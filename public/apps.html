@@ -19,19 +19,21 @@
   <div class="mouse-spotlight"></div>
   <div class="holo-grid-underlay"></div>
 
-  <!-- Telemetry Bar -->
-  <aside class="telemetry-ticker-bar">
+  <!-- Telemetry Bar (Always Active & Shown) -->
+  <aside class="telemetry-ticker-bar" id="telemetry-ticker-bar">
     <div class="telemetry-inner">
       <div class="telemetry-group">
-        <span class="telemetry-item"><span class="live-beacon"></span> NETROAR KERNEL: ONLINE</span>
-        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
-        <span class="telemetry-item">APP STUDIOS SPOTLIGHT: TASKFLOW</span>
+        <span class="telemetry-item telemetry-active-indicator">
+          <span class="live-beacon"></span>
+          <span class="telemetry-label-muted">ACTIVE PAGE:</span>
+          <span class="telemetry-active-name" id="telemetry-active-page-name">STUDIO APPS</span>
+        </span>
       </div>
 
       <div class="telemetry-group">
         <span class="telemetry-item" id="telemetry-clock">00:00:00 UTC</span>
         <span class="telemetry-item" style="color: var(--text-dim);">//</span>
-        <span class="telemetry-item" style="color: var(--neon-mint);">SYS: NOMINAL</span>
+        <span class="telemetry-item" style="color: var(--neon-mint); font-weight: 700;">SYS: NOMINAL</span>
       </div>
     </div>
   </aside>

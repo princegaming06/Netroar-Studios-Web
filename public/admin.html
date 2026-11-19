@@ -20,21 +20,21 @@
   <div class="mouse-spotlight"></div>
   <div class="holo-grid-underlay"></div>
 
-  <!-- Aerospace Telemetry Status Bar -->
-  <aside class="telemetry-ticker-bar">
+  <!-- Aerospace Telemetry Status Bar (Always Active & Shown) -->
+  <aside class="telemetry-ticker-bar" id="telemetry-ticker-bar">
     <div class="telemetry-inner">
       <div class="telemetry-group">
-        <span class="telemetry-item"><span class="live-beacon"></span> NETROAR KERNEL: ONLINE</span>
-        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
-        <span class="telemetry-item">SEC PROTOCOL: 0x9F_VERIFIED</span>
-        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
-        <span class="telemetry-item">STUDIO GOVERNANCE</span>
+        <span class="telemetry-item telemetry-active-indicator">
+          <span class="live-beacon"></span>
+          <span class="telemetry-label-muted">ACTIVE PAGE:</span>
+          <span class="telemetry-active-name" id="telemetry-active-page-name">ADMIN CONTROL PANEL</span>
+        </span>
       </div>
 
       <div class="telemetry-group">
         <span class="telemetry-item" id="telemetry-clock">00:00:00 UTC</span>
         <span class="telemetry-item" style="color: var(--text-dim);">//</span>
-        <span class="telemetry-item" style="color: var(--accent-rockstar);">ADMIN SUITE</span>
+        <span class="telemetry-item" style="color: var(--accent-rockstar); font-weight: 700;">ADMIN SUITE</span>
       </div>
     </div>
   </aside>

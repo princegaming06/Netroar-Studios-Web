@@ -279,46 +279,81 @@ body {
 .spatial-nav-dock {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   list-style: none;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4px;
+  background: rgba(4, 7, 14, 0.65);
+  padding: 4px 6px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--border-ultra-subtle);
+  border: 1px solid var(--border-glass);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .spatial-nav-dock a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   padding: 8px 18px;
   border-radius: var(--radius-full);
   color: var(--text-secondary);
   font-family: var(--font-display);
   font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
 }
 
 .spatial-nav-dock a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .spatial-nav-dock a.active {
-  color: #000 !important;
-  background: var(--neon-mint) !important;
-  box-shadow: 0 0 25px var(--neon-mint-glow);
+  color: #ffffff !important;
+  background: rgba(0, 245, 184, 0.12) !important;
+  border: 1px solid rgba(0, 245, 184, 0.45) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 20px rgba(0, 245, 184, 0.2) !important;
   font-weight: 800;
+  text-shadow: 0 0 12px rgba(0, 245, 184, 0.4);
+}
+
+.spatial-nav-dock a.active::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--neon-mint);
+  box-shadow: 0 0 8px var(--neon-mint), 0 0 14px var(--neon-mint-glow);
+  display: inline-block;
+  animation: navBeaconPulse 2s infinite ease-in-out;
+}
+
+.spatial-nav-dock a.active::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-mint), transparent);
+  box-shadow: 0 0 8px var(--neon-mint);
+}
+
+@keyframes navBeaconPulse {
+  0%, 100% { opacity: 0.75; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.25); filter: drop-shadow(0 0 4px var(--neon-mint)); }
 }
 
 .spatial-nav-dock a.active:hover {
-  color: #000 !important;
-  background: var(--neon-mint) !important;
+  color: #ffffff !important;
+  background: rgba(0, 245, 184, 0.18) !important;
+  border-color: var(--neon-mint) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 25px rgba(0, 245, 184, 0.35) !important;
 }
 
 .header-utility-cluster {
@@ -409,16 +444,19 @@ body {
 }
 
 .admin-suite-pill.active {
-  color: #000 !important;
-  background: var(--accent-rockstar) !important;
+  color: #ffffff !important;
+  background: rgba(245, 158, 11, 0.18) !important;
   border-color: var(--accent-rockstar) !important;
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 22px rgba(245, 158, 11, 0.35) !important;
   font-weight: 800;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
 }
 
 .admin-suite-pill.active:hover {
-  color: #000 !important;
-  background: var(--accent-rockstar) !important;
+  color: #ffffff !important;
+  background: rgba(245, 158, 11, 0.26) !important;
+  border-color: var(--accent-rockstar) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 28px rgba(245, 158, 11, 0.5) !important;
 }
 
 /* ==========================================================================

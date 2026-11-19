@@ -416,31 +416,46 @@ function playBreakSound() {
 
     const now = audioCtx.currentTime;
 
-    // Oscillator 1: High crisp fracture snap (sawtooth)
+    // 1. Initial High-Velocity Structural Impact Shatter (Sawtooth sweep)
     const osc1 = audioCtx.createOscillator();
     const gain1 = audioCtx.createGain();
     osc1.type = 'sawtooth';
-    osc1.frequency.setValueAtTime(1400, now);
-    osc1.frequency.exponentialRampToValueAtTime(320, now + 0.18);
-    gain1.gain.setValueAtTime(0.09, now);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc1.frequency.setValueAtTime(1800, now);
+    osc1.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+    gain1.gain.setValueAtTime(0.12, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
     osc1.connect(gain1);
     gain1.connect(audioCtx.destination);
     osc1.start(now);
-    osc1.stop(now + 0.18);
+    osc1.stop(now + 0.35);
 
-    // Oscillator 2: Crystal chime harmonic (triangle)
+    // 2. Crystal / Acrylic Fracture Crunch (Triangle harmonic)
     const osc2 = audioCtx.createOscillator();
     const gain2 = audioCtx.createGain();
     osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(880, now + 0.02);
-    osc2.frequency.exponentialRampToValueAtTime(220, now + 0.22);
-    gain2.gain.setValueAtTime(0.06, now + 0.02);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc2.frequency.setValueAtTime(960, now + 0.02);
+    osc2.frequency.exponentialRampToValueAtTime(140, now + 0.4);
+    gain2.gain.setValueAtTime(0.09, now + 0.02);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
     osc2.connect(gain2);
     gain2.connect(audioCtx.destination);
     osc2.start(now + 0.02);
-    osc2.stop(now + 0.22);
+    osc2.stop(now + 0.4);
+
+    // 3. Staggered secondary debris impacts (Pieces hitting floor)
+    [0.12, 0.22, 0.34, 0.48].forEach((delay, idx) => {
+      const debrisOsc = audioCtx.createOscillator();
+      const debrisGain = audioCtx.createGain();
+      debrisOsc.type = 'triangle';
+      debrisOsc.frequency.setValueAtTime(320 - (idx * 45), now + delay);
+      debrisOsc.frequency.exponentialRampToValueAtTime(60, now + delay + 0.08);
+      debrisGain.gain.setValueAtTime(0.05, now + delay);
+      debrisGain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.08);
+      debrisOsc.connect(debrisGain);
+      debrisGain.connect(audioCtx.destination);
+      debrisOsc.start(now + delay);
+      debrisOsc.stop(now + delay + 0.08);
+    });
   } catch (err) {}
 }
 
@@ -452,31 +467,46 @@ function playConcatenateSound() {
 
     const now = audioCtx.currentTime;
 
-    // Layer 1: Sub-bass magnetic docking implosion (sine)
-    const subOsc = audioCtx.createOscillator();
-    const subGain = audioCtx.createGain();
-    subOsc.type = 'sine';
-    subOsc.frequency.setValueAtTime(180, now);
-    subOsc.frequency.exponentialRampToValueAtTime(55, now + 0.32);
-    subGain.gain.setValueAtTime(0.14, now);
-    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
-    subOsc.connect(subGain);
-    subGain.connect(audioCtx.destination);
-    subOsc.start(now);
-    subOsc.stop(now + 0.32);
+    // 1. Reverse-gravity magnetic vacuum hum (Frequency rising upwards against gravity)
+    const vacuumOsc = audioCtx.createOscillator();
+    const vacuumGain = audioCtx.createGain();
+    vacuumOsc.type = 'sine';
+    vacuumOsc.frequency.setValueAtTime(75, now);
+    vacuumOsc.frequency.exponentialRampToValueAtTime(540, now + 0.72);
+    vacuumGain.gain.setValueAtTime(0.03, now);
+    vacuumGain.gain.linearRampToValueAtTime(0.12, now + 0.65);
+    vacuumGain.gain.exponentialRampToValueAtTime(0.001, now + 0.78);
+    vacuumOsc.connect(vacuumGain);
+    vacuumGain.connect(audioCtx.destination);
+    vacuumOsc.start(now);
+    vacuumOsc.stop(now + 0.78);
 
-    // Layer 2: High harmonic seam weld lock (triangle)
-    const weldOsc = audioCtx.createOscillator();
-    const weldGain = audioCtx.createGain();
-    weldOsc.type = 'triangle';
-    weldOsc.frequency.setValueAtTime(440, now + 0.08);
-    weldOsc.frequency.exponentialRampToValueAtTime(1046.5, now + 0.28); // High harmonic C6 lock tone
-    weldGain.gain.setValueAtTime(0.08, now + 0.08);
-    weldGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
-    weldOsc.connect(weldGain);
-    weldGain.connect(audioCtx.destination);
-    weldOsc.start(now + 0.08);
-    weldOsc.stop(now + 0.32);
+    // 2. High-impact magnetic docking snap at impact moment (0.72s)
+    const snapOsc = audioCtx.createOscillator();
+    const snapGain = audioCtx.createGain();
+    snapOsc.type = 'sawtooth';
+    snapOsc.frequency.setValueAtTime(260, now + 0.72);
+    snapOsc.frequency.exponentialRampToValueAtTime(45, now + 0.95);
+    snapGain.gain.setValueAtTime(0.16, now + 0.72);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.95);
+    snapOsc.connect(snapGain);
+    snapGain.connect(audioCtx.destination);
+    snapOsc.start(now + 0.72);
+    snapOsc.stop(now + 0.95);
+
+    // 3. Shimmering harmonic lock chord (C5 + G5 + C6)
+    [523.25, 783.99, 1046.5].forEach((freq, i) => {
+      const chordOsc = audioCtx.createOscillator();
+      const chordGain = audioCtx.createGain();
+      chordOsc.type = 'triangle';
+      chordOsc.frequency.setValueAtTime(freq, now + 0.74 + (i * 0.02));
+      chordGain.gain.setValueAtTime(0.06, now + 0.74 + (i * 0.02));
+      chordGain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+      chordOsc.connect(chordGain);
+      chordGain.connect(audioCtx.destination);
+      chordOsc.start(now + 0.74 + (i * 0.02));
+      chordOsc.stop(now + 1.1);
+    });
   } catch (err) {}
 }
 
@@ -975,11 +1005,11 @@ function initBreakConcatenateEngine() {
       beacon.className = 'kinetic-beacon broken';
     }
     if (cohesionVal) {
-      cohesionVal.textContent = 'FRACTURED (0% COHESION)';
+      cohesionVal.textContent = 'SHATTERED (0% COHESION)';
       cohesionVal.className = 'kinetic-status-val broken';
     }
     if (shardVal) {
-      shardVal.textContent = '6 SHARDS (DISASSEMBLED)';
+      shardVal.textContent = '12 PIECES (FALLEN TO FLOOR)';
     }
 
     playBreakSound();
@@ -987,12 +1017,12 @@ function initBreakConcatenateEngine() {
     // Dispatch Standard Custom Events
     const breakEvent = new CustomEvent('netroar:elementBreak', {
       bubbles: true,
-      detail: { target: chassis, shards: 6, state: 'broken', timestamp: Date.now() }
+      detail: { target: chassis, shards: 12, state: 'broken', timestamp: Date.now() }
     });
     document.dispatchEvent(breakEvent);
     document.dispatchEvent(new CustomEvent('element:break', { bubbles: true, detail: breakEvent.detail }));
 
-    showToast('⚡ [QUANTUM KINETIC] Element Break Dispatched: 6 Shards Fractured in 3D Space');
+    showToast('⚡ [QUANTUM KINETIC] Element Shattered: 12 Pieces Fallen to Ground Plane');
   }
 
   // 2. Element Concatenate / Concinnate Function
@@ -1010,11 +1040,11 @@ function initBreakConcatenateEngine() {
       beacon.className = 'kinetic-beacon concatenating';
     }
     if (cohesionVal) {
-      cohesionVal.textContent = 'CONCATENATING... [MAGNETIC DRAW]';
+      cohesionVal.textContent = 'CONCATENATING... [REVERSE GRAVITY]';
       cohesionVal.className = 'kinetic-status-val concatenating';
     }
     if (shardVal) {
-      shardVal.textContent = 'SEALING FISSURES...';
+      shardVal.textContent = 'REASSEMBLING PIECES FROM FLOOR...';
     }
 
     playConcatenateSound();
@@ -1045,13 +1075,13 @@ function initBreakConcatenateEngine() {
         shardVal.textContent = '0 (SOLID COHESION)';
       }
 
-      showToast('🔗 [QUANTUM KINETIC] Concatenate Event Complete: Monolithic Cohesion Restored (100%)');
+      showToast('🔗 [QUANTUM KINETIC] Concatenate Complete: Monolithic Cohesion Restored (100%)');
 
       setTimeout(() => {
         chassis.classList.remove('element-concatenated');
         if (dock) dock.classList.remove('dock-concatenated');
       }, 900);
-    }, 750);
+    }, 850);
   }
 
   // 3. Auto-Cycle Break and Concatenate
@@ -1065,8 +1095,8 @@ function initBreakConcatenateEngine() {
 
     setTimeout(() => {
       triggerConcatenate(targetSelector);
-      setTimeout(() => { isCycling = false; }, 900);
-    }, 1800);
+      setTimeout(() => { isCycling = false; }, 1000);
+    }, 2200);
   }
 
   // Bind Buttons

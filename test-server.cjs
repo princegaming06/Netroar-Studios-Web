@@ -113,14 +113,14 @@ async function runTests() {
     assert(css.status === 200 && css.data.includes('--accent-rockstar'), '2.4 GET /style.css serves Rockstar palette');
     assert(css.data.includes('.admin-login-screen') && css.data.includes('.login-hud-card') && css.data.includes('.admin-tab-btn.active'),
       '2.4b GET /style.css includes full Admin Panel cyber-acrylic suite styles');
-    assert(!css.data.includes('.scroll-laser-track') && css.data.includes('.scroll-top-beacon') && css.data.includes('.scroll-reveal'),
-      '2.4c GET /style.css includes scroll-to-top beacon & reveal styles without laser track');
+    assert(!css.data.includes('.scroll-laser-track') && css.data.includes('.scroll-top-beacon') && css.data.includes('.spatial-header.header-hidden'),
+      '2.4c GET /style.css includes auto-hide header-hidden and scroll-to-top beacon styles');
     assert(css.data.includes('.monolith-optical-glare') && css.data.includes('.beacon-dial-svg') && css.data.includes('.beacon-dial-progress'),
       '2.4d GET /style.css includes continuous optical glare sweep and circular dial beacon telemetry styles');
 
     const js = await request('GET', '/quantum-engine.js');
-    assert(js.status === 200 && js.data.includes('initScrollEngine') && !js.data.includes('wheelDebounce'),
-      '2.5 GET /quantum-engine.js allows unobstructed vertical scrolling over images without wheel trapping');
+    assert(js.status === 200 && js.data.includes('initScrollEngine') && js.data.includes('header-hidden') && !js.data.includes('wheelDebounce'),
+      '2.5 GET /quantum-engine.js includes auto-hide header on scroll down and unobstructed image scrolling');
     assert(js.data.includes('initSpatialScrollEffects') && js.data.includes('beaconProgressCircle'),
       '2.5b GET /quantum-engine.js includes continuous cinematic 3D spatial scroll effects and circular dial beacon');
     assert(js.data.includes('scrollVelocity') && js.data.includes('scrollVelocity *= 0.94'),

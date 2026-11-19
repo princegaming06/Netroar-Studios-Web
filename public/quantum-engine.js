@@ -844,7 +844,10 @@ function initScrollEngine() {
   const studioNav = document.querySelector('.spatial-nav-dock a[href="/"]');
   const newswireNav = document.querySelector('.spatial-nav-dock a[href*="chronicles"]');
 
-  // 1. Scroll listener for progress, header elevation, and scroll-top beacon
+  let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
+  const scrollThreshold = 8;
+
+  // 1. Scroll listener for progress, auto-hide header, and scroll-top beacon
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (!ticking) {
@@ -852,15 +855,26 @@ function initScrollEngine() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        const delta = scrollTop - lastScrollTop;
 
-        // Header Elevation & Compression
+        // Auto-Hide Header on Scroll Down, Reveal on Scroll Up
         if (header) {
-          if (scrollTop > 45) {
-            header.classList.add('scrolled');
-          } else {
+          if (scrollTop <= 45) {
+            header.classList.remove('header-hidden');
             header.classList.remove('scrolled');
+          } else {
+            header.classList.add('scrolled');
+            if (delta > scrollThreshold && scrollTop > 100) {
+              // Scrolling DOWN: hide header off-screen
+              header.classList.add('header-hidden');
+            } else if (delta < -scrollThreshold) {
+              // Scrolling UP: reveal header into view
+              header.classList.remove('header-hidden');
+            }
           }
         }
+
+        lastScrollTop = Math.max(0, scrollTop);
 
         // Floating Scroll-To-Top Beacon with Circular Progress Ring
         if (scrollTopBtn) {

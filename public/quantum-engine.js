@@ -48,7 +48,7 @@ function syncActiveNav() {
     el.classList.remove('active');
   });
 
-  let activeTitle = 'STUDIO';
+  let activeTitle = 'HOME';
   if (path === '/admin' || path === '/admin.html' || path.startsWith('/admin/') ||
       path === '/login' || path === '/login.html' || path.startsWith('/login/')) {
     adminLinks.forEach(el => el.classList.add('active'));
@@ -59,9 +59,17 @@ function syncActiveNav() {
   } else if (hash === '#chronicles' || hash === '#newswire') {
     newswireLinks.forEach(el => el.classList.add('active'));
     activeTitle = 'NEWSWIRE';
+  } else if (hash === '#philosophy') {
+    const philLink = document.querySelector('.spatial-nav-dock a[href*="philosophy"]');
+    if (philLink) philLink.classList.add('active');
+    activeTitle = 'PHILOSOPHY';
+  } else if (hash === '#about') {
+    const abLink = document.querySelector('.spatial-nav-dock a[href*="about"]');
+    if (abLink) abLink.classList.add('active');
+    activeTitle = 'ABOUT';
   } else {
     studioLinks.forEach(el => el.classList.add('active'));
-    activeTitle = 'STUDIO';
+    activeTitle = 'HOME';
   }
 
   if (activePageDisplay) {
@@ -846,8 +854,12 @@ function initScrollEngine() {
   const header = document.querySelector('.spatial-header');
   const scrollTopBtn = document.getElementById('scroll-top-beacon');
   const chroniclesSection = document.getElementById('chronicles');
-  const studioNav = document.querySelector('.spatial-nav-dock a[href="/"]');
+  const philosophySection = document.getElementById('philosophy');
+  const aboutSection = document.getElementById('about');
+  const homeNav = document.querySelector('.spatial-nav-dock a[href="/"]');
+  const philosophyNav = document.querySelector('.spatial-nav-dock a[href*="philosophy"]');
   const newswireNav = document.querySelector('.spatial-nav-dock a[href*="chronicles"]');
+  const aboutNav = document.querySelector('.spatial-nav-dock a[href*="about"]');
 
   let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
   const scrollThreshold = 8;
@@ -897,18 +909,29 @@ function initScrollEngine() {
           }
         }
 
-        // Dynamic Section Scrollspy on Home
-        if (chroniclesSection && studioNav && newswireNav && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
-          const rect = chroniclesSection.getBoundingClientRect();
+        // Dynamic Section Scrollspy on Home (HOME, PHILOSOPHY, NEWSWIRE, ABOUT)
+        if (homeNav && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
           const activePageDisplay = document.getElementById('telemetry-active-page-name');
-          if (rect.top <= 200 && rect.bottom >= 150) {
-            studioNav.classList.remove('active');
-            newswireNav.classList.add('active');
-            if (activePageDisplay) activePageDisplay.textContent = 'NEWSWIRE';
-          } else if (rect.top > 200) {
-            newswireNav.classList.remove('active');
-            studioNav.classList.add('active');
-            if (activePageDisplay) activePageDisplay.textContent = 'STUDIO';
+          const navLinks = [homeNav, philosophyNav, newswireNav, aboutNav].filter(Boolean);
+
+          function setNavActive(targetEl, title) {
+            navLinks.forEach(link => link.classList.remove('active'));
+            if (targetEl) targetEl.classList.add('active');
+            if (activePageDisplay) activePageDisplay.textContent = title;
+          }
+
+          const aboutRect = aboutSection ? aboutSection.getBoundingClientRect() : null;
+          const chroniclesRect = chroniclesSection ? chroniclesSection.getBoundingClientRect() : null;
+          const philosophyRect = philosophySection ? philosophySection.getBoundingClientRect() : null;
+
+          if (aboutRect && aboutRect.top <= 250 && aboutRect.bottom >= 120) {
+            setNavActive(aboutNav, 'ABOUT');
+          } else if (chroniclesRect && chroniclesRect.top <= 250 && chroniclesRect.bottom >= 120) {
+            setNavActive(newswireNav, 'NEWSWIRE');
+          } else if (philosophyRect && philosophyRect.top <= 250 && philosophyRect.bottom >= 120) {
+            setNavActive(philosophyNav, 'PHILOSOPHY');
+          } else if (scrollTop < 420) {
+            setNavActive(homeNav, 'HOME');
           }
         }
 

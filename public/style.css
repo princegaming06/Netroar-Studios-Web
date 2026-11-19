@@ -1892,3 +1892,471 @@ select.form-control option {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ==========================================================================
+   QUANTUM ELEMENT BREAK & CONCATENATE ENGINE STYLES
+   Bespoke, never-before-seen kinetic 3D deconstruction and magnetic seam reassembly
+   ========================================================================== */
+
+/* 1. Kinetic Controller Dock */
+.quantum-kinetic-dock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 14px 22px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  position: relative;
+  z-index: 10;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.quantum-kinetic-dock.dock-broken {
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 158, 11, 0.2);
+}
+
+.quantum-kinetic-dock.dock-concatenated {
+  border-color: var(--neon-mint);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px var(--neon-mint-glow);
+}
+
+.kinetic-telemetry-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.kinetic-beacon {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--neon-mint);
+  box-shadow: 0 0 12px var(--neon-mint);
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.kinetic-beacon.broken {
+  background: var(--solar-amber);
+  box-shadow: 0 0 12px var(--solar-amber);
+  animation: beaconBlink 0.6s infinite alternate;
+}
+
+.kinetic-beacon.concatenating {
+  background: var(--electric-blue);
+  box-shadow: 0 0 16px var(--electric-blue);
+  animation: beaconPulseFast 0.3s infinite alternate;
+}
+
+@keyframes beaconBlink {
+  0% { opacity: 0.3; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
+@keyframes beaconPulseFast {
+  0% { opacity: 0.6; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1.3); }
+}
+
+.kinetic-status-label, .kinetic-shard-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.kinetic-status-val {
+  color: var(--neon-mint);
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.kinetic-status-val.broken {
+  color: var(--solar-amber);
+}
+
+.kinetic-status-val.concatenating {
+  color: var(--electric-blue);
+}
+
+.kinetic-status-divider {
+  color: var(--text-dim);
+}
+
+.kinetic-shard-val {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.kinetic-trigger-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-kinetic-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  color: var(--text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-kinetic-trigger:hover {
+  transform: translateY(-2px);
+}
+
+.btn-kinetic-trigger:active {
+  transform: translateY(1px);
+}
+
+.btn-kinetic-trigger.btn-break:hover {
+  border-color: var(--solar-amber);
+  color: var(--solar-amber);
+  background: rgba(245, 158, 11, 0.12);
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
+}
+
+.btn-kinetic-trigger.btn-concatenate:hover {
+  border-color: var(--neon-mint);
+  color: var(--neon-mint);
+  background: rgba(0, 245, 184, 0.12);
+  box-shadow: 0 0 18px var(--neon-mint-glow);
+}
+
+.btn-kinetic-trigger.btn-cycle:hover {
+  border-color: var(--electric-blue);
+  color: var(--electric-blue);
+  background: rgba(0, 164, 239, 0.12);
+  box-shadow: 0 0 18px var(--electric-blue-glow);
+}
+
+.btn-kinetic-trigger .btn-icon {
+  font-size: 0.88rem;
+}
+
+/* 2. Quantum Break Chassis Container */
+.quantum-break-chassis {
+  perspective: 1600px;
+  transform-style: preserve-3d;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+              box-shadow 0.7s ease,
+              border-color 0.5s ease;
+}
+
+/* Broken Chassis State */
+.quantum-break-chassis.element-broken {
+  transform: perspective(1600px) rotateX(4.5deg) rotateY(-3.5deg) scale(0.975);
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Concatenating Magnetic Reassembly State */
+.quantum-break-chassis.element-concatenating {
+  transform: perspective(1600px) rotateX(0deg) rotateY(0deg) scale(1);
+  border-color: var(--electric-blue) !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--electric-blue-glow) !important;
+}
+
+/* Concatenated Solid State */
+.quantum-break-chassis.element-concatenated {
+  transform: perspective(1600px) rotateX(0deg) rotateY(0deg) scale(1);
+  border-color: var(--neon-mint) !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--neon-mint-glow) !important;
+  animation: monolithFusePulse 0.8s ease-out;
+}
+
+@keyframes monolithFusePulse {
+  0% { filter: brightness(1.2) drop-shadow(0 0 25px var(--neon-mint)); }
+  50% { filter: brightness(1.4) drop-shadow(0 0 45px var(--neon-mint)); }
+  100% { filter: brightness(1) drop-shadow(0 0 0 transparent); }
+}
+
+/* 3. Break Shards Holographic Layer */
+.break-shards-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transform-style: preserve-3d;
+  transition: opacity 0.4s ease;
+  z-index: 25;
+}
+
+.quantum-break-chassis.element-broken .break-shards-layer {
+  opacity: 1;
+}
+
+.quantum-break-chassis.element-concatenating .break-shards-layer {
+  opacity: 0.8;
+}
+
+.quantum-shard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(14, 22, 36, 0.75);
+  border: 1px solid rgba(245, 158, 11, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.25), 0 0 25px rgba(245, 158, 11, 0.2);
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.19, 1, 0.22, 1),
+              box-shadow 0.6s ease,
+              border-color 0.6s ease,
+              opacity 0.5s ease;
+  will-change: transform, box-shadow;
+}
+
+.shard-tag {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--solar-amber);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Shard 1: Top-Left Wing */
+.shard-tl {
+  clip-path: polygon(0 0, 52% 0, 44% 46%, 0 38%);
+  -webkit-clip-path: polygon(0 0, 52% 0, 44% 46%, 0 38%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-tl .shard-tag { top: 16px; left: 16px; }
+
+.quantum-break-chassis.element-broken .shard-tl {
+  transform: translate3d(-34px, -28px, 60px) rotateX(12deg) rotateY(-15deg) rotateZ(-3.5deg);
+  animation: shardHoverFloat1 4.5s ease-in-out infinite alternate;
+}
+
+/* Shard 2: Top-Right Blade */
+.shard-tr {
+  clip-path: polygon(52% 0, 100% 0, 100% 48%, 44% 46%);
+  -webkit-clip-path: polygon(52% 0, 100% 0, 100% 48%, 44% 46%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-tr .shard-tag { top: 16px; right: 16px; }
+
+.quantum-break-chassis.element-broken .shard-tr {
+  transform: translate3d(36px, -24px, 50px) rotateX(10deg) rotateY(16deg) rotateZ(4deg);
+  animation: shardHoverFloat2 4.2s ease-in-out infinite alternate;
+}
+
+/* Shard 3: Center Core Matrix */
+.shard-core {
+  clip-path: polygon(44% 46%, 72% 46%, 66% 76%, 34% 76%);
+  -webkit-clip-path: polygon(44% 46%, 72% 46%, 66% 76%, 34% 76%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-core .shard-tag { top: 48%; left: 45%; }
+
+.quantum-break-chassis.element-broken .shard-core {
+  transform: translate3d(0px, -12px, 85px) rotateX(-6deg) rotateY(0deg) scale(1.04);
+  border-color: var(--neon-mint);
+  box-shadow: inset 0 0 30px var(--neon-mint-glow), 0 0 30px var(--neon-mint-glow);
+  animation: shardHoverFloat3 3.8s ease-in-out infinite alternate;
+}
+.quantum-break-chassis.element-broken .shard-core .shard-tag {
+  color: var(--neon-mint);
+  border-color: var(--neon-mint);
+}
+
+/* Shard 4: Bottom-Left Flank */
+.shard-bl {
+  clip-path: polygon(0 38%, 44% 46%, 34% 76%, 42% 100%, 0 100%);
+  -webkit-clip-path: polygon(0 38%, 44% 46%, 34% 76%, 42% 100%, 0 100%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-bl .shard-tag { bottom: 20px; left: 16px; }
+
+.quantum-break-chassis.element-broken .shard-bl {
+  transform: translate3d(-38px, 28px, 45px) rotateX(-10deg) rotateY(-18deg) rotateZ(5.5deg);
+  animation: shardHoverFloat4 4.6s ease-in-out infinite alternate;
+}
+
+/* Shard 5: Bottom-Right Flank */
+.shard-br {
+  clip-path: polygon(72% 46%, 100% 48%, 100% 100%, 58% 100%, 66% 76%);
+  -webkit-clip-path: polygon(72% 46%, 100% 48%, 100% 100%, 58% 100%, 66% 76%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-br .shard-tag { bottom: 20px; right: 16px; }
+
+.quantum-break-chassis.element-broken .shard-br {
+  transform: translate3d(40px, 30px, 52px) rotateX(-12deg) rotateY(18deg) rotateZ(-4.5deg);
+  animation: shardHoverFloat5 4.0s ease-in-out infinite alternate;
+}
+
+/* Shard 6: Keel Base Anchor */
+.shard-keel {
+  clip-path: polygon(34% 76%, 66% 76%, 58% 100%, 42% 100%);
+  -webkit-clip-path: polygon(34% 76%, 66% 76%, 58% 100%, 42% 100%);
+  transform: translate3d(0, 0, 0) rotate(0);
+}
+.shard-keel .shard-tag { bottom: 8px; left: 42%; }
+
+.quantum-break-chassis.element-broken .shard-keel {
+  transform: translate3d(0px, 42px, 35px) rotateX(20deg) scale(0.95);
+  animation: shardHoverFloat6 4.8s ease-in-out infinite alternate;
+}
+
+/* Magnetic Concatenation Motion Keyframes */
+.quantum-break-chassis.element-concatenating .quantum-shard {
+  transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1) !important;
+  border-color: var(--neon-mint);
+  box-shadow: inset 0 0 25px var(--neon-mint-glow), 0 0 35px var(--neon-mint-glow);
+  transition: transform 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+/* Shard Zero-G Hover Animations */
+@keyframes shardHoverFloat1 {
+  0% { transform: translate3d(-34px, -28px, 60px) rotateX(12deg) rotateY(-15deg) rotateZ(-3.5deg); }
+  100% { transform: translate3d(-38px, -34px, 68px) rotateX(15deg) rotateY(-18deg) rotateZ(-5deg); }
+}
+
+@keyframes shardHoverFloat2 {
+  0% { transform: translate3d(36px, -24px, 50px) rotateX(10deg) rotateY(16deg) rotateZ(4deg); }
+  100% { transform: translate3d(42px, -30px, 58px) rotateX(13deg) rotateY(19deg) rotateZ(5.5deg); }
+}
+
+@keyframes shardHoverFloat3 {
+  0% { transform: translate3d(0px, -12px, 85px) rotateX(-6deg) rotateY(0deg) scale(1.04); }
+  100% { transform: translate3d(0px, -18px, 95px) rotateX(-9deg) rotateY(2deg) scale(1.07); }
+}
+
+@keyframes shardHoverFloat4 {
+  0% { transform: translate3d(-38px, 28px, 45px) rotateX(-10deg) rotateY(-18deg) rotateZ(5.5deg); }
+  100% { transform: translate3d(-44px, 34px, 52px) rotateX(-13deg) rotateY(-22deg) rotateZ(7deg); }
+}
+
+@keyframes shardHoverFloat5 {
+  0% { transform: translate3d(40px, 30px, 52px) rotateX(-12deg) rotateY(18deg) rotateZ(-4.5deg); }
+  100% { transform: translate3d(46px, 36px, 60px) rotateX(-15deg) rotateY(22deg) rotateZ(-6deg); }
+}
+
+@keyframes shardHoverFloat6 {
+  0% { transform: translate3d(0px, 42px, 35px) rotateX(20deg) scale(0.95); }
+  100% { transform: translate3d(0px, 50px, 42px) rotateX(24deg) scale(0.93); }
+}
+
+/* 4. Concatenation Laser Seam Scanner */
+.concatenation-laser-seam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 30;
+  background: linear-gradient(135deg, 
+    transparent 45%, 
+    rgba(0, 245, 184, 0.8) 50%, 
+    rgba(0, 164, 239, 0.9) 52%, 
+    transparent 57%
+  );
+  transform: translateY(-100%);
+  border-radius: inherit;
+}
+
+.quantum-break-chassis.element-concatenating .concatenation-laser-seam {
+  animation: laserSeamScan 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes laserSeamScan {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%) scaleY(1);
+  }
+  30% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%) scaleY(1);
+  }
+}
+
+/* 5. Concatenation Radial Shockwave Ring */
+.concatenation-shockwave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140px;
+  height: 140px;
+  margin-top: -70px;
+  margin-left: -70px;
+  border-radius: 50%;
+  border: 2px solid var(--neon-mint);
+  box-shadow: 0 0 35px var(--neon-mint), inset 0 0 25px var(--neon-mint);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.1);
+  z-index: 31;
+}
+
+.quantum-break-chassis.element-concatenating .concatenation-shockwave-ring {
+  animation: shockwaveExpand 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shockwaveExpand {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  25% {
+    opacity: 1;
+    border-color: var(--neon-mint);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.5);
+    border-color: var(--electric-blue);
+  }
+}
+
+/* 6. Kinetic Scroll Velocity Micro-Break */
+.quantum-break-chassis.kinetic-scroll-break {
+  transition: transform 0.15s ease-out;
+}
+

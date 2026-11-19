@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTelemetryClock();
   syncActiveNav();
   initScrollEngine();
+  initBreakConcatenateEngine();
   initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
@@ -407,6 +408,78 @@ function playWarpSound() {
   } catch (err) {}
 }
 
+function playBreakSound() {
+  if (!audioEnabled) return;
+  try {
+    ensureAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Oscillator 1: High crisp fracture snap (sawtooth)
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(1400, now);
+    osc1.frequency.exponentialRampToValueAtTime(320, now + 0.18);
+    gain1.gain.setValueAtTime(0.09, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.18);
+
+    // Oscillator 2: Crystal chime harmonic (triangle)
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(880, now + 0.02);
+    osc2.frequency.exponentialRampToValueAtTime(220, now + 0.22);
+    gain2.gain.setValueAtTime(0.06, now + 0.02);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.start(now + 0.02);
+    osc2.stop(now + 0.22);
+  } catch (err) {}
+}
+
+function playConcatenateSound() {
+  if (!audioEnabled) return;
+  try {
+    ensureAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    // Layer 1: Sub-bass magnetic docking implosion (sine)
+    const subOsc = audioCtx.createOscillator();
+    const subGain = audioCtx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(180, now);
+    subOsc.frequency.exponentialRampToValueAtTime(55, now + 0.32);
+    subGain.gain.setValueAtTime(0.14, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    subOsc.connect(subGain);
+    subGain.connect(audioCtx.destination);
+    subOsc.start(now);
+    subOsc.stop(now + 0.32);
+
+    // Layer 2: High harmonic seam weld lock (triangle)
+    const weldOsc = audioCtx.createOscillator();
+    const weldGain = audioCtx.createGain();
+    weldOsc.type = 'triangle';
+    weldOsc.frequency.setValueAtTime(440, now + 0.08);
+    weldOsc.frequency.exponentialRampToValueAtTime(1046.5, now + 0.28); // High harmonic C6 lock tone
+    weldGain.gain.setValueAtTime(0.08, now + 0.08);
+    weldGain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+    weldOsc.connect(weldGain);
+    weldGain.connect(audioCtx.destination);
+    weldOsc.start(now + 0.08);
+    weldOsc.stop(now + 0.32);
+  } catch (err) {}
+}
+
 // ==========================================================================
 // 3. TELEMETRY CLOCK
 // ==========================================================================
@@ -653,8 +726,14 @@ function initTerminal() {
       window.open('https://github.com/princegaming06/Netroar-To-Do-Official-WebPage', '_blank');
     } else if (clean === 'feed' || clean === 'merchant') {
       window.open('/feed/products.xml', '_blank');
+    } else if (clean === 'break' || clean === 'shatter') {
+      if (window.netroarBreak) window.netroarBreak();
+    } else if (clean === 'concatenate' || clean === 'concinate' || clean === 'assemble' || clean === 'fuse') {
+      if (window.netroarConcatenate) window.netroarConcatenate();
+    } else if (clean === 'cycle' || clean === 'kinetic') {
+      if (window.netroarCycle) window.netroarCycle();
     } else {
-      showToast(`Command not recognized: "${clean}". Try "launch", "download", or "apps".`);
+      showToast(`Command not recognized: "${clean}". Try "launch", "download", "break", or "concatenate".`);
     }
 
     if (terminalInput) terminalInput.value = '';
@@ -849,5 +928,196 @@ function initScrollEngine() {
     });
   } else {
     revealElements.forEach(el => el.classList.add('revealed'));
+  }
+}
+
+// ==========================================================================
+// 10. QUANTUM ELEMENT BREAK & CONCATENATE ENGINE
+// Features:
+// - Dynamic 3D Polygonal Sharding & Fracture Mechanics (Element Break)
+// - Magnetic Quantum Velocity Reassembly & Seam Fusion (Concatenate Event)
+// - Custom DOM Events: 'netroar:elementBreak', 'netroar:elementConcatenate', 'netroar:elementCycle'
+// - Velocity Scroll Integration & Interactive Cyber HUD Controls
+// - Full Web Audio Haptic Feedback (playBreakSound, playConcatenateSound)
+// ==========================================================================
+function initBreakConcatenateEngine() {
+  const dock = document.getElementById('quantum-kinetic-dock');
+  const beacon = document.getElementById('kinetic-beacon-dot');
+  const cohesionVal = document.getElementById('kinetic-cohesion-status');
+  const shardVal = document.getElementById('kinetic-shard-count');
+  const btnBreak = document.getElementById('btn-trigger-break');
+  const btnConcatenate = document.getElementById('btn-trigger-concatenate');
+  const btnCycle = document.getElementById('btn-trigger-cycle');
+  const heroTitle = document.getElementById('hero-quantum-title');
+
+  function getActiveChassis(selector) {
+    if (selector && typeof selector === 'string') {
+      return document.querySelector(selector);
+    }
+    return document.getElementById('popular-spotlight-monolith') ||
+           document.getElementById('flagship-console-rig') ||
+           document.querySelector('.quantum-break-chassis');
+  }
+
+  // 1. Element Break Function
+  function triggerBreak(targetSelector) {
+    const chassis = getActiveChassis(targetSelector);
+    if (!chassis) return;
+
+    chassis.classList.remove('element-concatenating', 'element-concatenated');
+    chassis.classList.add('element-broken');
+
+    if (dock) {
+      dock.classList.remove('dock-concatenated');
+      dock.classList.add('dock-broken');
+    }
+    if (beacon) {
+      beacon.className = 'kinetic-beacon broken';
+    }
+    if (cohesionVal) {
+      cohesionVal.textContent = 'FRACTURED (0% COHESION)';
+      cohesionVal.className = 'kinetic-status-val broken';
+    }
+    if (shardVal) {
+      shardVal.textContent = '6 SHARDS (DISASSEMBLED)';
+    }
+
+    playBreakSound();
+
+    // Dispatch Standard Custom Events
+    const breakEvent = new CustomEvent('netroar:elementBreak', {
+      bubbles: true,
+      detail: { target: chassis, shards: 6, state: 'broken', timestamp: Date.now() }
+    });
+    document.dispatchEvent(breakEvent);
+    document.dispatchEvent(new CustomEvent('element:break', { bubbles: true, detail: breakEvent.detail }));
+
+    showToast('⚡ [QUANTUM KINETIC] Element Break Dispatched: 6 Shards Fractured in 3D Space');
+  }
+
+  // 2. Element Concatenate / Concinnate Function
+  function triggerConcatenate(targetSelector) {
+    const chassis = getActiveChassis(targetSelector);
+    if (!chassis) return;
+
+    chassis.classList.remove('element-broken');
+    chassis.classList.add('element-concatenating');
+
+    if (dock) {
+      dock.classList.remove('dock-broken');
+    }
+    if (beacon) {
+      beacon.className = 'kinetic-beacon concatenating';
+    }
+    if (cohesionVal) {
+      cohesionVal.textContent = 'CONCATENATING... [MAGNETIC DRAW]';
+      cohesionVal.className = 'kinetic-status-val concatenating';
+    }
+    if (shardVal) {
+      shardVal.textContent = 'SEALING FISSURES...';
+    }
+
+    playConcatenateSound();
+
+    // Dispatch Standard Custom Events
+    const concatEvent = new CustomEvent('netroar:elementConcatenate', {
+      bubbles: true,
+      detail: { target: chassis, state: 'concatenating', timestamp: Date.now() }
+    });
+    document.dispatchEvent(concatEvent);
+    document.dispatchEvent(new CustomEvent('element:concatenate', { bubbles: true, detail: concatEvent.detail }));
+
+    setTimeout(() => {
+      chassis.classList.remove('element-concatenating');
+      chassis.classList.add('element-concatenated');
+
+      if (dock) {
+        dock.classList.add('dock-concatenated');
+      }
+      if (beacon) {
+        beacon.className = 'kinetic-beacon';
+      }
+      if (cohesionVal) {
+        cohesionVal.textContent = '100% MONOLITH';
+        cohesionVal.className = 'kinetic-status-val';
+      }
+      if (shardVal) {
+        shardVal.textContent = '0 (SOLID COHESION)';
+      }
+
+      showToast('🔗 [QUANTUM KINETIC] Concatenate Event Complete: Monolithic Cohesion Restored (100%)');
+
+      setTimeout(() => {
+        chassis.classList.remove('element-concatenated');
+        if (dock) dock.classList.remove('dock-concatenated');
+      }, 900);
+    }, 750);
+  }
+
+  // 3. Auto-Cycle Break and Concatenate
+  let isCycling = false;
+  function triggerCycle(targetSelector) {
+    if (isCycling) return;
+    isCycling = true;
+    showToast('↺ [QUANTUM KINETIC] Initiating Break & Concatenate Kinetic Cycle...');
+
+    triggerBreak(targetSelector);
+
+    setTimeout(() => {
+      triggerConcatenate(targetSelector);
+      setTimeout(() => { isCycling = false; }, 900);
+    }, 1800);
+  }
+
+  // Bind Buttons
+  if (btnBreak) btnBreak.addEventListener('click', () => triggerBreak());
+  if (btnConcatenate) btnConcatenate.addEventListener('click', () => triggerConcatenate());
+  if (btnCycle) btnCycle.addEventListener('click', () => triggerCycle());
+
+  // Listen to Global Custom Events
+  document.addEventListener('netroar:break', (e) => triggerBreak(e.detail?.target));
+  document.addEventListener('netroar:concatenate', (e) => triggerConcatenate(e.detail?.target));
+  document.addEventListener('netroar:concinnate', (e) => triggerConcatenate(e.detail?.target));
+  document.addEventListener('netroar:cycle', (e) => triggerCycle(e.detail?.target));
+
+  // Expose API to Window
+  window.netroarBreak = triggerBreak;
+  window.netroarConcatenate = triggerConcatenate;
+  window.netroarConcinnate = triggerConcatenate;
+  window.netroarCycle = triggerCycle;
+
+  // Kinetic Scroll Velocity Integration
+  let scrollBreakActive = false;
+  let scrollBreakTimeout = null;
+
+  window.addEventListener('scroll', () => {
+    const chassis = getActiveChassis();
+    if (!chassis) return;
+
+    const rect = chassis.getBoundingClientRect();
+    const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!inViewport) return;
+
+    if (!scrollBreakActive && !chassis.classList.contains('element-broken')) {
+      scrollBreakActive = true;
+      chassis.classList.add('kinetic-scroll-break');
+    }
+
+    clearTimeout(scrollBreakTimeout);
+    scrollBreakTimeout = setTimeout(() => {
+      if (scrollBreakActive) {
+        scrollBreakActive = false;
+        chassis.classList.remove('kinetic-scroll-break');
+      }
+    }, 160);
+  }, { passive: true });
+
+  // Optional Hero Title Click to trigger Break & Concatenate
+  if (heroTitle) {
+    heroTitle.style.cursor = 'pointer';
+    heroTitle.title = 'Click to trigger Quantum Break & Concatenate on Monolith';
+    heroTitle.addEventListener('click', () => {
+      triggerCycle();
+    });
   }
 }

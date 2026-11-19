@@ -96,15 +96,56 @@
 
     <!-- 2. Flagship Console View (Revealed when card is tapped) -->
     <section class="flagship-console-wrapper view-hidden" id="flagship-console-view">
-      <!-- Back to Apps Catalog Navigation -->
-      <div style="margin-bottom: 24px;">
+      <!-- Back to Apps Catalog Navigation & Kinetic Controls -->
+      <div style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
         <button class="btn-hyper-glass" id="btn-back-to-catalog" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 0.82rem; cursor: pointer; border: 1px solid var(--border-glass);">
           <span>❮ BACK TO ALL APPS</span>
         </button>
+
+        <div class="kinetic-trigger-group">
+          <button class="btn-kinetic-trigger btn-break" id="btn-trigger-break" title="Trigger Element Break Event">
+            <span class="btn-icon">⚡</span>
+            <span>BREAK RIG</span>
+          </button>
+          <button class="btn-kinetic-trigger btn-concatenate" id="btn-trigger-concatenate" title="Trigger Concatenate Event">
+            <span class="btn-icon">🔗</span>
+            <span>CONCATENATE</span>
+          </button>
+          <button class="btn-kinetic-trigger btn-cycle" id="btn-trigger-cycle" title="Auto-Cycle Break & Concatenate">
+            <span class="btn-icon">↺</span>
+            <span>CYCLE</span>
+          </button>
+        </div>
       </div>
 
       <!-- Flagship Console Wireframe Rig -->
-      <div class="flagship-console-rig" id="flagship-console-rig">
+      <div class="flagship-console-rig quantum-break-chassis" id="flagship-console-rig">
+        <!-- 3D Kinetic Floating Shards Holographic Overlay -->
+        <div class="break-shards-layer" id="break-shards-layer" aria-hidden="true">
+          <div class="quantum-shard shard-tl">
+            <span class="shard-tag">SHARD_01 // TL_WING</span>
+          </div>
+          <div class="quantum-shard shard-tr">
+            <span class="shard-tag">SHARD_02 // TR_BLADE</span>
+          </div>
+          <div class="quantum-shard shard-core">
+            <span class="shard-tag">SHARD_03 // CORE_MATRIX</span>
+          </div>
+          <div class="quantum-shard shard-bl">
+            <span class="shard-tag">SHARD_04 // BL_FLANK</span>
+          </div>
+          <div class="quantum-shard shard-br">
+            <span class="shard-tag">SHARD_05 // BR_FLANK</span>
+          </div>
+          <div class="quantum-shard shard-keel">
+            <span class="shard-tag">SHARD_06 // KEEL_BASE</span>
+          </div>
+        </div>
+
+        <!-- Concatenation Laser Seam & Radial Shockwave -->
+        <div class="concatenation-laser-seam" id="concatenation-laser-seam" aria-hidden="true"></div>
+        <div class="concatenation-shockwave-ring" id="concatenation-shockwave-ring" aria-hidden="true"></div>
+
         <span class="console-corner-bracket bracket-tl"></span>
         <span class="console-corner-bracket bracket-tr"></span>
         <span class="console-corner-bracket bracket-bl"></span>

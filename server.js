@@ -518,6 +518,10 @@ Sitemap: https://${host}/sitemap.xml
   if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\') {
     safePath = '/admin.html';
   }
+  if (safePath === '/apps' || safePath === '\\apps' || safePath === '/apps/' || safePath === '\\apps\\' ||
+      safePath === '/app-studios' || safePath === '\\app-studios' || safePath === '/app-studios/' || safePath === '\\app-studios\\') {
+    safePath = '/apps.html';
+  }
 
   // Block path traversal
   if (safePath.includes('..') || safePath.includes('\0')) {

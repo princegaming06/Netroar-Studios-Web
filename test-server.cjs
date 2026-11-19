@@ -89,13 +89,16 @@ async function runTests() {
 
     // Test 2: Public static HTML
     const index = await request('GET', '/');
-    assert(index.status === 200 && index.data.includes('Netroar Studios'), '2.1 GET / serves index.html with brand');
+    assert(index.status === 200 && index.data.includes('Netroar Studios'), '2.1 GET / serves Rockstar style index.html');
+
+    const appStudios = await request('GET', '/apps');
+    assert(appStudios.status === 200 && appStudios.data.includes('APP STUDIOS SPOTLIGHT'), '2.2 GET /apps serves App Studios showcase');
 
     const admin = await request('GET', '/admin');
-    assert(admin.status === 200 && admin.data.includes('Admin Control Panel'), '2.2 GET /admin serves admin.html');
+    assert(admin.status === 200 && admin.data.includes('Admin Control Panel'), '2.3 GET /admin serves admin.html');
 
     const css = await request('GET', '/style.css');
-    assert(css.status === 200 && css.data.includes('--accent-primary: #00f5b8'), '2.3 GET /style.css serves cyber-acrylic palette');
+    assert(css.status === 200 && css.data.includes('--accent-rockstar'), '2.4 GET /style.css serves Rockstar palette');
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');

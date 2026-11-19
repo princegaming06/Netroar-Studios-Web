@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netroar Studios — Admin Control Panel</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Ambient Glow Background -->
+  <div class="ambient-glow" aria-hidden="true">
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="glow-orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="site-wrapper">
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+      <div class="container header-content">
+        <a href="/admin" class="brand-link">
+          <img src="/assets/logo/netroars-logo.png" alt="Netroar Logo" class="brand-logo-img">
+          <div class="brand-title-wrap">
+            <span class="brand-name">Netroar Studios</span>
+            <span class="brand-badge" style="color: var(--accent-windows);">Admin Suite</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
+            <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+
+          <a href="/" target="_blank" class="btn-secondary" style="padding: 8px 16px; font-size: 0.88rem;">
+            <span>View Public Site ↗</span>
+          </a>
+
+          <button id="btn-logout" class="btn-admin-nav" style="display: none; background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
+            <span>Log Out</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Section -->
+    <main class="container" style="position: relative; z-index: 2;">
+
+      <!-- Login HUD Screen -->
+      <section id="admin-login-screen" class="admin-login-screen">
+        <div class="login-hud-card">
+          <div style="width: 64px; height: 64px; border-radius: var(--radius-lg); background: rgba(0, 245, 184, 0.1); border: 1px solid var(--border-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+
+          <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">Studio Authorization</h2>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+            Enter the studio master passcode to manage apps, website links, icons, and Google Merchant feeds.
+          </p>
+
+          <form id="admin-login-form">
+            <div class="form-group" style="text-align: left;">
+              <label class="form-label" for="admin-passcode-input">Master Passcode</label>
+              <input type="password" id="admin-passcode-input" class="form-control" placeholder="Enter admin passcode" required autofocus>
+              <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Default setup passcode: netroar@admin2026</span>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" id="btn-login-submit">
+              <span>Authenticate & Enter</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Authenticated Dashboard -->
+      <section id="admin-dashboard-screen" class="admin-dashboard-container" style="display: none;">
+        
+        <!-- Header row -->
+        <div class="admin-header-row">
+          <div>
+            <h1 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;">Studio Control Suite</h1>
+            <p style="color: var(--text-secondary); font-size: 1rem; margin-top: 4px;">
+              Manage your software ecosystem, store links, release metadata, and Google Merchant sync.
+            </p>
+          </div>
+
+          <button class="btn-primary" id="btn-open-create-modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add New App</span>
+          </button>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="admin-tabs-nav">
+          <button class="admin-tab-btn active" data-tab="apps">Apps & Software (<span id="admin-apps-count">0</span>)</button>
+          <button class="admin-tab-btn" data-tab="settings">Studio Settings</button>
+          <button class="admin-tab-btn" data-tab="feeds">Google Merchant & Backups</button>
+        </nav>
+
+        <!-- Tab 1: Apps Manager -->
+        <div id="tab-apps" class="admin-tab-content">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 24px; box-shadow: var(--shadow-card);">
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+              <input type="text" id="admin-search-apps" class="form-control" style="max-width: 340px;" placeholder="Filter apps by name or category...">
+              <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">
+                Changes persist immediately to disk
+              </span>
+            </div>
+
+            <div id="admin-apps-table-container">
+              <!-- Rendered via admin.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Studio Settings -->
+        <div id="tab-settings" class="admin-tab-content" style="display: none;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 36px; max-width: 800px; box-shadow: var(--shadow-card);">
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">Studio Profile & Customization</h3>
+
+            <form id="studio-settings-form">
+              <div class="form-group">
+                <label class="form-label" for="setting-studio-name">Studio Name</label>
+                <input type="text" id="setting-studio-name" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-slogan">Studio Tagline / Slogan</label>
+                <input type="text" id="setting-slogan" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-hero-title">Public Hero Title</label>
+                <input type="text" id="setting-hero-title" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-hero-desc">Public Hero Description</label>
+                <textarea id="setting-hero-desc" class="form-control" rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-about-text">About Studio Bio</label>
+                <textarea id="setting-about-text" class="form-control" rows="4"></textarea>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                  <label class="form-label" for="setting-contact-email">Contact / Support Email</label>
+                  <input type="email" id="setting-contact-email" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-founder-name">Founder Name</label>
+                  <input type="text" id="setting-founder-name" class="form-control">
+                </div>
+              </div>
+
+              <h4 style="font-size: 1.1rem; font-weight: 700; margin: 24px 0 16px; color: var(--accent-primary);">Social & Repository Links</h4>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                  <label class="form-label" for="setting-social-github">GitHub Profile URL</label>
+                  <input type="url" id="setting-social-github" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-social-discord">Discord Invite URL</label>
+                  <input type="url" id="setting-social-discord" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-social-twitter">Twitter / X URL</label>
+                  <input type="url" id="setting-social-twitter" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="setting-social-youtube">YouTube URL</label>
+                  <input type="url" id="setting-social-youtube" class="form-control">
+                </div>
+              </div>
+
+              <h4 style="font-size: 1.1rem; font-weight: 700; margin: 24px 0 16px; color: var(--accent-warning);">Security Passcode</h4>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-new-passcode">Change Master Passcode (leave blank to keep current)</label>
+                <input type="password" id="setting-new-passcode" class="form-control" placeholder="Enter new passcode">
+              </div>
+
+              <button type="submit" class="btn-primary" style="margin-top: 10px;">
+                <span>Save Studio Settings</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab 3: Google Merchant & Backups -->
+        <div id="tab-feeds" class="admin-tab-content" style="display: none;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            
+            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 32px; box-shadow: var(--shadow-card);">
+              <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; color: var(--accent-primary);">
+                Google Merchant Center Feeds
+              </h3>
+              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+                Connect your products and apps directly to Google Merchant Center and Google AI product scanners.
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <a href="/feed/products.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
+                  <span style="font-size: 1.2rem;">📄</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Google Merchant XML Feed (RSS 2.0)</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.xml</div>
+                  </div>
+                </a>
+
+                <a href="/feed/products.json" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
+                  <span style="font-size: 1.2rem;">⚡</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Structured JSON Feed</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.json</div>
+                  </div>
+                </a>
+
+                <a href="/sitemap.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
+                  <span style="font-size: 1.2rem;">🗺️</span>
+                  <div style="text-align: left;">
+                    <div style="font-weight: 700;">Googlebot XML Sitemap</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/sitemap.xml</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 32px; box-shadow: var(--shadow-card);">
+              <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px;">Data Backup & Recovery</h3>
+              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+                Export all apps, links, descriptions, and settings into a JSON backup file or restore previously saved data.
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <button class="btn-primary" id="btn-export-backup" style="justify-content: center;">
+                  <span>Export Complete JSON Backup</span>
+                </button>
+
+                <div style="display: flex; gap: 10px;">
+                  <input type="file" id="input-import-backup" accept=".json" style="display: none;">
+                  <button class="btn-secondary" id="btn-trigger-import" style="flex: 1; justify-content: center;">
+                    <span>Import JSON Backup</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- App Form Modal (Add / Edit) -->
+  <div class="modal-overlay" id="admin-app-modal" aria-hidden="true">
+    <div class="modal-card" style="max-width: 800px;">
+      <button class="modal-close-btn" id="admin-modal-close">&times;</button>
+      
+      <h3 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 20px;" id="admin-modal-title">Add New App</h3>
+
+      <form id="app-form">
+        <input type="hidden" id="form-app-id">
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="form-app-name">App Name *</label>
+            <input type="text" id="form-app-name" class="form-control" placeholder="e.g. Netroar TaskFlow" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-slug">Slug / Identifier</label>
+            <input type="text" id="form-app-slug" class="form-control" placeholder="e.g. netroar-taskflow">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-app-tagline">Short Tagline</label>
+          <input type="text" id="form-app-tagline" class="form-control" placeholder="Punchy one-sentence summary">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="form-app-desc">Full Description</label>
+          <textarea id="form-app-desc" class="form-control" rows="3" placeholder="In-depth description of features and ecosystem integration"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="form-app-category">Category</label>
+            <select id="form-app-category" class="form-control">
+              <option value="Productivity">Productivity</option>
+              <option value="AI & Smart Tools">AI & Smart Tools</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Digital Assets">Digital Assets</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Security & Governance">Security & Governance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-status">Release Status</label>
+            <select id="form-app-status" class="form-control">
+              <option value="Live">Live / Production</option>
+              <option value="Beta">Beta Testing</option>
+              <option value="Early Access">Early Access</option>
+              <option value="Coming Soon">Coming Soon</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Platforms Checkboxes -->
+        <div class="form-group">
+          <label class="form-label">Supported Platforms</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="Web" checked> Web 🌐</label>
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="Windows" checked> Windows 🪟</label>
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="Android" checked> Android 🤖</label>
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="iOS"> iOS 🍎</label>
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="macOS"> macOS 💻</label>
+            <label class="checkbox-label"><input type="checkbox" name="platform" value="Linux"> Linux 🐧</label>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="form-app-website">Official Website Link</label>
+            <input type="url" id="form-app-website" class="form-control" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-download">Direct Download Link</label>
+            <input type="url" id="form-app-download" class="form-control" placeholder="Installer / APK / Store URL">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-repo">GitHub Repository Link</label>
+            <input type="url" id="form-app-repo" class="form-control" placeholder="https://github.com/...">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-icon">Icon URL or Local Path</label>
+            <input type="text" id="form-app-icon" class="form-control" placeholder="/assets/logo/... or https://">
+          </div>
+        </div>
+
+        <!-- Image Upload helper -->
+        <div class="form-group">
+          <label class="form-label">Upload Custom Icon File</label>
+          <input type="file" id="form-icon-file" accept="image/png, image/jpeg, image/svg+xml, image/webp" class="form-control">
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Auto-saves to /assets/uploads/ on server</span>
+        </div>
+
+        <!-- Features list -->
+        <div class="form-group">
+          <label class="form-label" for="form-app-features">Key Feature Bullet Points (one per line)</label>
+          <textarea id="form-app-features" class="form-control" rows="4" placeholder="Cyber-Acrylic UI&#10;Real-time countdown sprint timers&#10;Cloud synchronization"></textarea>
+        </div>
+
+        <!-- SKU, Version & Featured -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="form-app-version">Version</label>
+            <input type="text" id="form-app-version" class="form-control" placeholder="1.0.0">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="form-app-sku">Merchant SKU</label>
+            <input type="text" id="form-app-sku" class="form-control" placeholder="NETROAR-01">
+          </div>
+          <div class="form-group" style="justify-content: flex-end; padding-bottom: 8px;">
+            <label class="checkbox-label">
+              <input type="checkbox" id="form-app-featured">
+              <strong style="color: var(--accent-primary);">Featured on Front Page</strong>
+            </label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end;">
+          <button type="button" class="btn-secondary" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn-primary" id="btn-save-app">
+            <span>Save App Details</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-notify">Action completed successfully</div>
+
+  <!-- Admin Engine Script -->
+  <script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "netroar-studios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Official software catalog and ecosystem hub for Netroar Studios with Google Merchant sync and Admin Suite.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test-server.cjs"
+  },
+  "keywords": [
+    "netroar-studios",
+    "software-catalog",
+    "admin-panel",
+    "google-merchant",
+    "cyber-acrylic"
+  ],
+  "author": "Prince Singh",
+  "license": "ISC"
+}

@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTelemetryClock();
   syncActiveNav();
   initBottomAuthDock();
-  initCinematicSmoothScroll();
   initScrollEngine();
   initSpatialScrollEffects();
   initAppsPageRouting();
@@ -1006,95 +1005,6 @@ function showToast(msg) {
 }
 
 // ==========================================================================
-// CINEMATIC SMOOTH SCROLL ENGINE
-// Translates stepped mouse wheel events into ultra-smooth momentum interpolation
-// ==========================================================================
-function initCinematicSmoothScroll() {
-  if (typeof window === 'undefined') return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  let targetY = window.scrollY || window.pageYOffset;
-  let currentY = targetY;
-  let isRunning = false;
-  let animId = null;
-  const ease = 0.088; // Silky fluid damping (luxury Rockstar studio feel)
-
-  function syncScroll() {
-    if (!isRunning) {
-      targetY = window.scrollY || window.pageYOffset;
-      currentY = targetY;
-    }
-  }
-
-  window.addEventListener('scroll', syncScroll, { passive: true });
-
-  window.addEventListener('wheel', (e) => {
-    // Pass through if modifier keys (Ctrl+wheel for zoom, etc.)
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-
-    // Check if scrolling inside an internal scrollable element (modal, code block, etc.)
-    let el = e.target;
-    while (el && el !== document.body && el !== document.documentElement) {
-      if (el.nodeType === 1) {
-        const style = window.getComputedStyle(el);
-        const overflowY = style.overflowY;
-        if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight) {
-          const canScrollUp = e.deltaY < 0 && el.scrollTop > 0;
-          const canScrollDown = e.deltaY > 0 && el.scrollTop < el.scrollHeight - el.clientHeight;
-          if (canScrollUp || canScrollDown) return;
-        }
-      }
-      el = el.parentElement;
-    }
-
-    let delta = e.deltaY;
-    if (e.deltaMode === 1) delta *= 36;
-    else if (e.deltaMode === 2) delta *= window.innerHeight;
-
-    // If delta is tiny (trackpad precision gestures), let native driver handle
-    if (Math.abs(delta) < 4) {
-      targetY = window.scrollY || window.pageYOffset;
-      currentY = targetY;
-      return;
-    }
-
-    e.preventDefault();
-
-    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    targetY = Math.max(0, Math.min(maxScroll, targetY + delta * 1.08));
-
-    if (!isRunning) {
-      isRunning = true;
-      currentY = window.scrollY || window.pageYOffset;
-      animId = requestAnimationFrame(updateScroll);
-    }
-  }, { passive: false });
-
-  function updateScroll() {
-    const diff = targetY - currentY;
-    if (Math.abs(diff) < 0.5) {
-      currentY = targetY;
-      window.scrollTo(0, currentY);
-      isRunning = false;
-      return;
-    }
-
-    currentY += diff * ease;
-    window.scrollTo(0, currentY);
-    animId = requestAnimationFrame(updateScroll);
-  }
-
-  window.smoothScrollTo = (y) => {
-    if (animId) cancelAnimationFrame(animId);
-    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    targetY = Math.max(0, Math.min(maxScroll, y));
-    isRunning = true;
-    currentY = window.scrollY || window.pageYOffset;
-    animId = requestAnimationFrame(updateScroll);
-  };
-}
-
-// ==========================================================================
 // 9. SCROLL ENGINE & KINETIC SYSTEM
 // Features:
 // - Laser scroll progress indicator bar
@@ -1199,11 +1109,7 @@ function initScrollEngine() {
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {
       playLaserBeep(700, 0.06, 'triangle');
-      if (typeof window.smoothScrollTo === 'function') {
-        window.smoothScrollTo(0);
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
@@ -1227,14 +1133,10 @@ function initScrollEngine() {
           playSlideSound();
           const headerHeight = header ? header.offsetHeight + 24 : 80;
           const targetPos = Math.max(0, targetEl.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - headerHeight);
-          if (typeof window.smoothScrollTo === 'function') {
-            window.smoothScrollTo(targetPos);
-          } else {
-            window.scrollTo({
-              top: targetPos,
-              behavior: 'smooth'
-            });
-          }
+          window.scrollTo({
+            top: targetPos,
+            behavior: 'smooth'
+          });
           if (history.pushState) {
             history.pushState(null, null, hash);
           }
@@ -1250,11 +1152,7 @@ function initScrollEngine() {
       if (targetEl) {
         const headerHeight = header ? header.offsetHeight + 24 : 80;
         const targetPos = Math.max(0, targetEl.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - headerHeight);
-        if (typeof window.smoothScrollTo === 'function') {
-          window.smoothScrollTo(targetPos);
-        } else {
-          window.scrollTo({ top: targetPos, behavior: 'smooth' });
-        }
+        window.scrollTo({ top: targetPos, behavior: 'smooth' });
       }
     }, 200);
   }

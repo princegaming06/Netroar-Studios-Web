@@ -1947,64 +1947,6 @@ select.form-control option {
   transition: width 0.08s ease-out;
 }
 
-.scroll-top-beacon {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-full);
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-glass);
-  color: var(--neon-mint);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 900;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(20px) scale(0.9);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  outline: none;
-}
-
-.scroll-top-beacon.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.scroll-top-beacon:hover {
-  background: var(--neon-mint);
-  color: #000;
-  border-color: var(--neon-mint);
-  box-shadow: 0 0 25px var(--neon-mint-glow);
-  transform: translateY(-3px) scale(1.08);
-}
-
-.scroll-top-beacon svg {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
-}
-
-/* Scroll-Driven Reveal Animations */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.scroll-reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ==========================================================================
    CINEMATIC AERO-SPATIAL SCROLL ENGINE
    Ultra-smooth, luxury 3D perspective parallax, anamorphic optical glare,
@@ -2116,19 +2058,20 @@ select.form-control option {
   transform: translateY(-3px) scale(1.08);
 }
 
-.beacon-dial-svg {
+.scroll-top-beacon .beacon-dial-svg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   transform: rotate(-90deg);
   pointer-events: none;
+  overflow: visible;
 }
 
 .beacon-dial-track {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.1);
   stroke-width: 2.5;
 }
 
@@ -2139,20 +2082,27 @@ select.form-control option {
   stroke-linecap: round;
   stroke-dasharray: 125.66;
   stroke-dashoffset: 125.66;
-  transition: stroke-dashoffset 0.08s ease-out;
+  transition: stroke-dashoffset 0.08s ease-out, stroke 0.25s ease;
 }
 
-.beacon-arrow-icon {
-  width: 20px;
-  height: 20px;
+.scroll-top-beacon .beacon-arrow-icon {
+  width: 20px !important;
+  height: 20px !important;
   stroke: var(--neon-mint);
   position: relative;
   z-index: 2;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, stroke 0.25s ease;
+  pointer-events: none;
 }
 
 .scroll-top-beacon:hover .beacon-arrow-icon {
   transform: translateY(-2px);
+  stroke: #ffffff;
+}
+
+.scroll-top-beacon:hover .beacon-dial-progress {
+  stroke: #ffffff;
+  filter: drop-shadow(0 0 6px var(--neon-mint));
 }
 
 /* 4. Scroll-Driven Reveal Animations */

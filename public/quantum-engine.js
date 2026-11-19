@@ -49,9 +49,10 @@ function syncActiveNav() {
   });
 
   let activeTitle = 'STUDIO';
-  if (path === '/admin' || path === '/admin.html' || path.startsWith('/admin/')) {
+  if (path === '/admin' || path === '/admin.html' || path.startsWith('/admin/') ||
+      path === '/login' || path === '/login.html' || path.startsWith('/login/')) {
     adminLinks.forEach(el => el.classList.add('active'));
-    activeTitle = 'ADMIN CONTROL PANEL';
+    activeTitle = 'LOGIN // ADMIN CONTROL';
   } else if (path.startsWith('/apps') || path.startsWith('/app/')) {
     appsLinks.forEach(el => el.classList.add('active'));
     activeTitle = (hash === '#taskflow' || path.includes('taskflow')) ? 'APPS // TASKFLOW' : 'STUDIO APPS';

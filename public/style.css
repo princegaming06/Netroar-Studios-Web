@@ -419,7 +419,7 @@ body {
 .admin-suite-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   height: 30px;
   padding: 0 13px;
   border-radius: var(--radius-full);
@@ -433,6 +433,13 @@ body {
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.2s ease;
+}
+
+.admin-suite-pill .login-user-icon {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1.6;
 }
 
 .admin-suite-pill:hover {

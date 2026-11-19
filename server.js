@@ -515,7 +515,8 @@ Sitemap: https://${host}/sitemap.xml
 
   let safePath = path.normalize(decodeURIComponent(pathname));
   if (safePath === '/' || safePath === '\\') safePath = '/index.html';
-  if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\') {
+  if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\' ||
+      safePath === '/login' || safePath === '\\login' || safePath === '/login/' || safePath === '\\login\\') {
     safePath = '/admin.html';
   }
   if (safePath === '/apps' || safePath === '\\apps' || safePath === '/apps/' || safePath === '\\apps\\' ||

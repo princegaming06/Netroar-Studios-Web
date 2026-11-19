@@ -510,6 +510,142 @@ body {
 }
 
 /* ==========================================================================
+   MINIMALIST APPS SECTION (ICON + NAME ONLY)
+   Tapping an app card navigates to its flagship console rig!
+   ========================================================================== */
+.studio-apps-section {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.apps-section-header-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 18px;
+}
+
+.apps-section-heading {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.apps-minimal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 320px));
+  gap: 32px;
+  justify-content: center;
+}
+
+.app-minimal-card {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  padding: 38px 24px 32px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.app-minimal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon-mint), var(--electric-blue));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.app-minimal-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--neon-mint);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px var(--neon-mint-glow);
+  background: var(--bg-surface-elevated);
+}
+
+.app-minimal-card:hover::before {
+  opacity: 1;
+}
+
+.app-minimal-icon-box {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.6) 100%);
+  border: 1px solid var(--border-glass);
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-minimal-card:hover .app-minimal-icon-box {
+  transform: scale(1.1) rotate(-2deg);
+  border-color: var(--neon-mint);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 245, 184, 0.25);
+}
+
+.app-minimal-icon-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.app-minimal-name {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  transition: color 0.2s ease;
+}
+
+.app-minimal-card:hover .app-minimal-name {
+  color: var(--neon-mint);
+}
+
+.app-minimal-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 8px;
+  opacity: 0.8;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.app-minimal-card:hover .app-minimal-hint {
+  color: var(--neon-mint);
+  opacity: 1;
+}
+
+/* ==========================================================================
    FLAGSHIP QUANTUM STAGE: NETROAR TASKFLOW
    The completely bespoke wireframe showcase requested by the user:
    - Tapping Icon or Name redirects directly to official webpage!

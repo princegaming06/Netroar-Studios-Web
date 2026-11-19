@@ -79,7 +79,7 @@
       <nav>
         <ul class="spatial-nav-dock">
           <li><a href="/" class="active">STUDIO</a></li>
-          <li><a href="#console" class="highlight-pill">TASKFLOW CONSOLE</a></li>
+          <li><a href="#apps" class="highlight-pill">APPS</a></li>
           <li><a href="#chronicles">NEWSWIRE</a></li>
           <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED</a></li>
         </ul>
@@ -120,8 +120,8 @@
         </p>
 
         <div class="hero-action-rail">
-          <a href="#console" class="btn-hyper-primary">
-            <span>ENGAGE TASKFLOW CONSOLE ❯</span>
+          <a href="#apps" class="btn-hyper-primary">
+            <span>EXPLORE STUDIO APPS ❯</span>
           </a>
           <a href="https://netroar-to-do.onrender.com" target="_blank" class="btn-hyper-glass">
             <span>VISIT OFFICIAL WEB ↗</span>
@@ -130,74 +130,23 @@
       </div>
     </section>
 
-    <!-- 6. The Flagship Quantum 3D Console (Matching User Wireframe) -->
-    <section class="flagship-console-wrapper" id="console">
-      <div class="flagship-console-rig" id="flagship-console-rig">
-        <!-- Laser Alignment Brackets -->
-        <span class="console-corner-bracket bracket-tl"></span>
-        <span class="console-corner-bracket bracket-tr"></span>
-        <span class="console-corner-bracket bracket-bl"></span>
-        <span class="console-corner-bracket bracket-br"></span>
+    <!-- 6. Minimalist Apps Section (Icon + Name Only) -->
+    <section class="studio-apps-section" id="apps">
+      <div class="apps-section-header-bar">
+        <h2 class="apps-section-heading">STUDIO APPS</h2>
+        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">
+          Tap app card to enter dedicated flagship console
+        </span>
+      </div>
 
-        <!-- Top Section: App Icon + App Name (Tapping either redirects to official webpage!) -->
-        <div class="console-header-deck">
-          <a href="https://netroar-to-do.onrender.com" target="_blank" class="teleport-icon-anchor" id="teleport-icon-link" title="Tap to launch Netroar TaskFlow official webpage">
-            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow Icon" class="teleport-icon-img" id="teleport-icon-img">
-          </a>
-
-          <div class="console-title-module">
-            <a href="https://netroar-to-do.onrender.com" target="_blank" class="teleport-title-anchor" id="teleport-title-link" title="Tap to launch Netroar TaskFlow official webpage">
-              <span>Netroar TaskFlow</span>
-              <span class="teleport-arrow-indicator">↗</span>
-            </a>
-
-            <div class="console-subtitle-bar">
-              <span class="console-studio-author">By Netroar Studios · Productivity &amp; Gamified Task Ecosystem</span>
-              <span class="console-click-hint">⚡ Tap icon or title to teleport to official webpage</span>
-            </div>
+      <div class="apps-minimal-grid" id="apps-minimal-grid">
+        <a href="/apps" class="app-minimal-card" title="Enter Netroar TaskFlow Flagship Console">
+          <div class="app-minimal-icon-box">
+            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow Icon" class="app-minimal-icon-img">
           </div>
-        </div>
-
-        <!-- Middle Section: Clean Dignified Narrative (Zero cheap pills) -->
-        <div class="console-description-body" id="console-desc-text">
-          Netroar TaskFlow is an ultra-fast, cyber-acrylic task management suite engineered for power users, developers, and creators. It combines precision countdown timers, an RPG gamification engine with XP gain and milestone rewards, seamless cloud synchronization, and native performance across Windows desktop and Android devices.
-        </div>
-
-        <!-- Bottom Section: Media Showcase Bay with Next & Previous Arrow Triggers -->
-        <div class="spatial-showcase-bay">
-          <div class="viewport-stage" id="viewport-stage" title="Click to inspect in Full HD Lightbox">
-            <!-- Previous Button Arrow -->
-            <button class="bay-nav-trigger btn-bay-prev" id="btn-bay-prev" aria-label="Previous Screenshot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-
-            <!-- Active Large Screenshot -->
-            <img src="/assets/screenshots/01_Desktop_Overview.png" 
-                 alt="TaskFlow Screenshot" 
-                 class="active-screenshot-lens" 
-                 id="active-screenshot-img">
-
-            <!-- Next Button Arrow -->
-            <button class="bay-nav-trigger btn-bay-next" id="btn-bay-next" aria-label="Next Screenshot">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Bottom Telemetry Caption & Step Counter Dock -->
-          <div class="bay-telemetry-dock">
-            <div class="bay-caption-title" id="bay-caption-text">
-              Desktop Cyber Matrix &amp; HUD [Windows Desktop]
-            </div>
-            <div class="bay-counter-chip" id="bay-counter-display">
-              01 / 14
-            </div>
-          </div>
-        </div>
-
+          <h3 class="app-minimal-name">Netroar TaskFlow</h3>
+          <span class="app-minimal-hint">ENTER FLAGSHIP CONSOLE ❯</span>
+        </a>
       </div>
     </section>
 

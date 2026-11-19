@@ -19,11 +19,45 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuantumCanvas();
   initAudioSystem();
   initTelemetryClock();
+  initMinimalAppsGrid();
   initFlagshipConsole();
   initTerminal();
   init3DRigTilt();
   initLightbox();
 });
+
+// ==========================================================================
+// 0. MINIMAL APPS GRID (ICON + NAME ONLY)
+// ==========================================================================
+async function initMinimalAppsGrid() {
+  const grid = document.getElementById('apps-minimal-grid');
+  if (!grid) return;
+
+  try {
+    const res = await fetch('/api/apps');
+    const data = await res.json();
+    if (data.success && Array.isArray(data.apps) && data.apps.length > 0) {
+      grid.innerHTML = data.apps.map(app => `
+        <a href="/apps" class="app-minimal-card" title="Enter ${app.name} Flagship Console">
+          <div class="app-minimal-icon-box">
+            <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" alt="${app.name} Icon" class="app-minimal-icon-img" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
+          </div>
+          <h3 class="app-minimal-name">${app.name}</h3>
+          <span class="app-minimal-hint">ENTER FLAGSHIP CONSOLE ❯</span>
+        </a>
+      `).join('');
+
+      // Wire tactile audio on click
+      grid.querySelectorAll('.app-minimal-card').forEach(card => {
+        card.addEventListener('click', () => {
+          playLaserBeep(640, 0.08, 'sine');
+        });
+      });
+    }
+  } catch (err) {
+    console.warn('Using static minimal grid card');
+  }
+}
 
 // ==========================================================================
 // 1. LIVING AMBIENT QUANTUM CANVAS (PARTICLE VORTEX)

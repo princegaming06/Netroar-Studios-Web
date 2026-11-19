@@ -519,7 +519,9 @@ Sitemap: https://${host}/sitemap.xml
     safePath = '/admin.html';
   }
   if (safePath === '/apps' || safePath === '\\apps' || safePath === '/apps/' || safePath === '\\apps\\' ||
-      safePath === '/app-studios' || safePath === '\\app-studios' || safePath === '/app-studios/' || safePath === '\\app-studios\\') {
+      safePath === '/app-studios' || safePath === '\\app-studios' || safePath === '/app-studios/' || safePath === '\\app-studios\\' ||
+      safePath.startsWith('/app/') || safePath.startsWith('\\app\\') ||
+      safePath.startsWith('/apps/') || safePath.startsWith('\\apps\\')) {
     safePath = '/apps.html';
   }
 

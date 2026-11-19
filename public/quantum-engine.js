@@ -616,24 +616,6 @@ async function initFlagshipConsole() {
       const current = screenshotData[currentScreenshotIndex];
       if (current && current.src) openLightbox(current.src);
     });
-
-    // Mouse wheel & trackpad scroll navigation over showcase bay
-    let wheelDebounce = false;
-    stage.addEventListener('wheel', (e) => {
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (Math.abs(delta) < 20) return;
-      e.preventDefault();
-
-      if (!wheelDebounce) {
-        wheelDebounce = true;
-        if (delta > 0) {
-          goToNextScreenshot();
-        } else {
-          goToPrevScreenshot();
-        }
-        setTimeout(() => { wheelDebounce = false; }, 280);
-      }
-    }, { passive: false });
   }
 }
 
@@ -856,7 +838,6 @@ function showToast(msg) {
 // - Smooth anchor jumps with header height offset
 // ==========================================================================
 function initScrollEngine() {
-  const progressBar = document.getElementById('scroll-laser-bar');
   const header = document.querySelector('.spatial-header');
   const scrollTopBtn = document.getElementById('scroll-top-beacon');
   const chroniclesSection = document.getElementById('chronicles');
@@ -871,11 +852,6 @@ function initScrollEngine() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
         const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-
-        // Laser Progress Bar
-        if (progressBar) {
-          progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
-        }
 
         // Header Elevation & Compression
         if (header) {
@@ -1006,13 +982,10 @@ function initSpatialScrollEffects() {
 
       // Only calculate if target is in active viewing area
       if (rect.bottom > -100 && rect.top < windowH + 100) {
-        // 1. Smooth 3D Perspective Horizon Tilt
         const clampedProg = Math.max(-1.2, Math.min(1.2, progress));
-        const rotX = -clampedProg * 6.5; // Smooth tilt based on scroll horizon
-        const rotY = clampedProg * 1.8;
-        const scale = 1 - Math.abs(clampedProg) * 0.025;
 
-        target.style.transform = `perspective(1600px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        // 1. Monolith and images remain rock-solid and stable with zero vertical scroll tilt distortion
+        target.style.transform = 'none';
 
         // 2. Anamorphic Optical Glare Sweep
         if (glare) {
@@ -1028,12 +1001,6 @@ function initSpatialScrollEffects() {
         } else {
           target.classList.remove('in-focus');
         }
-
-        // 4. Staggered Quad Cards Parallax Depth
-        quadCards.forEach((card, idx) => {
-          const depth = ((idx % 2 === 0 ? 1 : -1) * clampedProg * 8).toFixed(1);
-          card.style.transform = `translateY(${depth}px)`;
-        });
       }
     }
 

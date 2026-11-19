@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Netroar Studios — Official Site</title>
-  <meta name="description" content="Welcome to Netroar Studios, the official creators of Netroar TaskFlow. Explore high-performance software for Windows, Android, and Web.">
-  <meta name="keywords" content="Netroar Studios, Netroar TaskFlow, Prince Singh, Windows, Android, Newswire, Rockstar Games style">
+  <title>Netroar Studios — Flagship Engineering &amp; Software Hub</title>
+  <meta name="description" content="Netroar Studios is an independent technology and software engineering laboratory founded by Prince Singh. Creators of Netroar TaskFlow.">
+  <meta name="keywords" content="Netroar Studios, Netroar TaskFlow, Prince Singh, Cyber-Acrylic, Aero-Spatial, High Performance">
   <meta name="author" content="Prince Singh / Netroar Studios">
 
   <!-- OpenGraph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Netroar Studios — Official Site">
-  <meta property="og:description" content="Official home of Netroar Studios. Creators of Netroar TaskFlow.">
-  <meta property="og:image" content="/assets/screenshots/01_Desktop_Overview.png">
+  <meta property="og:title" content="Netroar Studios — Flagship Engineering &amp; Software Hub">
+  <meta property="og:description" content="Discover Netroar TaskFlow and high-performance digital architectures by Netroar Studios.">
+  <meta property="og:image" content="/assets/logo/netroar-studios-logo-dark.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png">
@@ -20,7 +20,7 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/style.css">
 
-  <!-- Google Merchant / RSS Feed Autodiscovery -->
+  <!-- Google Merchant Feeds -->
   <link rel="alternate" type="application/rss+xml" title="Netroar Studios Google Merchant Product Feed" href="/feed/products.xml">
   <link rel="alternate" type="application/json" title="Netroar Studios Software Catalog Feed" href="/feed/products.json">
 
@@ -31,7 +31,7 @@
     "@type": "Organization",
     "name": "Netroar Studios",
     "url": "https://netroar-studios.onrender.com",
-    "logo": "https://netroar-studios.onrender.com/assets/logo/netroars-logo.png",
+    "logo": "https://netroar-studios.onrender.com/assets/logo/netroar-studios-logo-dark.png",
     "founder": {
       "@type": "Person",
       "name": "Prince Singh"
@@ -41,205 +41,300 @@
 </head>
 <body>
 
-  <!-- Minimalist Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="header-left">
-        <a href="/" class="brand-emblem" aria-label="Netroar Studios Home">
-          <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios" class="brand-logo-img">
-        </a>
+  <!-- 1. Ambient Interactive Quantum Particle Vortex (HTML5 Canvas) -->
+  <canvas id="ambient-quantum-canvas"></canvas>
 
-        <nav>
-          <ul class="rockstar-nav">
-            <li><a href="/" class="active">HOME</a></li>
-            <li><a href="/apps">APP STUDIOS</a></li>
-            <li><a href="#newswire">NEWSWIRE</a></li>
-            <li><a href="#featured">GAMES & SOFTWARE</a></li>
-            <li><a href="#about">STUDIO</a></li>
-          </ul>
-        </nav>
+  <!-- 2. Interactive Flashlight & Holographic Underlay -->
+  <div class="mouse-spotlight"></div>
+  <div class="holo-grid-underlay"></div>
+
+  <!-- 3. Aerospace Telemetry Status Bar -->
+  <aside class="telemetry-ticker-bar">
+    <div class="telemetry-inner">
+      <div class="telemetry-group">
+        <span class="telemetry-item"><span class="live-beacon"></span> NETROAR KERNEL: ONLINE</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item">SEC PROTOCOL: 0x9F_VERIFIED</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item">FLAGSHIP: TASKFLOW v1.2.0</span>
       </div>
 
-      <div class="header-right">
-        <a href="/admin" class="btn-header-admin">Admin Suite</a>
+      <div class="telemetry-group">
+        <span class="telemetry-item" id="telemetry-clock">00:00:00 UTC</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item" style="color: var(--neon-mint);">SYS: NOMINAL</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 4. Spatial Floating Glass Capsule Header -->
+  <header class="spatial-header">
+    <div class="header-glass-capsule">
+      <!-- Official Netroar Studios NS Emblem -->
+      <a href="/" class="brand-emblem-anchor" title="Netroar Studios Home">
+        <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios Official Emblem" class="brand-logo-badge">
+      </a>
+
+      <!-- Minimalist Aerodynamic Nav Dock -->
+      <nav>
+        <ul class="spatial-nav-dock">
+          <li><a href="/" class="active">STUDIO</a></li>
+          <li><a href="#console" class="highlight-pill">TASKFLOW CONSOLE</a></li>
+          <li><a href="#chronicles">NEWSWIRE</a></li>
+          <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utility Cluster: Haptic Audio Toggle + Admin Access -->
+      <div class="header-utility-cluster">
+        <button class="tactile-audio-btn" id="btn-audio-toggle" title="Toggle Haptic Sound Synthesis">
+          <span class="tactile-audio-waves">
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+          </span>
+          <span id="audio-toggle-label">HAPTICS: OFF</span>
+        </button>
+
+        <a href="/admin" class="admin-suite-pill">ADMIN SUITE</a>
       </div>
     </div>
   </header>
 
-  <!-- Full-Bleed Cinematic Hero Banner -->
-  <section class="rockstar-hero">
-    <div class="hero-overlay-glow"></div>
-    <div class="rockstar-hero-content">
-      <span class="hero-release-tag">★ OUT NOW · WINDOWS 10/11 &amp; ANDROID 8.0+</span>
-      <h1 class="hero-headline">NETROAR TASKFLOW</h1>
-      <p class="hero-subheadline">
-        The Next-Generation Cyber-Acrylic Productivity &amp; Gamified Task Ecosystem. Engineered for zero-latency focus, live sprint timers, and cross-device sync.
-      </p>
-
-      <div class="hero-btn-group">
-        <a href="/apps" class="btn-rockstar-primary">ENTER APP STUDIOS ❯</a>
-        <a href="https://netroar-to-do.onrender.com" target="_blank" class="btn-rockstar-secondary">VISIT OFFICIAL WEB ↗</a>
-        <a href="https://netroar-to-do.onrender.com/#download" target="_blank" class="btn-rockstar-secondary">GET DOWNLOADS</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Rockstar Newswire Section -->
-  <section class="section-container" id="newswire">
-    <div class="section-title-bar">
-      <h2 class="section-heading">NEWSWIRE</h2>
-      <a href="https://netroar-to-do.onrender.com" target="_blank" class="section-view-all">VISIT ARCHIVES ↗</a>
-    </div>
-
-    <div class="newswire-grid">
-      <!-- Newswire Card 1 -->
-      <a href="/apps" class="newswire-card">
-        <div class="newswire-media-wrap">
-          <img src="/assets/screenshots/01_Desktop_Overview.png" alt="Desktop Overview" class="newswire-img">
+  <main>
+    <!-- 5. Monolith Hero: "The Architecture of Focus" -->
+    <section class="monolith-hero">
+      <div class="hero-chassis">
+        <div class="hero-laser-chip">
+          <span class="hero-laser-chip-dot"></span>
+          <span>NETROAR STUDIOS // FLAGSHIP SUITE</span>
         </div>
-        <div class="newswire-body">
-          <div class="newswire-meta">
-            <span class="newswire-tag">Netroar TaskFlow</span>
-            <span>November 19, 2026</span>
-          </div>
-          <h3 class="newswire-title">v1.2.0 Major Release: Full Cyber-Acrylic Overhaul &amp; Google Cloud Firestore Sync</h3>
-          <p class="newswire-excerpt">
-            Experience ultra-fluid 144Hz glassmorphic rendering, global Windows shortcut summon (Shift+Esc), and encrypted multi-device state synchronization.
-          </p>
-        </div>
-      </a>
 
-      <!-- Newswire Card 2 -->
-      <a href="/apps" class="newswire-card">
-        <div class="newswire-media-wrap">
-          <img src="/assets/screenshots/05_RPG_Gamification_Engine.png" alt="RPG Engine" class="newswire-img">
-        </div>
-        <div class="newswire-body">
-          <div class="newswire-meta">
-            <span class="newswire-tag">Developer Dispatch</span>
-            <span>November 18, 2026</span>
-          </div>
-          <h3 class="newswire-title">Behind the Code: Architecting the RPG Gamification Engine &amp; Milestone Sprints</h3>
-          <p class="newswire-excerpt">
-            How Netroar Studios engineered gamified XP level progression, streak multipliers, and accountability ledgers for relentless focus.
-          </p>
-        </div>
-      </a>
+        <h1 class="hero-quantum-title">
+          ENGINEERING <br>
+          <span class="hologram-gradient">ARCHITECTURES OF FOCUS</span>
+        </h1>
 
-      <!-- Newswire Card 3 -->
-      <a href="/apps" class="newswire-card">
-        <div class="newswire-media-wrap">
-          <img src="/assets/screenshots/android/01_Hero_Gamified_Task_Manager.png" alt="Android Companion" class="newswire-img">
-        </div>
-        <div class="newswire-body">
-          <div class="newswire-meta">
-            <span class="newswire-tag">Mobile Release</span>
-            <span>November 17, 2026</span>
-          </div>
-          <h3 class="newswire-title">Netroar TaskFlow Android Companion APK Officially Published</h3>
-          <p class="newswire-excerpt">
-            Carry your active sprint timers and gamified tasks wherever you go. Instant bi-directional cloud synchronization with your Windows desktop.
-          </p>
-        </div>
-      </a>
-    </div>
-  </section>
+        <p class="hero-sub-manifesto">
+          We craft high-performance desktop software, real-time gamified routines, and zero-latency cross-platform ecosystems designed for power creators and engineers.
+        </p>
 
-  <!-- Featured Titles / Software Section -->
-  <section class="section-container" id="featured" style="padding-top: 0;">
-    <div class="section-title-bar">
-      <h2 class="section-heading">FEATURED TITLES</h2>
-      <a href="/apps" class="section-view-all">VIEW IN APP STUDIOS ❯</a>
-    </div>
-
-    <div class="featured-titles-grid">
-      <!-- Title 1 -->
-      <a href="/apps" class="title-card">
-        <img src="/assets/screenshots/01_Desktop_Overview.png" alt="Windows Edition" class="title-card-cover">
-        <div class="title-card-overlay">
-          <span class="title-card-badge">WINDOWS DESKTOP</span>
-          <h3 class="title-card-heading">TaskFlow: Workstation</h3>
-          <p class="title-card-desc">Global Hotkeys · Live Timers · Offline Local Storage</p>
-        </div>
-      </a>
-
-      <!-- Title 2 -->
-      <a href="/apps" class="title-card">
-        <img src="/assets/screenshots/android/01_Hero_Gamified_Task_Manager.png" alt="Android Edition" class="title-card-cover">
-        <div class="title-card-overlay">
-          <span class="title-card-badge">ANDROID MOBILE</span>
-          <h3 class="title-card-heading">TaskFlow: Mobile</h3>
-          <p class="title-card-desc">Instant On-The-Go Sprints · Milestone Rewards · Push Sync</p>
-        </div>
-      </a>
-
-      <!-- Title 3 -->
-      <a href="https://netroar-to-do.onrender.com" target="_blank" class="title-card">
-        <img src="/assets/screenshots/04_Live_Countdown_Timers.png" alt="Cloud Web Edition" class="title-card-cover">
-        <div class="title-card-overlay">
-          <span class="title-card-badge">WEB CLOUD WORKSPACE</span>
-          <h3 class="title-card-heading">TaskFlow: Web</h3>
-          <p class="title-card-desc">Zero-Install Access · Universal Browser Compatibility</p>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section class="section-container" id="about" style="padding-top: 0;">
-    <div class="section-title-bar">
-      <h2 class="section-heading">THE STUDIO</h2>
-    </div>
-
-    <div style="background: #141414; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: 48px;">
-      <h3 style="font-size: 2rem; font-weight: 900; margin-bottom: 16px; color: #fff;">ABOUT NETROAR STUDIOS</h3>
-      <p style="font-size: 1.15rem; color: #a1a1aa; line-height: 1.7; max-width: 900px; margin-bottom: 24px;">
-        Netroar Studios is an independent software and digital entertainment studio founded by Prince Singh. We specialize in building uncompromising, high-performance desktop software, mobile utilities, and cyber-acrylic digital ecosystems designed for creators and engineers.
-      </p>
-      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-        <a href="/apps" class="btn-rockstar-primary">LAUNCH APP STUDIOS</a>
-        <a href="https://github.com/princegaming06" target="_blank" class="btn-rockstar-secondary">STUDIO REPOSITORY ↗</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Rockstar Games Style Footer -->
-  <footer class="rockstar-footer">
-    <div class="footer-inner">
-      <div class="footer-top-row">
-        <ul class="footer-nav-links">
-          <li><a href="/">HOME</a></li>
-          <li><a href="/apps">APP STUDIOS</a></li>
-          <li><a href="#newswire">NEWSWIRE</a></li>
-          <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED (XML)</a></li>
-          <li><a href="/feed/products.json" target="_blank">PRODUCTS API</a></li>
-          <li><a href="/admin">ADMIN SUITE</a></li>
-        </ul>
-
-        <div class="footer-social-icons">
-          <a href="https://github.com/princegaming06" target="_blank" class="social-icon-btn" title="GitHub">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
+        <div class="hero-action-rail">
+          <a href="#console" class="btn-hyper-primary">
+            <span>ENGAGE TASKFLOW CONSOLE ❯</span>
           </a>
-          <a href="https://youtube.com/@princegaming" target="_blank" class="social-icon-btn" title="YouTube">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>
+          <a href="https://netroar-to-do.onrender.com" target="_blank" class="btn-hyper-glass">
+            <span>VISIT OFFICIAL WEB ↗</span>
           </a>
         </div>
       </div>
+    </section>
 
-      <div class="footer-bottom-row">
+    <!-- 6. The Flagship Quantum 3D Console (Matching User Wireframe) -->
+    <section class="flagship-console-wrapper" id="console">
+      <div class="flagship-console-rig" id="flagship-console-rig">
+        <!-- Laser Alignment Brackets -->
+        <span class="console-corner-bracket bracket-tl"></span>
+        <span class="console-corner-bracket bracket-tr"></span>
+        <span class="console-corner-bracket bracket-bl"></span>
+        <span class="console-corner-bracket bracket-br"></span>
+
+        <!-- Top Section: App Icon + App Name (Tapping either redirects to official webpage!) -->
+        <div class="console-header-deck">
+          <a href="https://netroar-to-do.onrender.com" target="_blank" class="teleport-icon-anchor" id="teleport-icon-link" title="Tap to launch Netroar TaskFlow official webpage">
+            <img src="/assets/logo/Netroar_To_Do_dark_v2.png" alt="Netroar TaskFlow Icon" class="teleport-icon-img" id="teleport-icon-img">
+          </a>
+
+          <div class="console-title-module">
+            <a href="https://netroar-to-do.onrender.com" target="_blank" class="teleport-title-anchor" id="teleport-title-link" title="Tap to launch Netroar TaskFlow official webpage">
+              <span>Netroar TaskFlow</span>
+              <span class="teleport-arrow-indicator">↗</span>
+            </a>
+
+            <div class="console-subtitle-bar">
+              <span class="console-studio-author">By Netroar Studios · Productivity &amp; Gamified Task Ecosystem</span>
+              <span class="console-click-hint">⚡ Tap icon or title to teleport to official webpage</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Section: Clean Dignified Narrative (Zero cheap pills) -->
+        <div class="console-description-body" id="console-desc-text">
+          Netroar TaskFlow is an ultra-fast, cyber-acrylic task management suite engineered for power users, developers, and creators. It combines precision countdown timers, an RPG gamification engine with XP gain and milestone rewards, seamless cloud synchronization, and native performance across Windows desktop and Android devices.
+        </div>
+
+        <!-- Bottom Section: Media Showcase Bay with Next & Previous Arrow Triggers -->
+        <div class="spatial-showcase-bay">
+          <div class="viewport-stage" id="viewport-stage" title="Click to inspect in Full HD Lightbox">
+            <!-- Previous Button Arrow -->
+            <button class="bay-nav-trigger btn-bay-prev" id="btn-bay-prev" aria-label="Previous Screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Active Large Screenshot -->
+            <img src="/assets/screenshots/01_Desktop_Overview.png" 
+                 alt="TaskFlow Screenshot" 
+                 class="active-screenshot-lens" 
+                 id="active-screenshot-img">
+
+            <!-- Next Button Arrow -->
+            <button class="bay-nav-trigger btn-bay-next" id="btn-bay-next" aria-label="Next Screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Bottom Telemetry Caption & Step Counter Dock -->
+          <div class="bay-telemetry-dock">
+            <div class="bay-caption-title" id="bay-caption-text">
+              Desktop Cyber Matrix &amp; HUD [Windows Desktop]
+            </div>
+            <div class="bay-counter-chip" id="bay-counter-display">
+              01 / 14
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. Developer Chronicles & Newswire Section -->
+    <section class="dev-chronicles-section" id="chronicles">
+      <div class="chronicles-header-bar">
+        <h2 class="chronicles-heading">STUDIO NEWSWIRE</h2>
+        <a href="https://netroar-to-do.onrender.com" target="_blank" style="color: var(--neon-mint); font-family: var(--font-mono); font-size: 0.85rem; text-decoration: none; font-weight: 700;">
+          LIVE REPOSITORY DISPATCHES ↗
+        </a>
+      </div>
+
+      <div class="chronicles-feed-grid">
+        <!-- Chronicle Card 1 -->
+        <a href="#console" class="chronicle-card">
+          <div class="chronicle-thumb-box">
+            <img src="/assets/screenshots/01_Desktop_Overview.png" alt="TaskFlow Major Release" class="chronicle-thumb-img">
+            <span class="chronicle-tag-overlay">TaskFlow v1.2</span>
+          </div>
+          <div class="chronicle-content">
+            <span class="chronicle-date">November 19, 2026</span>
+            <h3 class="chronicle-title">Cyber-Acrylic Engine &amp; Firestore Real-Time Cloud Sync</h3>
+            <p class="chronicle-summary">
+              Experience ultra-fluid 144Hz desktop animations, system-level summon shortcuts (Shift+Esc), and encrypted state persistence.
+            </p>
+          </div>
+        </a>
+
+        <!-- Chronicle Card 2 -->
+        <a href="#console" class="chronicle-card">
+          <div class="chronicle-thumb-box">
+            <img src="/assets/screenshots/05_RPG_Gamification_Engine.png" alt="RPG Engine" class="chronicle-thumb-img">
+            <span class="chronicle-tag-overlay">Architecture</span>
+          </div>
+          <div class="chronicle-content">
+            <span class="chronicle-date">November 18, 2026</span>
+            <h3 class="chronicle-title">Engineering the RPG Gamification Engine &amp; Focus Sprints</h3>
+            <p class="chronicle-summary">
+              Inside Prince Singh's algorithmic reward loop: leveling milestones, streak multipliers, and immutable history ledgers.
+            </p>
+          </div>
+        </a>
+
+        <!-- Chronicle Card 3 -->
+        <a href="#console" class="chronicle-card">
+          <div class="chronicle-thumb-box">
+            <img src="/assets/screenshots/android/01_Hero_Gamified_Task_Manager.png" alt="Android Companion" class="chronicle-thumb-img">
+            <span class="chronicle-tag-overlay">Mobile Companion</span>
+          </div>
+          <div class="chronicle-content">
+            <span class="chronicle-date">November 17, 2026</span>
+            <h3 class="chronicle-title">Netroar TaskFlow Android Companion APK Officially Published</h3>
+            <p class="chronicle-summary">
+              Carry your active sprints and gamified habits on the go with high-speed bi-directional synchronization with your PC.
+            </p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 8. Interactive Command-Line Quick Terminal -->
+    <section class="studio-terminal-strip">
+      <div class="terminal-box">
+        <div class="terminal-prompt-line">
+          <span class="terminal-prompt-cursor">netroar@studio:~$</span>
+          <input type="text" id="terminal-input" class="terminal-interactive-input" placeholder="type 'launch', 'download', or 'admin'..." autocomplete="off" spellcheck="false">
+        </div>
+
+        <div class="terminal-pill-shortcuts">
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">QUICK EXEC:</span>
+          <button class="cmd-pill" data-cmd="launch">launch web</button>
+          <button class="cmd-pill" data-cmd="download">downloads</button>
+          <button class="cmd-pill" data-cmd="admin">admin suite</button>
+          <button class="cmd-pill" data-cmd="github">github</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 9. Minimalist Luxury Studio Footer -->
+  <footer class="monolith-footer">
+    <div class="footer-cockpit">
+      <div class="footer-matrix">
         <div>
-          &copy; 2026 <strong>Netroar Studios</strong>. Engineered by Prince Singh. All Rights Reserved.
+          <div class="footer-brand-title">NETROAR STUDIOS</div>
+          <p class="footer-bio-p">
+            Independent software and digital experience engineering laboratory founded by Prince Singh. Makers of Netroar TaskFlow.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-header">FLAGSHIP SUITE</div>
+          <ul class="footer-vertical-menu">
+            <li><a href="https://netroar-to-do.onrender.com" target="_blank">Netroar TaskFlow Web ↗</a></li>
+            <li><a href="https://netroar-to-do.onrender.com/#download" target="_blank">Windows Desktop Setup</a></li>
+            <li><a href="https://netroar-to-do.onrender.com/#download" target="_blank">Android Companion APK</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-header">FEEDS &amp; COMPLIANCE</div>
+          <ul class="footer-vertical-menu">
+            <li><a href="/feed/products.xml" target="_blank">Google Merchant XML Feed</a></li>
+            <li><a href="/feed/products.json" target="_blank">Products API (JSON)</a></li>
+            <li><a href="/sitemap.xml" target="_blank">XML Sitemap</a></li>
+            <li><a href="/robots.txt" target="_blank">Robots.txt</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-header">TERMINAL &amp; GOVERNANCE</div>
+          <ul class="footer-vertical-menu">
+            <li><a href="/admin">Admin Control Panel</a></li>
+            <li><a href="/api/health" target="_blank">Kernel Health Ping</a></li>
+            <li><a href="mailto:princegaming5555@gmail.com">Developer Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-sub-bar">
+        <div>
+          &copy; 2026 <strong>Netroar Studios</strong>. Engineered by Prince Singh.
         </div>
         <div>
-          Netroar TaskFlow and related marks are trademarks of Netroar Studios.
+          All software verified &amp; indexed across Google Merchant, Google Search Console, and Schema.org.
         </div>
       </div>
     </div>
   </footer>
 
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightbox-modal" aria-hidden="true">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">&times;</button>
+    <img src="" alt="Screenshot HD View" class="lightbox-img" id="lightbox-img">
+  </div>
+
+  <!-- Quantum Aero-Spatial Engine -->
+  <script src="/quantum-engine.js"></script>
 </body>
 </html>

@@ -237,14 +237,34 @@ function initQuantumCanvas() {
     lastScrollY = currentY;
   }, { passive: true });
 
-  // Generate particle nodes
+  // Generate particle nodes with minimum distance spacing
   const particleCount = Math.min(Math.floor((width * height) / 18000), 70);
   const particles = [];
+  const minStarDistance = 45; // Minimum distance threshold between any two stars
 
   for (let i = 0; i < particleCount; i++) {
+    let px = Math.random() * width;
+    let py = Math.random() * height;
+    let attempts = 0;
+
+    // Ensure stars spawn at least minStarDistance apart
+    while (attempts < 50) {
+      let tooClose = false;
+      for (let k = 0; k < particles.length; k++) {
+        if (Math.hypot(px - particles[k].x, py - particles[k].y) < minStarDistance) {
+          tooClose = true;
+          break;
+        }
+      }
+      if (!tooClose) break;
+      px = Math.random() * width;
+      py = Math.random() * height;
+      attempts++;
+    }
+
     particles.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
+      x: px,
+      y: py,
       vx: (Math.random() - 0.5) * 0.4,
       vy: (Math.random() - 0.5) * 0.4,
       radius: Math.random() * 1.5 + 0.8,
@@ -297,10 +317,34 @@ function initQuantumCanvas() {
         ctx.fill();
       }
 
-      // Connect nearby particles with subtle energy lines
+      // Enforce minimum distance & dynamic repulsion so stars never clump or overlap
       for (let j = i + 1; j < particles.length; j++) {
         const p2 = particles[j];
-        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.hypot(dx, dy);
+
+        // Repel particles if they get closer than minimum distance
+        if (dist < minStarDistance) {
+          const effectiveDist = dist > 0.1 ? dist : 0.1;
+          const overlap = (minStarDistance - effectiveDist) * 0.5;
+          const nx = dx / effectiveDist;
+          const ny = dy / effectiveDist;
+
+          // Push positions apart immediately so stars never touch
+          p.x += nx * overlap * 0.25;
+          p.y += ny * overlap * 0.25;
+          p2.x -= nx * overlap * 0.25;
+          p2.y -= ny * overlap * 0.25;
+
+          // Impart gentle repulsion momentum
+          p.vx += nx * 0.03;
+          p.vy += ny * 0.03;
+          p2.vx -= nx * 0.03;
+          p2.vy -= ny * 0.03;
+        }
+
+        // Connect nearby particles with subtle energy lines
         if (dist < 120) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);

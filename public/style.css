@@ -534,6 +534,178 @@ body {
 }
 
 /* ==========================================================================
+   THE PHILOSOPHY OF CREATION & VISION MONOLITHS
+   ========================================================================== */
+.philosophy-section {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 24px 60px;
+}
+
+.section-head-deck {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 54px;
+}
+
+.section-subhead-text {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-top: 14px;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.philosophy-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.philosophy-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--neon-mint);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 245, 184, 0.15);
+}
+
+.philosophy-num {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--neon-mint);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.philosophy-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.philosophy-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Manifesto Monolith Banner */
+.manifesto-monolith-banner {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto 90px;
+  padding: 0 24px;
+}
+
+.manifesto-inner {
+  background: linear-gradient(135deg, rgba(6, 11, 20, 0.95), rgba(3, 5, 10, 0.98));
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: 56px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+}
+
+.manifesto-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-mint), var(--solar-amber), transparent);
+}
+
+.manifesto-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--neon-mint);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.manifesto-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.manifesto-lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 780px;
+  margin: 0 auto 36px;
+  line-height: 1.65;
+}
+
+.manifesto-triad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  text-align: left;
+  border-top: 1px solid var(--border-ultra-subtle);
+  padding-top: 32px;
+}
+
+.triad-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-ultra-subtle);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  transition: border-color 0.25s ease;
+}
+
+.triad-item:hover {
+  border-color: rgba(0, 245, 184, 0.4);
+}
+
+.triad-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--neon-mint);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.triad-strong {
+  font-size: 0.95rem;
+  color: #ffffff;
+  line-height: 1.5;
+  display: block;
+  font-weight: 600;
+}
+
+/* ==========================================================================
    HERO MONOLITH: "THE ARCHITECTURE OF FOCUS"
    ========================================================================== */
 .monolith-hero {

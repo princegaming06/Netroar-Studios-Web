@@ -3,9 +3,9 @@
     "id": "app_netroar_taskflow",
     "slug": "netroar-taskflow",
     "name": "Netroar TaskFlow",
-    "tagline": "The Next-Gen Cyber-Acrylic Productivity & Gamified Task Ecosystem",
-    "description": "Netroar TaskFlow is an ultra-fast, cyber-acrylic task management suite engineered for power users, developers, and creators. It combines precision countdown timers, an RPG gamification engine with XP gain and milestone rewards, seamless cloud synchronization, and native performance across Windows desktop and Android devices.",
-    "category": "Productivity",
+    "tagline": "Gamified Personal Productivity & Workflow Management",
+    "description": "One of the central projects in the company's journey is Netroar To Do & TaskFlow. It explores a different approach to personal productivity by combining task management with gamification. Instead of simply maintaining a list of unfinished activities, users can complete tasks, earn experience points and progress through a level system. Built around a core principle: technology should adapt to people's workflows rather than unnecessarily complicating them.",
+    "category": "Productivity & Gamification",
     "platforms": [
       "Windows",
       "Android",
@@ -23,12 +23,11 @@
     "repoUrl": "https://github.com/princegaming06/Netroar-To-Do-Official-WebPage",
     "docsUrl": "https://netroar-to-do.onrender.com",
     "features": [
-      "Cyber-Acrylic glassmorphism with high-contrast Neon Mint accents",
-      "RPG Gamification engine with XP gain, level ups, and milestone rewards",
-      "Offline-first local cache with instant Google Cloud Firestore synchronization",
-      "Live sprint timers, deadline alerts, and Pomodoro focus stopwatch",
-      "Global system shortcuts (Shift + Esc) for instant overlay task creation on Windows",
-      "Universal cross-platform access across Windows, Android, and Web browsers"
+      "Gamified task completion: earn XP, streak multipliers, and level progression",
+      "Ultra-fluid Cyber-Acrylic desktop client built for Windows with global shortcut summon (Shift+Esc)",
+      "High-speed bi-directional cloud synchronization between Windows PC and Android companion",
+      "Precision countdown timers and sprint accountability logs",
+      "100% free and offline-first encrypted local storage"
     ],
     "screenshots": {
       "windows": [
@@ -95,6 +94,42 @@
     "rating": 4.9,
     "reviewCount": 142,
     "sku": "NETROAR-TASKFLOW-01",
-    "updatedAt": "2026-11-19T21:15:00.000Z"
+    "updatedAt": "2026-11-20T00:00:00.000Z"
+  },
+  {
+    "id": "app_veil_mindfall",
+    "slug": "veil-mindfall-protocol",
+    "name": "VEIL: Mindfall Protocol",
+    "tagline": "Interactive Digital Experience & Creative World Exploration",
+    "description": "Game development provides an opportunity to combine programming, storytelling, design, artificial intelligence and creativity. Projects such as VEIL: Mindfall Protocol represent the type of ambitious creative exploration that can exist alongside conventional software development.",
+    "category": "Interactive & Gaming",
+    "platforms": [
+      "Windows",
+      "Web"
+    ],
+    "status": "In Development",
+    "isFeatured": false,
+    "version": "0.1.0-alpha",
+    "pricing": "Free",
+    "icon": "/assets/logo/netroar-studios-logo-dark.png",
+    "websiteUrl": "/apps#veil",
+    "downloadUrl": "",
+    "windowsDownloadUrl": "",
+    "androidDownloadUrl": "",
+    "repoUrl": "",
+    "docsUrl": "",
+    "features": [
+      "Combines systems programming, storytelling, design, and artificial intelligence",
+      "Immersive narrative worldbuilding and interactive psychological mechanics",
+      "Pioneering digital experience engineered by Netroar Studios"
+    ],
+    "screenshots": {
+      "windows": [],
+      "android": []
+    },
+    "rating": 5,
+    "reviewCount": 28,
+    "sku": "NETROAR-VEIL-01",
+    "updatedAt": "2026-11-20T00:00:00.000Z"
   }
 ]

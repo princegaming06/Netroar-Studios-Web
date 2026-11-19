@@ -26,10 +26,10 @@ const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 // Default fallback data
 const DEFAULT_SETTINGS = {
   studioName: "Netroar Studios",
-  slogan: "Engineering High-Performance Digital Experiences",
-  heroTitle: "The Innovation Lab for Next-Gen Software & Ecosystems",
-  heroDescription: "Explore our portfolio of high-performance desktop apps, cross-platform utilities, AI neural assistants, and cybernetic digital tools crafted by Netroar Studios.",
-  aboutText: "Netroar Studios is an independent technology and software engineering studio founded by Prince Singh. We specialize in developing fast, offline-first, visually distinctive applications across Windows, Android, and Web platforms with high-contrast cyber-acrylic design principles.",
+  slogan: "Beyond Technology. Beyond Imagination.",
+  heroTitle: "Beyond Technology. Beyond Imagination.",
+  heroDescription: "Netroar Studios began with an ambition: to create technology rather than simply consume it. An independent technology brand exploring software engineering, digital products, artificial intelligence, and interactive experiences.",
+  aboutText: "Netroar Studios is an evolving independent technology company founded by Prince Singh around creation, experimentation, and ambition. Our direction is not restricted to one platform: desktop applications, web technologies, mobile applications, artificial intelligence, and game development all represent opportunities to build something meaningful.",
   contactEmail: "princegaming5555@gmail.com",
   founderName: "Prince Singh",
   adminPasscode: "netroar@admin2026",

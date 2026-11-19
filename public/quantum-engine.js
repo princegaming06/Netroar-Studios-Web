@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initQuantumCanvas();
   initAudioSystem();
   initTelemetryClock();
+  syncActiveNav();
   initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
@@ -26,6 +27,38 @@ document.addEventListener('DOMContentLoaded', () => {
   init3DRigTilt();
   initLightbox();
 });
+
+// ==========================================================================
+// ACTIVE PAGE NAVIGATION CONTROLLER
+// Guarantees 100% accurate active status across all pages & links
+// ==========================================================================
+function syncActiveNav() {
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.toLowerCase();
+
+  const studioLinks = document.querySelectorAll('.spatial-nav-dock a[href="/"]');
+  const appsLinks = document.querySelectorAll('.spatial-nav-dock a[href="/apps"]');
+  const newswireLinks = document.querySelectorAll('.spatial-nav-dock a[href*="chronicles"]');
+  const adminLinks = document.querySelectorAll('.admin-suite-pill');
+
+  // Reset active classes
+  document.querySelectorAll('.spatial-nav-dock a, .admin-suite-pill').forEach(el => {
+    el.classList.remove('active');
+  });
+
+  if (path === '/admin' || path === '/admin.html' || path.startsWith('/admin/')) {
+    adminLinks.forEach(el => el.classList.add('active'));
+  } else if (path.startsWith('/apps') || path.startsWith('/app/')) {
+    appsLinks.forEach(el => el.classList.add('active'));
+  } else if (hash === '#chronicles' || hash === '#newswire') {
+    newswireLinks.forEach(el => el.classList.add('active'));
+  } else {
+    studioLinks.forEach(el => el.classList.add('active'));
+  }
+}
+
+window.addEventListener('hashchange', syncActiveNav);
+window.addEventListener('popstate', syncActiveNav);
 
 // ==========================================================================
 // 0. APPS PAGE DUAL-VIEW ROUTER & CONTROLLER

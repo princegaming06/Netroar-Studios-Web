@@ -100,9 +100,13 @@ async function runTests() {
 
     const admin = await request('GET', '/admin');
     assert(admin.status === 200 && admin.data.includes('Admin Control Panel'), '2.3 GET /admin serves admin.html');
+    assert(admin.data.includes('admin-suite-pill active') && admin.data.includes('admin-dashboard-screen') && admin.data.includes('admin-tab-btn'),
+      '2.3b GET /admin includes active admin status, unified spatial header, and dashboard tabs');
 
     const css = await request('GET', '/style.css');
     assert(css.status === 200 && css.data.includes('--accent-rockstar'), '2.4 GET /style.css serves Rockstar palette');
+    assert(css.data.includes('.admin-login-screen') && css.data.includes('.login-hud-card') && css.data.includes('.admin-tab-btn.active'),
+      '2.4b GET /style.css includes full Admin Panel cyber-acrylic suite styles');
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');

@@ -51,12 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Toast Helper
 function showToast(message, isError = false) {
-  toastNotify.textContent = message;
-  toastNotify.style.borderColor = isError ? 'var(--accent-danger)' : 'var(--border-accent)';
-  toastNotify.classList.add('show');
-  setTimeout(() => {
-    toastNotify.classList.remove('show');
-  }, 3500);
+  if (toastNotify) {
+    toastNotify.textContent = message;
+    toastNotify.style.borderColor = isError ? 'var(--danger-crimson)' : 'var(--neon-mint)';
+    toastNotify.classList.add('show');
+    setTimeout(() => {
+      toastNotify.classList.remove('show');
+    }, 3500);
+  }
 }
 
 // Theme
@@ -197,14 +199,14 @@ function renderAdminAppsTable(apps) {
       <tr style="border-bottom: 1px solid var(--border-subtle);">
         <td style="padding: 16px 12px;">
           <div style="display: flex; align-items: center; gap: 14px;">
-            <img src="${app.icon || '/assets/logo/netroars-logo.png'}" 
+            <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" 
                  alt="${app.name}" 
-                 style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: contain; background: var(--bg-surface-elevated); padding: 4px; border: 1px solid var(--border-card);"
-                 onerror="this.src='/assets/logo/netroars-logo.png'">
+                 style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: contain; background: var(--bg-surface-elevated); padding: 4px; border: 1px solid var(--border-glass);"
+                 onerror="this.src='/assets/logo/Netroar_To_Do_dark_v2.png'">
             <div>
-              <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+              <div style="font-weight: 800; font-size: 1rem; color: #ffffff; display: flex; align-items: center; gap: 6px;">
                 ${app.name}
-                ${app.isFeatured ? '<span style="color: var(--accent-primary); font-size: 0.9rem;" title="Featured">★</span>' : ''}
+                ${app.isFeatured ? '<span style="color: var(--neon-mint); font-size: 0.9rem;" title="Featured">★</span>' : ''}
               </div>
               <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">${app.slug} · ${app.category || 'App'}</div>
             </div>
@@ -410,7 +412,7 @@ window.openCreateModal = function() {
   document.getElementById('form-app-website').value = '';
   document.getElementById('form-app-download').value = '';
   document.getElementById('form-app-repo').value = '';
-  document.getElementById('form-app-icon').value = '/assets/logo/netroars-logo.png';
+  document.getElementById('form-app-icon').value = '/assets/logo/Netroar_To_Do_dark_v2.png';
   document.getElementById('form-app-features').value = '';
   document.getElementById('form-app-version').value = '1.0.0';
   document.getElementById('form-app-sku').value = '';

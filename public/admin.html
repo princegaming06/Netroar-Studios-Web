@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Netroar Studios — Admin Control Panel</title>
+  <meta name="description" content="Netroar Studios Admin Control Suite. Software ecosystem and Google Merchant management.">
   <meta name="robots" content="noindex, nofollow">
 
   <!-- Favicon -->
@@ -14,265 +15,277 @@
 </head>
 <body>
 
-  <!-- Ambient Glow Background -->
-  <div class="ambient-glow" aria-hidden="true">
-    <div class="glow-orb-1"></div>
-    <div class="glow-orb-2"></div>
-    <div class="glow-orb-3"></div>
-    <div class="grid-overlay"></div>
-  </div>
+  <!-- Ambient Interactive Quantum Particle Vortex (HTML5 Canvas) -->
+  <canvas id="ambient-quantum-canvas"></canvas>
+  <div class="mouse-spotlight"></div>
+  <div class="holo-grid-underlay"></div>
 
-  <div class="site-wrapper">
-
-    <!-- Header Navigation -->
-    <header class="site-header">
-      <div class="container header-content">
-        <a href="/admin" class="brand-link" style="display: flex; align-items: center; gap: 14px; text-decoration: none;">
-          <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Logo" class="brand-logo-img" style="height: 42px; width: auto;">
-          <span class="brand-badge" style="color: var(--accent-rockstar); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 800; border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 8px; border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.1);">Admin Suite</span>
-        </a>
-
-        <div class="header-actions">
-          <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark/Light Mode">
-            <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-          </button>
-
-          <a href="/" target="_blank" class="btn-secondary" style="padding: 8px 16px; font-size: 0.88rem;">
-            <span>View Public Site ↗</span>
-          </a>
-
-          <button id="btn-logout" class="btn-admin-nav" style="display: none; background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
-            <span>Log Out</span>
-          </button>
-        </div>
+  <!-- Aerospace Telemetry Status Bar -->
+  <aside class="telemetry-ticker-bar">
+    <div class="telemetry-inner">
+      <div class="telemetry-group">
+        <span class="telemetry-item"><span class="live-beacon"></span> NETROAR KERNEL: ONLINE</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item">SEC PROTOCOL: 0x9F_VERIFIED</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item">STUDIO GOVERNANCE</span>
       </div>
-    </header>
 
-    <!-- Main Section -->
-    <main class="container" style="position: relative; z-index: 2;">
+      <div class="telemetry-group">
+        <span class="telemetry-item" id="telemetry-clock">00:00:00 UTC</span>
+        <span class="telemetry-item" style="color: var(--text-dim);">//</span>
+        <span class="telemetry-item" style="color: var(--accent-rockstar);">ADMIN SUITE</span>
+      </div>
+    </div>
+  </aside>
 
-      <!-- Login HUD Screen -->
-      <section id="admin-login-screen" class="admin-login-screen">
-        <div class="login-hud-card">
-          <div style="margin: 0 auto 20px;">
-            <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios" style="max-height: 64px; width: auto; object-fit: contain;">
+  <!-- Spatial Floating Glass Capsule Header -->
+  <header class="spatial-header">
+    <div class="header-glass-capsule">
+      <!-- Official Netroar Studios NS Emblem -->
+      <a href="/" class="brand-emblem-anchor" title="Netroar Studios Home">
+        <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios Official Emblem" class="brand-logo-badge">
+      </a>
+
+      <!-- Minimalist Aerodynamic Nav Dock -->
+      <nav>
+        <ul class="spatial-nav-dock">
+          <li><a href="/">STUDIO</a></li>
+          <li><a href="/apps">APPS</a></li>
+          <li><a href="/#chronicles">NEWSWIRE</a></li>
+          <li><a href="/feed/products.xml" target="_blank">MERCHANT FEED</a></li>
+        </ul>
+      </nav>
+
+      <!-- Utility Cluster: Admin Suite Active Pill + Log Out -->
+      <div class="header-utility-cluster">
+        <a href="/admin" class="admin-suite-pill active" title="Admin Control Suite">ADMIN SUITE</a>
+        <button id="btn-logout" class="btn-card-outline" style="display: none; height: 38px; padding: 0 16px; border-radius: var(--radius-full); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+          LOG OUT
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <main style="position: relative; z-index: 10;">
+
+    <!-- Login HUD Screen -->
+    <section id="admin-login-screen" class="admin-login-screen">
+      <div class="login-hud-card">
+        <span class="console-corner-bracket bracket-tl"></span>
+        <span class="console-corner-bracket bracket-tr"></span>
+        <span class="console-corner-bracket bracket-bl"></span>
+        <span class="console-corner-bracket bracket-br"></span>
+
+        <div style="margin: 0 auto 20px;">
+          <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios" style="max-height: 56px; width: auto; object-fit: contain;">
+        </div>
+
+        <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: #ffffff;">Studio Authorization</h2>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
+          Enter the studio master passcode to manage apps, website links, icons, and Google Merchant feeds.
+        </p>
+
+        <form id="admin-login-form">
+          <div class="form-group" style="text-align: left;">
+            <label class="form-label" for="admin-passcode-input">Master Passcode</label>
+            <input type="password" id="admin-passcode-input" class="form-control" placeholder="Enter admin passcode" required autofocus>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 4px;">Default setup passcode: netroar@admin2026</span>
           </div>
 
-          <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 8px;">Studio Authorization</h2>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px;">
-            Enter the studio master passcode to manage apps, website links, icons, and Google Merchant feeds.
-          </p>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" id="btn-login-submit">
+            <span>Authenticate &amp; Enter</span>
+          </button>
+        </form>
+      </div>
+    </section>
 
-          <form id="admin-login-form">
-            <div class="form-group" style="text-align: left;">
-              <label class="form-label" for="admin-passcode-input">Master Passcode</label>
-              <input type="password" id="admin-passcode-input" class="form-control" placeholder="Enter admin passcode" required autofocus>
-              <span style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Default setup passcode: netroar@admin2026</span>
+    <!-- Authenticated Dashboard -->
+    <section id="admin-dashboard-screen" class="admin-dashboard-container" style="display: none;">
+      
+      <!-- Header row -->
+      <div class="admin-header-row">
+        <div>
+          <h1 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff;">Studio Control Suite</h1>
+          <p style="color: var(--text-secondary); font-size: 1rem; margin-top: 4px;">
+            Manage your software ecosystem, store links, release metadata, and Google Merchant sync.
+          </p>
+        </div>
+
+        <button class="btn-primary" id="btn-open-create-modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add New App</span>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="admin-tabs-nav">
+        <button class="admin-tab-btn active" data-tab="apps">Apps &amp; Software (<span id="admin-apps-count">0</span>)</button>
+        <button class="admin-tab-btn" data-tab="settings">Studio Settings</button>
+        <button class="admin-tab-btn" data-tab="feeds">Google Merchant &amp; Backups</button>
+      </nav>
+
+      <!-- Tab 1: Apps Manager -->
+      <div id="tab-apps" class="admin-tab-content">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 32px; box-shadow: var(--shadow-spatial);">
+          
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
+            <input type="text" id="admin-search-apps" class="form-control" style="max-width: 340px;" placeholder="Filter apps by name or category...">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">
+              Changes persist immediately to disk
+            </span>
+          </div>
+
+          <div id="admin-apps-table-container">
+            <!-- Rendered via admin.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Studio Settings -->
+      <div id="tab-settings" class="admin-tab-content" style="display: none;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 36px; max-width: 860px; box-shadow: var(--shadow-spatial);">
+          <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; color: #ffffff;">Studio Profile &amp; Customization</h3>
+
+          <form id="studio-settings-form">
+            <div class="form-group">
+              <label class="form-label" for="setting-studio-name">Studio Name</label>
+              <input type="text" id="setting-studio-name" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" id="btn-login-submit">
-              <span>Authenticate & Enter</span>
+            <div class="form-group">
+              <label class="form-label" for="setting-slogan">Studio Tagline / Slogan</label>
+              <input type="text" id="setting-slogan" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-hero-title">Public Hero Title</label>
+              <input type="text" id="setting-hero-title" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-hero-desc">Public Hero Description</label>
+              <textarea id="setting-hero-desc" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-about-text">About Studio Bio</label>
+              <textarea id="setting-about-text" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label" for="setting-contact-email">Contact / Support Email</label>
+                <input type="email" id="setting-contact-email" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-founder-name">Founder Name</label>
+                <input type="text" id="setting-founder-name" class="form-control">
+              </div>
+            </div>
+
+            <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 28px 0 16px; color: var(--neon-mint);">Social &amp; Repository Links</h4>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label" for="setting-social-github">GitHub Profile URL</label>
+                <input type="url" id="setting-social-github" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-social-discord">Discord Invite URL</label>
+                <input type="url" id="setting-social-discord" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-social-twitter">Twitter / X URL</label>
+                <input type="url" id="setting-social-twitter" class="form-control">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="setting-social-youtube">YouTube URL</label>
+                <input type="url" id="setting-social-youtube" class="form-control">
+              </div>
+            </div>
+
+            <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 28px 0 16px; color: var(--accent-rockstar);">Security Passcode</h4>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-new-passcode">Change Master Passcode (leave blank to keep current)</label>
+              <input type="password" id="setting-new-passcode" class="form-control" placeholder="Enter new passcode">
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 10px;">
+              <span>Save Studio Settings</span>
             </button>
           </form>
         </div>
-      </section>
+      </div>
 
-      <!-- Authenticated Dashboard -->
-      <section id="admin-dashboard-screen" class="admin-dashboard-container" style="display: none;">
-        
-        <!-- Header row -->
-        <div class="admin-header-row">
-          <div>
-            <h1 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;">Studio Control Suite</h1>
-            <p style="color: var(--text-secondary); font-size: 1rem; margin-top: 4px;">
-              Manage your software ecosystem, store links, release metadata, and Google Merchant sync.
+      <!-- Tab 3: Google Merchant & Backups -->
+      <div id="tab-feeds" class="admin-tab-content" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 32px; box-shadow: var(--shadow-spatial);">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; color: var(--neon-mint);">
+              Google Merchant Center Feeds
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+              Connect your products and apps directly to Google Merchant Center and Google AI product scanners.
             </p>
-          </div>
 
-          <button class="btn-primary" id="btn-open-create-modal">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            <span>Add New App</span>
-          </button>
-        </div>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <a href="/feed/products.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start; text-decoration: none;">
+                <span style="font-size: 1.2rem;">📄</span>
+                <div style="text-align: left;">
+                  <div style="font-weight: 700; color: #ffffff;">Google Merchant XML Feed (RSS 2.0)</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.xml</div>
+                </div>
+              </a>
 
-        <!-- Navigation Tabs -->
-        <nav class="admin-tabs-nav">
-          <button class="admin-tab-btn active" data-tab="apps">Apps & Software (<span id="admin-apps-count">0</span>)</button>
-          <button class="admin-tab-btn" data-tab="settings">Studio Settings</button>
-          <button class="admin-tab-btn" data-tab="feeds">Google Merchant & Backups</button>
-        </nav>
+              <a href="/feed/products.json" target="_blank" class="btn-secondary" style="justify-content: flex-start; text-decoration: none;">
+                <span style="font-size: 1.2rem;">⚡</span>
+                <div style="text-align: left;">
+                  <div style="font-weight: 700; color: #ffffff;">Structured JSON Feed</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.json</div>
+                </div>
+              </a>
 
-        <!-- Tab 1: Apps Manager -->
-        <div id="tab-apps" class="admin-tab-content">
-          <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 24px; box-shadow: var(--shadow-card);">
-            
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
-              <input type="text" id="admin-search-apps" class="form-control" style="max-width: 340px;" placeholder="Filter apps by name or category...">
-              <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">
-                Changes persist immediately to disk
-              </span>
-            </div>
-
-            <div id="admin-apps-table-container">
-              <!-- Rendered via admin.js -->
+              <a href="/sitemap.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start; text-decoration: none;">
+                <span style="font-size: 1.2rem;">🗺️</span>
+                <div style="text-align: left;">
+                  <div style="font-weight: 700; color: #ffffff;">Googlebot XML Sitemap</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/sitemap.xml</div>
+                </div>
+              </a>
             </div>
           </div>
-        </div>
 
-        <!-- Tab 2: Studio Settings -->
-        <div id="tab-settings" class="admin-tab-content" style="display: none;">
-          <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 36px; max-width: 800px; box-shadow: var(--shadow-card);">
-            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 24px;">Studio Profile & Customization</h3>
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 32px; box-shadow: var(--shadow-spatial);">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; color: #ffffff;">Data Backup &amp; Recovery</h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+              Export all apps, links, descriptions, and settings into a JSON backup file or restore previously saved data.
+            </p>
 
-            <form id="studio-settings-form">
-              <div class="form-group">
-                <label class="form-label" for="setting-studio-name">Studio Name</label>
-                <input type="text" id="setting-studio-name" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="setting-slogan">Studio Tagline / Slogan</label>
-                <input type="text" id="setting-slogan" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="setting-hero-title">Public Hero Title</label>
-                <input type="text" id="setting-hero-title" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="setting-hero-desc">Public Hero Description</label>
-                <textarea id="setting-hero-desc" class="form-control" rows="3"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="setting-about-text">About Studio Bio</label>
-                <textarea id="setting-about-text" class="form-control" rows="4"></textarea>
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="form-group">
-                  <label class="form-label" for="setting-contact-email">Contact / Support Email</label>
-                  <input type="email" id="setting-contact-email" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="setting-founder-name">Founder Name</label>
-                  <input type="text" id="setting-founder-name" class="form-control">
-                </div>
-              </div>
-
-              <h4 style="font-size: 1.1rem; font-weight: 700; margin: 24px 0 16px; color: var(--accent-primary);">Social & Repository Links</h4>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="form-group">
-                  <label class="form-label" for="setting-social-github">GitHub Profile URL</label>
-                  <input type="url" id="setting-social-github" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="setting-social-discord">Discord Invite URL</label>
-                  <input type="url" id="setting-social-discord" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="setting-social-twitter">Twitter / X URL</label>
-                  <input type="url" id="setting-social-twitter" class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="setting-social-youtube">YouTube URL</label>
-                  <input type="url" id="setting-social-youtube" class="form-control">
-                </div>
-              </div>
-
-              <h4 style="font-size: 1.1rem; font-weight: 700; margin: 24px 0 16px; color: var(--accent-warning);">Security Passcode</h4>
-
-              <div class="form-group">
-                <label class="form-label" for="setting-new-passcode">Change Master Passcode (leave blank to keep current)</label>
-                <input type="password" id="setting-new-passcode" class="form-control" placeholder="Enter new passcode">
-              </div>
-
-              <button type="submit" class="btn-primary" style="margin-top: 10px;">
-                <span>Save Studio Settings</span>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <button class="btn-primary" id="btn-export-backup" style="justify-content: center;">
+                <span>Export Complete JSON Backup</span>
               </button>
-            </form>
-          </div>
-        </div>
 
-        <!-- Tab 3: Google Merchant & Backups -->
-        <div id="tab-feeds" class="admin-tab-content" style="display: none;">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-            
-            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 32px; box-shadow: var(--shadow-card);">
-              <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; color: var(--accent-primary);">
-                Google Merchant Center Feeds
-              </h3>
-              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
-                Connect your products and apps directly to Google Merchant Center and Google AI product scanners.
-              </p>
-
-              <div style="display: flex; flex-direction: column; gap: 14px;">
-                <a href="/feed/products.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
-                  <span style="font-size: 1.2rem;">📄</span>
-                  <div style="text-align: left;">
-                    <div style="font-weight: 700;">Google Merchant XML Feed (RSS 2.0)</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.xml</div>
-                  </div>
-                </a>
-
-                <a href="/feed/products.json" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
-                  <span style="font-size: 1.2rem;">⚡</span>
-                  <div style="text-align: left;">
-                    <div style="font-weight: 700;">Structured JSON Feed</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/feed/products.json</div>
-                  </div>
-                </a>
-
-                <a href="/sitemap.xml" target="_blank" class="btn-secondary" style="justify-content: flex-start;">
-                  <span style="font-size: 1.2rem;">🗺️</span>
-                  <div style="text-align: left;">
-                    <div style="font-weight: 700;">Googlebot XML Sitemap</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">/sitemap.xml</div>
-                  </div>
-                </a>
-              </div>
-            </div>
-
-            <div style="background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius-xl); backdrop-filter: blur(16px); padding: 32px; box-shadow: var(--shadow-card);">
-              <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 12px;">Data Backup & Recovery</h3>
-              <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
-                Export all apps, links, descriptions, and settings into a JSON backup file or restore previously saved data.
-              </p>
-
-              <div style="display: flex; flex-direction: column; gap: 16px;">
-                <button class="btn-primary" id="btn-export-backup" style="justify-content: center;">
-                  <span>Export Complete JSON Backup</span>
+              <div style="display: flex; gap: 10px;">
+                <input type="file" id="input-import-backup" accept=".json" style="display: none;">
+                <button class="btn-secondary" id="btn-trigger-import" style="flex: 1; justify-content: center;">
+                  <span>Import JSON Backup</span>
                 </button>
-
-                <div style="display: flex; gap: 10px;">
-                  <input type="file" id="input-import-backup" accept=".json" style="display: none;">
-                  <button class="btn-secondary" id="btn-trigger-import" style="flex: 1; justify-content: center;">
-                    <span>Import JSON Backup</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-      </section>
-    </main>
-  </div>
+    </section>
+  </main>
 
   <!-- App Form Modal (Add / Edit) -->
   <div class="modal-overlay" id="admin-app-modal" aria-hidden="true">
@@ -405,7 +418,8 @@
   <!-- Toast Notification -->
   <div class="toast" id="toast-notify">Action completed successfully</div>
 
-  <!-- Admin Engine Script -->
+  <!-- Quantum Aero-Spatial Engine & Admin Controller -->
+  <script src="/quantum-engine.js"></script>
   <script src="/admin.js"></script>
 </body>
 </html>

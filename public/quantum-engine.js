@@ -88,6 +88,7 @@ window.addEventListener('popstate', syncActiveNav);
 function syncBottomAuthDock(user) {
   const dock = document.getElementById('bottom-auth-dock');
   const avatarSlot = document.getElementById('auth-dock-avatar-slot');
+  const kicker = document.getElementById('auth-dock-kicker');
   const label = document.getElementById('auth-dock-label');
   if (!dock || !avatarSlot) return;
 
@@ -97,14 +98,18 @@ function syncBottomAuthDock(user) {
     const initial = name.charAt(0).toUpperCase() || 'U';
 
     if (user.photoURL) {
-      avatarSlot.innerHTML = `<img src="${user.photoURL}" class="auth-dock-circle-img" alt="${name}" referrerpolicy="no-referrer">`;
+      avatarSlot.innerHTML = `<img src="${user.photoURL}" class="auth-dock-circle-img" alt="${name}" referrerpolicy="no-referrer"><span class="auth-dock-beacon-dot"></span>`;
     } else {
-      avatarSlot.innerHTML = `<div class="auth-dock-letter-circle">${initial}</div>`;
+      avatarSlot.innerHTML = `<div class="auth-dock-letter-circle">${initial}</div><span class="auth-dock-beacon-dot"></span>`;
+    }
+
+    if (kicker) {
+      kicker.textContent = user.isAdmin ? 'FOUNDER // ADMIN' : 'PILOT // ONLINE';
     }
 
     if (label) {
       const firstName = name.split(' ')[0];
-      label.textContent = firstName.toUpperCase();
+      label.innerHTML = `${firstName.toUpperCase()} <span class="auth-dock-arrow">❯</span>`;
     }
     dock.title = `Signed in as ${name} (${user.email || ''})`;
   } else {
@@ -114,9 +119,13 @@ function syncBottomAuthDock(user) {
         <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
         <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
       </svg>
+      <span class="auth-dock-beacon-dot"></span>
     `;
+    if (kicker) {
+      kicker.textContent = window.location.pathname.includes('admin') ? 'STUDIO ADMIN' : 'NETROAR ID';
+    }
     if (label) {
-      label.textContent = 'LOGIN';
+      label.innerHTML = `${window.location.pathname.includes('admin') ? 'ADMIN' : 'LOGIN'} <span class="auth-dock-arrow">❯</span>`;
     }
     dock.title = 'Netroar Account / Login';
   }

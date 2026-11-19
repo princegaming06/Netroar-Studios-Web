@@ -73,16 +73,18 @@ function initTheme() {
   const savedTheme = localStorage.getItem('netroar_theme') || 'dark';
   applyTheme(savedTheme);
 
+  const handleToggle = () => {
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    const nxt = cur === 'dark' ? 'light' : 'dark';
+    applyTheme(nxt);
+    localStorage.setItem('netroar_theme', nxt);
+    showToast(`Switched to ${nxt === 'dark' ? 'Cyber Obsidian (Dark)' : 'Prism Holographic (Light)'} theme.`);
+  };
+
   const themeToggle = document.getElementById('theme-toggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-      const nxt = cur === 'dark' ? 'light' : 'dark';
-      applyTheme(nxt);
-      localStorage.setItem('netroar_theme', nxt);
-      showToast(`Switched to ${nxt === 'dark' ? 'Cyber Obsidian (Dark)' : 'Prism Holographic (Light)'} theme.`);
-    });
-  }
+  const themeToggleDash = document.getElementById('theme-toggle-dash');
+  if (themeToggle) themeToggle.addEventListener('click', handleToggle);
+  if (themeToggleDash) themeToggleDash.addEventListener('click', handleToggle);
 
   // Studio Settings Theme Mode Dropdown sync
   const settingThemeSelect = document.getElementById('setting-theme-mode');
@@ -112,20 +114,21 @@ function initTheme() {
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  const themeToggleIcon = document.getElementById('theme-toggle-icon');
-  const themeToggleLabel = document.getElementById('theme-toggle-label');
+
+  const themeToggles = [
+    document.getElementById('theme-toggle'),
+    document.getElementById('theme-toggle-dash')
+  ];
+
+  themeToggles.forEach(t => {
+    if (!t) return;
+    const icon = t.querySelector('.theme-toggle-icon');
+    const label = t.querySelector('.theme-toggle-label');
+    if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
+    if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+  });
+
   const settingThemeSelect = document.getElementById('setting-theme-mode');
-
-  if (themeToggleIcon && themeToggleLabel) {
-    if (theme === 'light') {
-      themeToggleIcon.textContent = '☀️';
-      themeToggleLabel.textContent = 'LIGHT';
-    } else {
-      themeToggleIcon.textContent = '🌙';
-      themeToggleLabel.textContent = 'DARK';
-    }
-  }
-
   if (settingThemeSelect) {
     settingThemeSelect.value = theme;
   }
@@ -154,6 +157,14 @@ function applyAccentColor(hex, notify = true) {
   }
 }
 
+// Lock Studio Session
+window.lockStudioSession = function() {
+  adminToken = null;
+  sessionStorage.removeItem('netroar_admin_token');
+  showToast('🔒 Studio Suite Locked. Passcode required to re-authenticate.');
+  showLogin();
+};
+
 // Authentication Flow
 async function setupAuthFlow() {
   // Passcode visibility toggle
@@ -165,6 +176,25 @@ async function setupAuthFlow() {
       btnToggleAdminPasscode.style.color = isPw ? 'var(--neon-mint)' : 'var(--text-muted)';
     });
   }
+
+  // Lock Studio Handlers
+  const btnLockStudio = document.getElementById('btn-lock-studio');
+  if (btnLockStudio) {
+    btnLockStudio.addEventListener('click', window.lockStudioSession);
+  }
+  if (btnLogout) {
+    btnLogout.addEventListener('click', window.lockStudioSession);
+  }
+
+  // Global Keyboard Shortcut: Alt+L to immediately lock studio
+  document.addEventListener('keydown', (e) => {
+    if ((e.altKey && e.key.toLowerCase() === 'l') || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'l')) {
+      if (adminToken && dashboardScreen.style.display !== 'none') {
+        e.preventDefault();
+        window.lockStudioSession();
+      }
+    }
+  });
 
   if (adminToken) {
     const isValid = await verifyToken(adminToken);
@@ -199,13 +229,6 @@ async function setupAuthFlow() {
       showToast('Network error during authentication.', true);
     }
   });
-
-  btnLogout.addEventListener('click', () => {
-    adminToken = null;
-    sessionStorage.removeItem('netroar_admin_token');
-    showToast('Logged out of Studio Suite.');
-    showLogin();
-  });
 }
 
 async function verifyToken(token) {
@@ -223,8 +246,9 @@ async function verifyToken(token) {
 function showLogin() {
   loginScreen.style.display = 'flex';
   dashboardScreen.style.display = 'none';
-  btnLogout.style.display = 'none';
+  if (btnLogout) btnLogout.style.display = 'none';
   passcodeInput.value = '';
+  setTimeout(() => passcodeInput && passcodeInput.focus(), 150);
 }
 
 function showDashboard() {

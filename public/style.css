@@ -2256,6 +2256,51 @@ select.form-control option {
   transform: scale(1.18);
 }
 
+/* --- Lock Studio Action Button --- */
+.btn-lock-studio {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-full);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.btn-lock-studio:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-lock-studio:active {
+  transform: translateY(0);
+}
+
+[data-theme='light'] .btn-lock-studio {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #dc2626;
+}
+
+[data-theme='light'] .btn-lock-studio:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+}
+
 /* --- Light Mode Refinements for Admin Suite --- */
 [data-theme='light'] .admin-login-screen {
   background: radial-gradient(circle at 50% 20%, rgba(0, 184, 130, 0.08), transparent 60%);

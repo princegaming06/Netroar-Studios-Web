@@ -51,55 +51,21 @@
     </div>
   </aside>
 
-  <!-- Spatial Floating Glass Capsule Header -->
-  <header class="spatial-header">
-    <div class="header-glass-capsule">
-      <!-- Official Netroar Studios NS Emblem -->
-      <a href="/" class="brand-emblem-anchor" title="Netroar Studios Home">
-        <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios Official Emblem" class="brand-logo-badge">
-      </a>
-
-      <!-- Minimalist Aerodynamic Nav Dock -->
-      <nav>
-        <ul class="spatial-nav-dock">
-          <li><a href="/">HOME</a></li>
-          <li><a href="/#philosophy">PHILOSOPHY</a></li>
-          <li><a href="/#chronicles">NEWSWIRE</a></li>
-          <li><a href="/#about">ABOUT</a></li>
-        </ul>
-      </nav>
-
-      <!-- Utility Cluster: Dedicated Apps Pill + Theme Switcher + Log Out -->
-      <div class="header-utility-cluster">
-        <a href="/apps" class="apps-nav-pill" title="Explore Netroar Apps Showcase">
-          <svg class="apps-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor">
-            <rect x="2" y="2" width="4.5" height="4.5" rx="1" stroke-width="1.5" />
-            <rect x="9.5" y="2" width="4.5" height="4.5" rx="1" stroke-width="1.5" />
-            <rect x="2" y="9.5" width="4.5" height="4.5" rx="1" stroke-width="1.5" />
-            <rect x="9.5" y="9.5" width="4.5" height="4.5" rx="1" stroke-width="1.5" />
-          </svg>
-          <span>APPS</span>
-          <span class="page-arrow">↗</span>
-        </a>
-
-        <!-- Interactive Theme Mode Toggle -->
-        <button id="theme-toggle" class="theme-toggle-pill" aria-label="Toggle Theme Mode" title="Toggle Light / Dark Cyber Theme">
-          <span class="theme-toggle-icon" id="theme-toggle-icon">🌙</span>
-          <span class="theme-toggle-label" id="theme-toggle-label">DARK</span>
-        </button>
-
-        <button id="btn-logout" class="btn-card-outline" style="display: none; height: 38px; padding: 0 16px; border-radius: var(--radius-full); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
-          LOG OUT
-        </button>
-      </div>
-    </div>
-  </header>
-
   <!-- Main Section -->
   <main style="position: relative; z-index: 10;">
 
     <!-- Login HUD Screen -->
     <section id="admin-login-screen" class="admin-login-screen">
+      <!-- Quick Header Utilities for Standalone Terminal -->
+      <a href="/" class="btn-card-outline" style="position: absolute; top: 20px; left: 24px; text-decoration: none; height: 36px; padding: 0 14px; font-size: 0.8rem; z-index: 20; display: inline-flex; align-items: center; gap: 6px;" title="Return to Public Website">
+        <span>← Public Site</span>
+      </a>
+
+      <button id="theme-toggle" class="theme-toggle-pill" aria-label="Toggle Theme Mode" title="Toggle Light / Dark Cyber Theme" style="position: absolute; top: 20px; right: 24px; z-index: 20; height: 36px;">
+        <span class="theme-toggle-icon" id="theme-toggle-icon">🌙</span>
+        <span class="theme-toggle-label" id="theme-toggle-label">DARK</span>
+      </button>
+
       <div class="login-hud-card">
         <div class="monolith-optical-glare"></div>
         <span class="console-corner-bracket bracket-tl"></span>
@@ -111,7 +77,7 @@
           <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios" style="max-height: 52px; width: auto; object-fit: contain; filter: drop-shadow(0 0 16px rgba(0, 245, 184, 0.25));">
         </div>
 
-        <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: #ffffff;">Studio Authorization</h2>
+        <h2 style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; color: var(--text-primary);">Studio Authorization</h2>
         <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">
           Enter the studio master passcode to manage apps, website links, icons, and Google Merchant feeds.
         </p>
@@ -148,22 +114,39 @@
     <!-- Authenticated Dashboard -->
     <section id="admin-dashboard-screen" class="admin-dashboard-container" style="display: none;">
       
-      <!-- Header row -->
+      <!-- Studio Control Bar (Dedicated Admin Command Header) -->
       <div class="admin-header-row">
-        <div>
-          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-            <span class="status-dot-pulse"></span>
-            <span style="font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--neon-mint); text-transform: uppercase;">ADMIN COMMAND ACTIVE</span>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <a href="/" title="Netroar Studios Public Site" style="display: flex; align-items: center;">
+            <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios Emblem" style="height: 42px; width: auto; object-fit: contain; filter: drop-shadow(0 0 12px rgba(0, 245, 184, 0.25));">
+          </a>
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+              <span class="status-dot-pulse"></span>
+              <span style="font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--neon-mint); text-transform: uppercase; font-weight: 700;">COMMAND SESSION // ONLINE</span>
+            </div>
+            <h1 style="font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); margin: 0; line-height: 1.2;">Studio Control Suite</h1>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 2px;">
+              Manage software catalog, platform binaries, store links, and Google Merchant indexing.
+            </p>
           </div>
-          <h1 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary);">Studio Control Suite</h1>
-          <p style="color: var(--text-secondary); font-size: 1rem; margin-top: 4px;">
-            Manage software catalog, platform binaries, store links, and Google Merchant indexing.
-          </p>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <!-- Public Website Link -->
+          <a href="/" class="btn-card-outline" style="height: 38px; padding: 0 14px; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="View Public Website">
+            <span>🌐 View Site</span>
+            <span style="font-size: 0.75rem;">↗</span>
+          </a>
+
+          <!-- Dashboard Theme Toggle -->
+          <button id="theme-toggle-dash" class="theme-toggle-pill" aria-label="Toggle Theme Mode" title="Toggle Light / Dark Cyber Theme" style="height: 38px;">
+            <span class="theme-toggle-icon">🌙</span>
+            <span class="theme-toggle-label">DARK</span>
+          </button>
+
           <!-- Real-time HUD Accent Theme Bar -->
-          <div class="admin-accent-swatches" title="Customize HUD Accent Color">
+          <div class="admin-accent-swatches" title="Customize HUD Accent Color" style="padding: 4px 10px;">
             <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); margin-right: 2px;">THEME:</span>
             <button type="button" class="accent-swatch active" data-accent="#00f5b8" style="background: #00f5b8;" title="Neon Mint"></button>
             <button type="button" class="accent-swatch" data-accent="#f59e0b" style="background: #f59e0b;" title="Rockstar Amber"></button>
@@ -172,13 +155,26 @@
             <button type="button" class="accent-swatch" data-accent="#ff3366" style="background: #ff3366;" title="Crimson Velocity"></button>
           </div>
 
-          <button class="btn-primary" id="btn-open-create-modal">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Add New App Primary Action -->
+          <button class="btn-primary" id="btn-open-create-modal" style="height: 38px; padding: 0 18px; font-size: 0.86rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
             <span>Add New App</span>
           </button>
+
+          <!-- LOCK STUDIO ACTION BUTTON -->
+          <button id="btn-lock-studio" class="btn-lock-studio" title="Secure and Lock Studio Suite immediately (Alt+L)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>LOCK STUDIO</span>
+          </button>
+
+          <!-- Hidden legacy logout button for compatibility -->
+          <button id="btn-logout" style="display: none;"></button>
         </div>
       </div>
 
@@ -361,6 +357,25 @@
               <span>Save Studio Settings</span>
             </button>
           </form>
+
+          <!-- Studio Security & Lock Card -->
+          <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border-glass);">
+            <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #f87171;">Session Security &amp; Terminal Lock</h4>
+            <div style="padding: 18px 22px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+              <div>
+                <div style="font-weight: 800; color: var(--text-primary); font-size: 0.98rem; display: flex; align-items: center; gap: 8px;">
+                  <span>🔒 Lock Studio Session</span>
+                </div>
+                <div style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                  Instantly revoke the current session token and lock this terminal. (Shortcut: <kbd style="background: rgba(255,255,255,0.08); padding: 2px 7px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.78rem;">Alt + L</kbd>)
+                </div>
+              </div>
+              <button type="button" class="btn-lock-studio" onclick="lockStudioSession()" style="height: 38px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <span>LOCK STUDIO NOW</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

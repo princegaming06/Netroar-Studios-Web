@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
-  initTerminal();
   init3DRigTilt();
   initLightbox();
 });
@@ -736,59 +735,6 @@ function init3DRigTilt() {
   });
 }
 
-// ==========================================================================
-// 6. INTERACTIVE COMMAND TERMINAL
-// ==========================================================================
-function initTerminal() {
-  const terminalInput = document.getElementById('terminal-input');
-  const pills = document.querySelectorAll('.cmd-pill');
-
-  function handleCommand(cmd) {
-    const clean = cmd.toLowerCase().trim();
-    playLaserBeep(600, 0.05, 'triangle');
-
-    if (clean === 'launch' || clean === 'open') {
-      window.open(OFFICIAL_TASKFLOW_URL, '_blank');
-      showToast('Executing: Launch Netroar TaskFlow Web');
-    } else if (clean === 'download' || clean === 'get') {
-      window.open(`${OFFICIAL_TASKFLOW_URL}/#download`, '_blank');
-      showToast('Executing: Navigate to Official Downloads');
-    } else if (clean === 'admin' || clean === 'login') {
-      window.location.href = '/admin';
-    } else if (clean === 'apps' || clean === 'app studios') {
-      window.location.href = '/apps';
-    } else if (clean === 'github' || clean === 'source') {
-      window.open('https://github.com/princegaming06/Netroar-To-Do-Official-WebPage', '_blank');
-    } else if (clean === 'feed' || clean === 'merchant') {
-      window.open('/feed/products.xml', '_blank');
-    } else if (clean === 'break' || clean === 'shatter') {
-      if (window.netroarBreak) window.netroarBreak();
-    } else if (clean === 'concatenate' || clean === 'concinate' || clean === 'assemble' || clean === 'fuse') {
-      if (window.netroarConcatenate) window.netroarConcatenate();
-    } else if (clean === 'cycle' || clean === 'kinetic') {
-      if (window.netroarCycle) window.netroarCycle();
-    } else {
-      showToast(`Command not recognized: "${clean}". Try "launch", "download", "break", or "concatenate".`);
-    }
-
-    if (terminalInput) terminalInput.value = '';
-  }
-
-  if (terminalInput) {
-    terminalInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        handleCommand(terminalInput.value);
-      }
-    });
-  }
-
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const cmd = pill.getAttribute('data-cmd');
-      if (cmd) handleCommand(cmd);
-    });
-  });
-}
 
 // ==========================================================================
 // 7. LIGHTBOX MODAL
@@ -956,7 +902,7 @@ function initScrollEngine() {
 
   // 4. Scroll-Reveal IntersectionObserver
   const revealElements = document.querySelectorAll(
-    '.scroll-reveal, .popular-spotlight-monolith, .chronicle-card, .terminal-box, .app-minimal-card, .popular-quad-card, .login-hud-card, .admin-tabs-nav'
+    '.scroll-reveal, .popular-spotlight-monolith, .chronicle-card, .app-minimal-card, .popular-quad-card, .login-hud-card, .admin-tabs-nav'
   );
 
   if ('IntersectionObserver' in window && revealElements.length > 0) {

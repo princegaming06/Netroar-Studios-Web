@@ -1,5 +1,5 @@
 /**
- * NETROAR STUDIOS — Unified Firebase & Studio Authentication Gateway
+ * NETROAR STUDIOS — Pure Firebase Auth & Cloud Account Gateway
  * Powered by Firebase Modular SDK (Netroar To Do Web Cloud Engine)
  */
 
@@ -19,7 +19,6 @@ import {
   getFirestore,
   doc,
   setDoc,
-  getDoc,
   serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
@@ -40,14 +39,13 @@ const ADMIN_EMAILS = [
   'admin@netroar.dev'
 ];
 
-// Helper: Check if an email is a Netroar Studio Administrator
 function isEmailAdmin(email) {
   if (!email) return false;
   const clean = String(email).trim().toLowerCase();
   return ADMIN_EMAILS.includes(clean) || clean.endsWith('@netroar.dev');
 }
 
-// 2. Initialize Firebase SDK safely
+// 2. Initialize Firebase SDK
 let app = null;
 let auth = null;
 let db = null;
@@ -94,19 +92,18 @@ function getFriendlyErrorMessage(err) {
 
 // 4. Main Controller
 document.addEventListener('DOMContentLoaded', () => {
-  // Tabs & Views
-  const tabSignIn = document.getElementById('tab-btn-signin');
-  const tabSignUp = document.getElementById('tab-btn-signup');
-  const tabPasscode = document.getElementById('tab-btn-passcode');
-  const authModeTabs = document.getElementById('auth-mode-tabs');
-
+  // Views
   const viewSignIn = document.getElementById('view-signin');
   const viewSignUp = document.getElementById('view-signup');
   const viewForgot = document.getElementById('view-forgot');
-  const viewPasscode = document.getElementById('view-passcode');
 
-  const screenTitle = document.getElementById('login-screen-title');
-  const screenSubtitle = document.getElementById('login-screen-subtitle');
+  // Switch triggers
+  const btnGotoSignup = document.getElementById('btn-goto-signup');
+  const btnGotoSignin = document.getElementById('btn-goto-signin');
+  const linkGotoForgot = document.getElementById('link-goto-forgot');
+  const btnCancelForgot = document.getElementById('btn-cancel-forgot');
+
+  // Notifications
   const alertBanner = document.getElementById('login-alert-banner');
   const toastNotify = document.getElementById('toast-notify');
 
@@ -124,38 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileUserMonogram = document.getElementById('profile-user-monogram');
   const profileDisplayName = document.getElementById('profile-display-name');
   const profileDisplayEmail = document.getElementById('profile-display-email');
-  const profileInfoUid = document.getElementById('profile-info-uid');
-  const profileInfoProvider = document.getElementById('profile-info-provider');
   const btnProfileAdminStudio = document.getElementById('btn-profile-admin-studio');
   const btnSessionLogout = document.getElementById('btn-session-logout');
 
-  // Google sign in buttons
+  // Google buttons
   const btnGoogleSignIn = document.getElementById('btn-google-signin');
   const btnGoogleSignUp = document.getElementById('btn-google-signup');
 
-  // Password visibility buttons
+  // Eye buttons
   const btnToggleSignInEye = document.getElementById('btn-toggle-signin-eye');
   const inputSignInPassword = document.getElementById('signin-password-input');
   const btnToggleSignUpEye = document.getElementById('btn-toggle-signup-eye');
   const inputSignUpPassword = document.getElementById('signup-password-input');
-  const btnToggleMasterEye = document.getElementById('btn-toggle-eye');
-  const inputMasterPasscode = document.getElementById('login-passcode-input');
-
-  // Password strength elements
   const inputSignUpConfirm = document.getElementById('signup-confirm-input');
+
+  // Strength segments
   const seg1 = document.getElementById('strength-seg-1');
   const seg2 = document.getElementById('strength-seg-2');
   const seg3 = document.getElementById('strength-seg-3');
   const seg4 = document.getElementById('strength-seg-4');
   const strengthLabelText = document.getElementById('strength-label-text');
 
-  // Forgot password triggers
-  const linkGotoForgot = document.getElementById('link-goto-forgot');
-  const btnCancelForgot = document.getElementById('btn-cancel-forgot');
   const inputForgotEmail = document.getElementById('forgot-email-input');
-
-  // Passcode quick autofill
-  const quickPasscodeBtn = document.getElementById('quick-passcode-btn');
+  const inputMasterPasscode = document.getElementById('login-passcode-input');
 
   // UI Helpers
   function showToast(message, isError = false) {
@@ -181,48 +169,29 @@ document.addEventListener('DOMContentLoaded', () => {
     alertBanner.style.display = 'none';
   }
 
-  function switchMode(mode) {
+  function switchView(target) {
     hideAlert();
+    [viewSignIn, viewSignUp, viewForgot].forEach(v => v?.classList.remove('active'));
     if (sessionBadgeCard) sessionBadgeCard.classList.remove('visible');
 
-    // Reset tabs
-    [tabSignIn, tabSignUp, tabPasscode].forEach(t => t?.classList.remove('active'));
-    [viewSignIn, viewSignUp, viewForgot, viewPasscode].forEach(v => v?.classList.remove('active'));
-
-    if (authModeTabs) authModeTabs.style.display = mode === 'forgot' ? 'none' : 'flex';
-
-    if (mode === 'signin') {
-      tabSignIn?.classList.add('active');
-      viewSignIn?.classList.add('active');
-      if (screenTitle) screenTitle.textContent = 'Welcome Back';
-      if (screenSubtitle) screenSubtitle.textContent = 'Sign in with your Netroar account, Google, or email.';
-    } else if (mode === 'signup') {
-      tabSignUp?.classList.add('active');
+    if (target === 'signup') {
       viewSignUp?.classList.add('active');
-      if (screenTitle) screenTitle.textContent = 'Create an Account';
-      if (screenSubtitle) screenSubtitle.textContent = 'Join Netroar Studios to sync cross-platform applications and settings.';
-    } else if (mode === 'forgot') {
+    } else if (target === 'forgot') {
       viewForgot?.classList.add('active');
-      if (screenTitle) screenTitle.textContent = 'Reset Password';
-      if (screenSubtitle) screenSubtitle.textContent = 'Verify your email to receive a secure password reset link.';
-    } else if (mode === 'passcode') {
-      tabPasscode?.classList.add('active');
-      viewPasscode?.classList.add('active');
-      if (screenTitle) screenTitle.textContent = 'Studio Authorization';
-      if (screenSubtitle) screenSubtitle.textContent = 'Enter the master passcode to authenticate administrative access to Netroar Studios.';
+    } else {
+      viewSignIn?.classList.add('active');
     }
   }
 
-  // Bind tab buttons
-  tabSignIn?.addEventListener('click', () => switchMode('signin'));
-  tabSignUp?.addEventListener('click', () => switchMode('signup'));
-  tabPasscode?.addEventListener('click', () => switchMode('passcode'));
+  // Bind view switchers
+  btnGotoSignup?.addEventListener('click', () => switchView('signup'));
+  btnGotoSignin?.addEventListener('click', () => switchView('signin'));
   linkGotoForgot?.addEventListener('click', () => {
     const prefill = document.getElementById('signin-email-input')?.value.trim();
     if (prefill && inputForgotEmail) inputForgotEmail.value = prefill;
-    switchMode('forgot');
+    switchView('forgot');
   });
-  btnCancelForgot?.addEventListener('click', () => switchMode('signin'));
+  btnCancelForgot?.addEventListener('click', () => switchView('signin'));
 
   // Eye Toggles
   function bindEye(btn, input) {
@@ -234,16 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   bindEye(btnToggleSignInEye, inputSignInPassword);
   bindEye(btnToggleSignUpEye, inputSignUpPassword);
-  bindEye(btnToggleMasterEye, inputMasterPasscode);
-
-  // Quick Passcode
-  quickPasscodeBtn?.addEventListener('click', () => {
-    if (inputMasterPasscode) {
-      inputMasterPasscode.value = 'netroar@admin2026';
-      inputMasterPasscode.focus();
-      showToast('Master passcode filled.');
-    }
-  });
 
   // Password strength calculation
   inputSignUpPassword?.addEventListener('input', (e) => {
@@ -254,11 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (/[0-9]/.test(val)) score++;
     if (/[^A-Za-z0-9]/.test(val) || /[A-Z]/.test(val)) score++;
 
-    [seg1, seg2, seg3, seg4].forEach(s => s.className = 'strength-segment');
-    if (score >= 1) seg1.classList.add(score === 1 ? 'active-weak' : score === 2 ? 'active-fair' : score === 3 ? 'active-good' : 'active-strong');
-    if (score >= 2) seg2.classList.add(score === 2 ? 'active-fair' : score === 3 ? 'active-good' : 'active-strong');
-    if (score >= 3) seg3.classList.add(score === 3 ? 'active-good' : 'active-strong');
-    if (score >= 4) seg4.classList.add('active-strong');
+    [seg1, seg2, seg3, seg4].forEach(s => s ? s.className = 'strength-segment' : null);
+    if (score >= 1 && seg1) seg1.classList.add(score === 1 ? 'active-weak' : score === 2 ? 'active-fair' : score === 3 ? 'active-good' : 'active-strong');
+    if (score >= 2 && seg2) seg2.classList.add(score === 2 ? 'active-fair' : score === 3 ? 'active-good' : 'active-strong');
+    if (score >= 3 && seg3) seg3.classList.add(score === 3 ? 'active-good' : 'active-strong');
+    if (score >= 4 && seg4) seg4.classList.add('active-strong');
 
     const labels = ['Enter password', 'Weak', 'Fair', 'Good', 'Strong'];
     if (strengthLabelText) strengthLabelText.textContent = `Strength: ${labels[score] || 'Weak'}`;
@@ -309,15 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Hide input forms and mode tabs
-    if (authModeTabs) authModeTabs.style.display = 'none';
-    [viewSignIn, viewSignUp, viewForgot, viewPasscode].forEach(v => v?.classList.remove('active'));
+    // Hide input forms
+    [viewSignIn, viewSignUp, viewForgot].forEach(v => v?.classList.remove('active'));
     hideAlert();
-
-    if (screenTitle) screenTitle.textContent = isAdmin ? 'Administrator Profile' : 'User Account';
-    if (screenSubtitle) screenSubtitle.textContent = isAdmin
-      ? 'Verified Netroar Studio Administrator with master management privileges.'
-      : 'Authenticated Netroar account with active cloud synchronization.';
 
     // Populate profile card
     if (profileAdminCrown) profileAdminCrown.style.display = isAdmin ? 'block' : 'none';
@@ -325,8 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (profileDisplayName) profileDisplayName.textContent = name;
     if (profileDisplayEmail) profileDisplayEmail.textContent = email;
-    if (profileInfoUid) profileInfoUid.textContent = uid;
-    if (profileInfoProvider) profileInfoProvider.textContent = providerType;
 
     if (avatar && profileUserAvatar) {
       profileUserAvatar.src = avatar;
@@ -418,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hideAlert();
 
     if (!firebaseReady || !auth) {
-      showAlert('Firebase authentication service unavailable. Use Master Passcode tab.', 'error');
+      showAlert('Firebase authentication service connecting...', 'error');
       return;
     }
 
@@ -509,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 11. Master Passcode Form Handler
+  // 11. Master Passcode Form Handler (Fallback)
   formPasscode?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const passcode = inputMasterPasscode?.value.trim();
@@ -517,11 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!passcode) return;
 
     hideAlert();
-    if (btnSubmit) {
-      btnSubmit.disabled = true;
-      btnSubmit.innerHTML = '<span>Verifying Master Credentials...</span>';
-    }
-
     try {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
@@ -534,9 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('netroar_admin_token', data.token);
         localStorage.setItem('netroar_admin_token', data.token);
 
-        showAlert('● ACCESS GRANTED // TELEPORTING TO DASHBOARD...', 'success');
-        showToast('Authorization verified. Welcome to Netroar Studios.');
-
         renderUserProfile({
           uid: 'NETROAR-STUDIO-ADMIN',
           name: 'Prince Singh',
@@ -546,23 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           window.location.href = '/admin';
-        }, 600);
-      } else {
-        showAlert(`✖ AUTHENTICATION FAILED: ${data.error || 'Invalid passcode.'}`, 'error');
-        showToast(data.error || 'Invalid master passcode.', true);
-        if (btnSubmit) {
-          btnSubmit.disabled = false;
-          btnSubmit.innerHTML = '<span>Authenticate &amp; Enter ❯</span>';
-        }
-        inputMasterPasscode?.select();
+        }, 500);
       }
     } catch (err) {
-      showAlert('✖ SYSTEM ERROR: Failed to reach authentication server.', 'error');
-      showToast('Network error during authentication.', true);
-      if (btnSubmit) {
-        btnSubmit.disabled = false;
-        btnSubmit.innerHTML = '<span>Authenticate &amp; Enter ❯</span>';
-      }
+      console.warn('Passcode fallback submit error:', err);
     }
   });
 
@@ -580,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (sessionBadgeCard) sessionBadgeCard.classList.remove('visible');
-    switchMode('signin');
+    switchView('signin');
     showToast('Session ended. You have been logged out.');
   });
 });

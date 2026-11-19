@@ -459,6 +459,73 @@ body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 28px rgba(245, 158, 11, 0.5) !important;
 }
 
+/* Standalone Apps Page Navigation Pill */
+.apps-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 245, 184, 0.08);
+  border: 1px solid rgba(0, 245, 184, 0.35);
+  color: var(--neon-mint);
+  font-family: var(--font-display);
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apps-nav-pill:hover {
+  background: rgba(0, 245, 184, 0.2);
+  color: #ffffff;
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 18px var(--neon-mint-glow);
+  transform: translateY(-1px);
+}
+
+.apps-nav-pill.active {
+  color: #ffffff !important;
+  background: rgba(0, 245, 184, 0.22) !important;
+  border-color: var(--neon-mint) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 22px var(--neon-mint-glow) !important;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(0, 245, 184, 0.5);
+}
+
+.apps-nav-pill.active::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--neon-mint);
+  box-shadow: 0 0 8px var(--neon-mint);
+  display: inline-block;
+  animation: navBeaconPulse 2s infinite ease-in-out;
+}
+
+.apps-nav-pill .apps-icon-svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.apps-nav-pill .page-arrow {
+  font-size: 0.70rem;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.apps-nav-pill:hover .page-arrow {
+  transform: translate(1px, -1px);
+  opacity: 1;
+}
+
 /* ==========================================================================
    HERO MONOLITH: "THE ARCHITECTURE OF FOCUS"
    ========================================================================== */

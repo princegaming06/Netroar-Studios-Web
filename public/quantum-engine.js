@@ -38,13 +38,13 @@ function syncActiveNav() {
   const hash = window.location.hash.toLowerCase();
 
   const studioLinks = document.querySelectorAll('.spatial-nav-dock a[href="/"]');
-  const appsLinks = document.querySelectorAll('.spatial-nav-dock a[href="/apps"]');
+  const appsLinks = document.querySelectorAll('.apps-nav-pill, a[href="/apps"]');
   const newswireLinks = document.querySelectorAll('.spatial-nav-dock a[href*="chronicles"]');
   const adminLinks = document.querySelectorAll('.admin-suite-pill');
   const activePageDisplay = document.getElementById('telemetry-active-page-name');
 
   // Reset active classes
-  document.querySelectorAll('.spatial-nav-dock a, .admin-suite-pill').forEach(el => {
+  document.querySelectorAll('.spatial-nav-dock a, .admin-suite-pill, .apps-nav-pill').forEach(el => {
     el.classList.remove('active');
   });
 

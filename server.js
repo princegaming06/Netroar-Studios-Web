@@ -172,45 +172,57 @@ function sendJson(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
+function escapeXml(unsafe) {
+  if (unsafe === undefined || unsafe === null) return '';
+  return String(unsafe)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 // Google Merchant Feed Generator
 function generateGoogleMerchantFeed(apps, settings, host) {
   const baseUrl = host.startsWith('http') ? host : `https://${host}`;
   const itemsXml = apps.map(app => {
-    const appUrl = app.websiteUrl || `${baseUrl}/#${app.slug}`;
-    const imgUrl = app.icon.startsWith('http') ? app.icon : `${baseUrl}${app.icon}`;
-    const desc = (app.description || app.tagline || app.name)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-    const title = (app.name || 'Netroar App')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-    const id = app.sku || app.id || app.slug;
+    let appUrl = app.websiteUrl || `${baseUrl}/#${app.slug || app.id}`;
+    if (!appUrl.startsWith('http')) {
+      appUrl = `${baseUrl}${appUrl.startsWith('/') ? '' : '/'}${appUrl}`;
+    }
+    const imgUrl = (app.icon && app.icon.startsWith('http')) ? app.icon : `${baseUrl}${app.icon || '/assets/logo/netroar-studios-logo-dark.png'}`;
+    const desc = escapeXml(app.description || app.tagline || app.name || '');
+    const title = escapeXml(app.name || 'Netroar App');
+    const id = escapeXml(app.sku || app.id || app.slug || 'APP-01');
+    const brand = escapeXml(settings.studioName || 'Netroar Studios');
+    const category = escapeXml(app.category || 'Digital Goods & Software');
 
     return `
     <item>
       <g:id>${id}</g:id>
       <g:title>${title}</g:title>
       <g:description>${desc}</g:description>
-      <g:link>${appUrl}</g:link>
-      <g:image_link>${imgUrl}</g:image_link>
+      <g:link>${escapeXml(appUrl)}</g:link>
+      <g:image_link>${escapeXml(imgUrl)}</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
       <g:price>0.00 USD</g:price>
-      <g:brand>${settings.studioName || 'Netroar Studios'}</g:brand>
+      <g:brand>${brand}</g:brand>
       <g:google_product_category>Software &gt; Digital Goods &amp; Software</g:google_product_category>
-      <g:product_type>${app.category || 'Software'}</g:product_type>
+      <g:product_type>${category}</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
     </item>`;
   }).join('');
 
+  const channelTitle = escapeXml(`${settings.studioName || 'Netroar Studios'} — Official Products & Software Catalog`);
+  const channelDesc = escapeXml(settings.heroDescription || settings.slogan || 'Official digital software & application catalog');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>${settings.studioName} — Official Products &amp; Software Catalog</title>
+    <title>${channelTitle}</title>
     <link>${baseUrl}</link>
-    <description>${settings.heroDescription || settings.slogan}</description>
+    <description>${channelDesc}</description>
     ${itemsXml}
   </channel>
 </rss>`;
@@ -308,7 +320,7 @@ const server = http.createServer(async (req, res) => {
     const urlsXml = [
       `<url><loc>${baseUrl}/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>`,
       `<url><loc>${baseUrl}/admin</loc><priority>0.3</priority><changefreq>monthly</changefreq></url>`,
-      ...apps.map(app => `<url><loc>${baseUrl}/#${app.slug}</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>`)
+      ...apps.map(app => `<url><loc>${escapeXml(`${baseUrl}/#${app.slug || app.id}`)}</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>`)
     ].join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

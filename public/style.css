@@ -147,11 +147,11 @@ body {
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border-glass);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
-  padding: 7px 24px;
+  padding: 5px 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
 }
 
@@ -214,7 +214,7 @@ body {
    ========================================================================== */
 .spatial-header {
   position: sticky;
-  top: 38px;
+  top: 28px;
   z-index: 1000;
   max-width: 1360px;
   margin: 0 auto;
@@ -234,38 +234,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 68px;
-  padding: 0 24px;
+  height: 48px;
+  padding: 0 16px;
   background: var(--bg-surface);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-full);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .spatial-header.scrolled .header-glass-capsule {
-  height: 56px;
+  height: 40px;
   background: rgba(4, 7, 14, 0.94);
   border-color: rgba(0, 245, 184, 0.28);
-  box-shadow: 0 15px 40px -5px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 245, 184, 0.12);
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 245, 184, 0.12);
 }
 
 .spatial-header.scrolled .brand-logo-badge {
-  height: 34px;
+  height: 24px;
 }
 
 .brand-emblem-anchor {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
   cursor: pointer;
 }
 
 .brand-logo-badge {
-  height: 42px;
+  height: 28px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
@@ -279,10 +279,10 @@ body {
 .spatial-nav-dock {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   list-style: none;
   background: rgba(4, 7, 14, 0.65);
-  padding: 4px 6px;
+  padding: 3px 5px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-glass);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
@@ -292,14 +292,14 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 18px;
+  gap: 6px;
+  padding: 5px 13px;
   border-radius: var(--radius-full);
   color: var(--text-secondary);
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -366,15 +366,15 @@ body {
 .tactile-audio-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 38px;
-  padding: 0 14px;
+  gap: 5px;
+  height: 30px;
+  padding: 0 11px;
   border-radius: var(--radius-full);
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-glass);
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.70rem;
   font-weight: 700;
   cursor: pointer;
   outline: none;
@@ -419,15 +419,15 @@ body {
 .admin-suite-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 38px;
-  padding: 0 16px;
+  gap: 5px;
+  height: 30px;
+  padding: 0 13px;
   border-radius: var(--radius-full);
   background: rgba(245, 158, 11, 0.08);
   border: 1px solid rgba(245, 158, 11, 0.35);
   color: var(--accent-rockstar);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.70rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;

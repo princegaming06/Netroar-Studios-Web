@@ -240,7 +240,7 @@ function initQuantumCanvas() {
   // Generate particle nodes with minimum distance spacing
   const particleCount = Math.min(Math.floor((width * height) / 18000), 70);
   const particles = [];
-  const minStarDistance = 45; // Minimum distance threshold between any two stars
+  const minStarDistance = 18; // Decreased minimum distance threshold for natural constellations without overlapping
 
   for (let i = 0; i < particleCount; i++) {
     let px = Math.random() * width;

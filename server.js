@@ -515,9 +515,11 @@ Sitemap: https://${host}/sitemap.xml
 
   let safePath = path.normalize(decodeURIComponent(pathname));
   if (safePath === '/' || safePath === '\\') safePath = '/index.html';
-  if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\' ||
-      safePath === '/login' || safePath === '\\login' || safePath === '/login/' || safePath === '\\login\\') {
+  if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\') {
     safePath = '/admin.html';
+  }
+  if (safePath === '/login' || safePath === '\\login' || safePath === '/login/' || safePath === '\\login\\') {
+    safePath = '/login.html';
   }
   if (safePath === '/apps' || safePath === '\\apps' || safePath === '/apps/' || safePath === '\\apps\\' ||
       safePath === '/app-studios' || safePath === '\\app-studios' || safePath === '/app-studios/' || safePath === '\\app-studios\\' ||

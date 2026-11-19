@@ -109,6 +109,10 @@ async function runTests() {
     assert(admin.data.includes('admin-suite-pill active') && admin.data.includes('admin-dashboard-screen') && admin.data.includes('admin-tab-btn'),
       '2.3b GET /admin includes active admin status, unified spatial header, and dashboard tabs');
 
+    const loginPage = await request('GET', '/login');
+    assert(loginPage.status === 200 && loginPage.data.includes('Studio Authorization') && loginPage.data.includes('login-passcode-input'),
+      '2.3c GET /login serves dedicated login.html portal with passcode authentication');
+
     const css = await request('GET', '/style.css');
     assert(css.status === 200 && css.data.includes('--accent-rockstar'), '2.4 GET /style.css serves Rockstar palette');
     assert(css.data.includes('.admin-login-screen') && css.data.includes('.login-hud-card') && css.data.includes('.admin-tab-btn.active'),

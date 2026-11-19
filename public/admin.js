@@ -167,6 +167,28 @@ async function loadDashboardData() {
 }
 
 async function loadApps() {
+  if (appsTableContainer && (!currentApps || currentApps.length === 0)) {
+    appsTableContainer.innerHTML = `
+      <div style="padding: 16px;">
+        <div style="display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
+          <div class="skeleton-box" style="width: 44px; height: 44px; border-radius: 8px;"></div>
+          <div style="flex: 1;">
+            <div class="skeleton-text" style="width: 140px; height: 16px; margin-bottom: 6px;"></div>
+            <div class="skeleton-text" style="width: 90px; height: 12px; margin-bottom: 0;"></div>
+          </div>
+          <div class="skeleton-pill" style="width: 64px; height: 22px;"></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; padding: 14px 0;">
+          <div class="skeleton-box" style="width: 44px; height: 44px; border-radius: 8px;"></div>
+          <div style="flex: 1;">
+            <div class="skeleton-text" style="width: 120px; height: 16px; margin-bottom: 6px;"></div>
+            <div class="skeleton-text" style="width: 80px; height: 12px; margin-bottom: 0;"></div>
+          </div>
+          <div class="skeleton-pill" style="width: 64px; height: 22px;"></div>
+        </div>
+      </div>
+    `;
+  }
   try {
     const res = await fetch('/api/apps');
     const data = await res.json();

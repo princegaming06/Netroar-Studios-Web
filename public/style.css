@@ -2848,5 +2848,209 @@ select.form-control option {
   font-weight: 600;
 }
 
+/* ==========================================================================
+   CYBER-ACRYLIC SKELETON LOADER SUITE
+   High-tech holographic shimmer wireframes for zero-CLS seamless loading
+   ========================================================================== */
+.skeleton-shimmer,
+.skeleton-box,
+.skeleton-text,
+.skeleton-circle,
+.skeleton-pill,
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(16, 24, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  user-select: none;
+}
+
+.skeleton-shimmer::after,
+.skeleton-box::after,
+.skeleton-text::after,
+.skeleton-circle::after,
+.skeleton-pill::after,
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(0, 245, 184, 0.16) 50%,
+    rgba(0, 164, 239, 0.08) 70%,
+    transparent 100%
+  );
+  animation: cyberSkeletonScan 1.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cyberSkeletonScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  60%, 100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-pill {
+  border-radius: var(--radius-full);
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.skeleton-text.skeleton-title {
+  height: 26px;
+  width: 65%;
+  margin-bottom: 14px;
+}
+
+.skeleton-text.skeleton-sub {
+  height: 14px;
+  width: 45%;
+}
+
+/* Full-Screen Cyber Web Skeleton Curtain */
+.web-skeleton-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #030712;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 28px;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.4s ease;
+  pointer-events: all;
+  overflow: hidden;
+}
+
+.web-skeleton-screen.skeleton-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.web-skeleton-header {
+  height: 58px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(16, 24, 40, 0.85);
+  border: 1px solid rgba(0, 245, 184, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.web-skeleton-body {
+  max-width: 1060px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.web-skeleton-hero-chip {
+  width: 240px;
+  height: 28px;
+  border-radius: var(--radius-full);
+}
+
+.web-skeleton-hero-title {
+  width: 72%;
+  height: 56px;
+  border-radius: var(--radius-md);
+  margin-top: 8px;
+}
+
+.web-skeleton-hero-subtitle {
+  width: 52%;
+  height: 20px;
+  border-radius: var(--radius-sm);
+}
+
+.web-skeleton-monolith {
+  width: 100%;
+  height: 360px;
+  border-radius: var(--radius-xl);
+  margin-top: 16px;
+  border: 1px solid rgba(0, 245, 184, 0.2);
+}
+
+/* Minimal App Card Skeleton */
+.app-minimal-skeleton-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px 22px;
+  border-radius: var(--radius-lg);
+  background: rgba(16, 24, 40, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  min-height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-minimal-skeleton-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  margin-bottom: 18px;
+}
+
+.app-minimal-skeleton-title {
+  width: 110px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .web-skeleton-screen {
+    padding: 16px;
+  }
+  .web-skeleton-header {
+    height: 48px;
+    padding: 0 16px;
+    margin-bottom: 24px;
+  }
+  .web-skeleton-header .skeleton-nav-pills {
+    display: none !important;
+  }
+  .web-skeleton-hero-title {
+    width: 90%;
+    height: 40px;
+  }
+  .web-skeleton-hero-subtitle {
+    width: 80%;
+  }
+  .web-skeleton-monolith {
+    height: 240px;
+  }
+}
+
+
 
 

@@ -15,6 +15,22 @@ let currentScreenshotIndex = 0;
 let screenshotData = [];
 const OFFICIAL_TASKFLOW_URL = 'https://netroar-to-do.onrender.com';
 
+// ==========================================================================
+// WEB SKELETON PRELOADER CONTROLLER
+// Seamless holographic dissolve transition once DOM and assets initialize
+// ==========================================================================
+function dismissWebSkeleton() {
+  const skeleton = document.getElementById('web-skeleton-screen');
+  if (skeleton && !skeleton.classList.contains('skeleton-hidden')) {
+    skeleton.classList.add('skeleton-hidden');
+    setTimeout(() => {
+      if (skeleton.parentNode) skeleton.parentNode.removeChild(skeleton);
+    }, 450);
+  }
+}
+window.dismissWebSkeleton = dismissWebSkeleton;
+window.addEventListener('load', dismissWebSkeleton);
+
 document.addEventListener('DOMContentLoaded', () => {
   initQuantumCanvas();
   initAudioSystem();
@@ -28,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFlagshipConsole();
   init3DRigTilt();
   initLightbox();
+  setTimeout(dismissWebSkeleton, 160);
 });
 
 // ==========================================================================

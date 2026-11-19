@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTelemetryClock();
   syncActiveNav();
   initBottomAuthDock();
+  initCinematicSmoothScroll();
   initScrollEngine();
   initSpatialScrollEffects();
   initAppsPageRouting();
@@ -1005,6 +1006,95 @@ function showToast(msg) {
 }
 
 // ==========================================================================
+// CINEMATIC SMOOTH SCROLL ENGINE
+// Translates stepped mouse wheel events into ultra-smooth momentum interpolation
+// ==========================================================================
+function initCinematicSmoothScroll() {
+  if (typeof window === 'undefined') return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let targetY = window.scrollY || window.pageYOffset;
+  let currentY = targetY;
+  let isRunning = false;
+  let animId = null;
+  const ease = 0.088; // Silky fluid damping (luxury Rockstar studio feel)
+
+  function syncScroll() {
+    if (!isRunning) {
+      targetY = window.scrollY || window.pageYOffset;
+      currentY = targetY;
+    }
+  }
+
+  window.addEventListener('scroll', syncScroll, { passive: true });
+
+  window.addEventListener('wheel', (e) => {
+    // Pass through if modifier keys (Ctrl+wheel for zoom, etc.)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    // Check if scrolling inside an internal scrollable element (modal, code block, etc.)
+    let el = e.target;
+    while (el && el !== document.body && el !== document.documentElement) {
+      if (el.nodeType === 1) {
+        const style = window.getComputedStyle(el);
+        const overflowY = style.overflowY;
+        if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight) {
+          const canScrollUp = e.deltaY < 0 && el.scrollTop > 0;
+          const canScrollDown = e.deltaY > 0 && el.scrollTop < el.scrollHeight - el.clientHeight;
+          if (canScrollUp || canScrollDown) return;
+        }
+      }
+      el = el.parentElement;
+    }
+
+    let delta = e.deltaY;
+    if (e.deltaMode === 1) delta *= 36;
+    else if (e.deltaMode === 2) delta *= window.innerHeight;
+
+    // If delta is tiny (trackpad precision gestures), let native driver handle
+    if (Math.abs(delta) < 4) {
+      targetY = window.scrollY || window.pageYOffset;
+      currentY = targetY;
+      return;
+    }
+
+    e.preventDefault();
+
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    targetY = Math.max(0, Math.min(maxScroll, targetY + delta * 1.08));
+
+    if (!isRunning) {
+      isRunning = true;
+      currentY = window.scrollY || window.pageYOffset;
+      animId = requestAnimationFrame(updateScroll);
+    }
+  }, { passive: false });
+
+  function updateScroll() {
+    const diff = targetY - currentY;
+    if (Math.abs(diff) < 0.5) {
+      currentY = targetY;
+      window.scrollTo(0, currentY);
+      isRunning = false;
+      return;
+    }
+
+    currentY += diff * ease;
+    window.scrollTo(0, currentY);
+    animId = requestAnimationFrame(updateScroll);
+  }
+
+  window.smoothScrollTo = (y) => {
+    if (animId) cancelAnimationFrame(animId);
+    const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    targetY = Math.max(0, Math.min(maxScroll, y));
+    isRunning = true;
+    currentY = window.scrollY || window.pageYOffset;
+    animId = requestAnimationFrame(updateScroll);
+  };
+}
+
+// ==========================================================================
 // 9. SCROLL ENGINE & KINETIC SYSTEM
 // Features:
 // - Laser scroll progress indicator bar
@@ -1109,28 +1199,65 @@ function initScrollEngine() {
   if (scrollTopBtn) {
     scrollTopBtn.addEventListener('click', () => {
       playLaserBeep(700, 0.06, 'triangle');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (typeof window.smoothScrollTo === 'function') {
+        window.smoothScrollTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   }
 
   // 3. Smooth Anchor Scroll with Header Offset
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  document.querySelectorAll('a[href^="#"], a[href*="/#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (!targetId || targetId === '#' || targetId.length <= 1) return;
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        playSlideSound();
-        const headerHeight = header ? header.offsetHeight + 24 : 80;
-        const targetPos = targetEl.getBoundingClientRect().top + window.scrollY - headerHeight;
-        window.scrollTo({
-          top: Math.max(0, targetPos),
-          behavior: 'smooth'
-        });
+      const href = this.getAttribute('href');
+      if (!href) return;
+      const hashIndex = href.indexOf('#');
+      if (hashIndex === -1) return;
+      const hash = href.substring(hashIndex);
+      if (!hash || hash === '#' || hash.length <= 1) return;
+
+      const pathPart = href.substring(0, hashIndex);
+      const isSamePage = !pathPart || (pathPart === '/' && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) || pathPart === window.location.pathname;
+
+      if (isSamePage) {
+        const targetEl = document.querySelector(hash);
+        if (targetEl) {
+          e.preventDefault();
+          playSlideSound();
+          const headerHeight = header ? header.offsetHeight + 24 : 80;
+          const targetPos = Math.max(0, targetEl.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - headerHeight);
+          if (typeof window.smoothScrollTo === 'function') {
+            window.smoothScrollTo(targetPos);
+          } else {
+            window.scrollTo({
+              top: targetPos,
+              behavior: 'smooth'
+            });
+          }
+          if (history.pushState) {
+            history.pushState(null, null, hash);
+          }
+        }
       }
     });
   });
+
+  // Smooth scroll to anchor on initial load if URL contains hash
+  if (window.location.hash && window.location.hash.length > 1) {
+    setTimeout(() => {
+      const targetEl = document.querySelector(window.location.hash);
+      if (targetEl) {
+        const headerHeight = header ? header.offsetHeight + 24 : 80;
+        const targetPos = Math.max(0, targetEl.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - headerHeight);
+        if (typeof window.smoothScrollTo === 'function') {
+          window.smoothScrollTo(targetPos);
+        } else {
+          window.scrollTo({ top: targetPos, behavior: 'smooth' });
+        }
+      }
+    }, 200);
+  }
 
   // 4. Scroll-Reveal IntersectionObserver
   const revealElements = document.querySelectorAll(

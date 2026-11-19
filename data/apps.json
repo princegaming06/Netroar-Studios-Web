@@ -4,12 +4,12 @@
     "slug": "netroar-taskflow",
     "name": "Netroar TaskFlow",
     "tagline": "The Next-Gen Cyber-Acrylic Productivity & Gamified Task Ecosystem",
-    "description": "Netroar TaskFlow (formerly Netroar To-Do) is a high-performance productivity suite engineered for creators, gamers, and engineers. It combines precision countdown timers, an RPG gamification engine with XP and rewards, seamless cross-device cloud synchronization, and a stunning cyber-acrylic visual interface.",
+    "description": "Netroar TaskFlow is an ultra-fast, cyber-acrylic task management suite engineered for power users, developers, and creators. It combines precision countdown timers, an RPG gamification engine with XP gain and milestone rewards, seamless cloud synchronization, and native performance across Windows desktop and Android devices.",
     "category": "Productivity",
     "platforms": [
-      "Web",
       "Windows",
-      "Android"
+      "Android",
+      "Web"
     ],
     "status": "Live",
     "isFeatured": true,
@@ -18,6 +18,8 @@
     "icon": "/assets/logo/Netroar_To_Do_dark_v2.png",
     "websiteUrl": "https://netroar-to-do.onrender.com",
     "downloadUrl": "https://netroar-to-do.onrender.com/#download",
+    "windowsDownloadUrl": "https://netroar-to-do.onrender.com/downloads/windows/Netroar-To-Do-Setup.exe",
+    "androidDownloadUrl": "https://netroar-to-do.onrender.com/downloads/apks/netroar-to-do-latest.apk",
     "repoUrl": "https://github.com/princegaming06/Netroar-To-Do-Official-WebPage",
     "docsUrl": "https://netroar-to-do.onrender.com",
     "features": [
@@ -25,161 +27,74 @@
       "RPG Gamification engine with XP gain, level ups, and milestone rewards",
       "Offline-first local cache with instant Google Cloud Firestore synchronization",
       "Live sprint timers, deadline alerts, and Pomodoro focus stopwatch",
+      "Global system shortcuts (Shift + Esc) for instant overlay task creation on Windows",
       "Universal cross-platform access across Windows, Android, and Web browsers"
     ],
+    "screenshots": {
+      "windows": [
+        {
+          "title": "Desktop Overview & Cyber Grid",
+          "src": "/assets/screenshots/01_Desktop_Overview.png"
+        },
+        {
+          "title": "Global Quick Summon Shortcut (Shift+Esc)",
+          "src": "/assets/screenshots/02_Global_Shortcut_Shift_Esc.png"
+        },
+        {
+          "title": "Effortless Task & Sprint Creation",
+          "src": "/assets/screenshots/03_Effortless_Task_Creation.png"
+        },
+        {
+          "title": "Live Sprint Countdown Timers",
+          "src": "/assets/screenshots/04_Live_Countdown_Timers.png"
+        },
+        {
+          "title": "RPG Gamification & XP Progression Engine",
+          "src": "/assets/screenshots/05_RPG_Gamification_Engine.png"
+        },
+        {
+          "title": "Accountability & Task History Log",
+          "src": "/assets/screenshots/06_Accountability_And_History.png"
+        },
+        {
+          "title": "Smart Startup & Dynamic Cyber Themes",
+          "src": "/assets/screenshots/07_Smart_Startup_And_Themes.png"
+        }
+      ],
+      "android": [
+        {
+          "title": "Android Gamified Task Manager",
+          "src": "/assets/screenshots/android/01_Hero_Gamified_Task_Manager.png"
+        },
+        {
+          "title": "Real-Time Mobile Countdown Timers",
+          "src": "/assets/screenshots/android/02_Real_Time_Countdown_Timers.png"
+        },
+        {
+          "title": "Daily & Weekly Milestone Sprints",
+          "src": "/assets/screenshots/android/03_Daily_And_Weekly_Sprints.png"
+        },
+        {
+          "title": "Rapid Mobile Task Creation",
+          "src": "/assets/screenshots/android/04_Rapid_Task_Creation.png"
+        },
+        {
+          "title": "Smart Habit Presets & Routines",
+          "src": "/assets/screenshots/android/06_Smart_Habit_Presets.png"
+        },
+        {
+          "title": "RPG Accountability & Level Progression",
+          "src": "/assets/screenshots/android/11_Gamified_Profile_And_Level_Progression.png"
+        },
+        {
+          "title": "Cross-Platform Cloud Synchronization",
+          "src": "/assets/screenshots/android/09_Cross_Platform_Cloud_Sync.png"
+        }
+      ]
+    },
     "rating": 4.9,
     "reviewCount": 142,
     "sku": "NETROAR-TASKFLOW-01",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
-  },
-  {
-    "id": "app_netroar_axon",
-    "slug": "netroar-axon",
-    "name": "Netroar Axon Assistant",
-    "tagline": "Intelligent Neural Voice Assistant & System Automator",
-    "description": "Netroar Axon is an ultra-fast Android and desktop smart assistant powered by hybrid on-device voice recognition and cloud neural intelligence. It executes complex device commands, drafts thoughts, manages tasks, and automates workflows with a responsive cybernetic HUD.",
-    "category": "AI & Smart Tools",
-    "platforms": [
-      "Android",
-      "Windows"
-    ],
-    "status": "Beta",
-    "isFeatured": true,
-    "version": "0.9.4",
-    "pricing": "Free",
-    "icon": "/assets/logo/netroars-logo.png",
-    "websiteUrl": "https://github.com/princegaming06",
-    "downloadUrl": "https://github.com/princegaming06",
-    "repoUrl": "https://github.com/princegaming06",
-    "docsUrl": "https://github.com/princegaming06",
-    "features": [
-      "Low-latency voice activation and on-device natural speech processing",
-      "Smart system command execution and contextual workflow triggers",
-      "Privacy-centric offline voice transcription modes",
-      "Custom customizable hotwords and cybernetic HUD interface"
-    ],
-    "rating": 4.8,
-    "reviewCount": 56,
-    "sku": "NETROAR-AXON-02",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
-  },
-  {
-    "id": "app_netroar_bridge",
-    "slug": "netroar-bridge",
-    "name": "Netroar Bridge",
-    "tagline": "Seamless Cross-Device Synchronization & File Relay",
-    "description": "Bridge the gap between Windows PC and Android smartphones. Netroar Bridge provides instant real-time clipboard sharing, biometric notifications mirroring, and zero-compression high-speed local Wi-Fi file drops without cloud latency.",
-    "category": "Utilities",
-    "platforms": [
-      "Windows",
-      "Android",
-      "Web"
-    ],
-    "status": "Live",
-    "isFeatured": true,
-    "version": "1.1.0",
-    "pricing": "Free",
-    "icon": "/assets/logo/Netroar_Available_Windows_Android_Dark.png",
-    "websiteUrl": "https://github.com/princegaming06",
-    "downloadUrl": "https://github.com/princegaming06",
-    "repoUrl": "https://github.com/princegaming06",
-    "docsUrl": "https://github.com/princegaming06",
-    "features": [
-      "Zero-configuration peer-to-peer local network discovery",
-      "Instant two-way clipboard copy-paste sync across PC and phone",
-      "End-to-end encrypted Wi-Fi direct file transfer with drag-and-drop",
-      "Remote media controls and synced notification dismissals"
-    ],
-    "rating": 4.9,
-    "reviewCount": 88,
-    "sku": "NETROAR-BRIDGE-03",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
-  },
-  {
-    "id": "app_netroar_store",
-    "slug": "netroar-store",
-    "name": "Netroar Store",
-    "tagline": "Curated Developer Marketplace for Modern Assets & Tools",
-    "description": "The premier distribution hub for Netroar digital assets, 2D/3D sprites, audio packages, Flutter widgets, and developer utility plugins crafted for cutting-edge game and web creators.",
-    "category": "Digital Assets",
-    "platforms": [
-      "Web"
-    ],
-    "status": "Early Access",
-    "isFeatured": false,
-    "version": "1.0.0-preview",
-    "pricing": "Freemium",
-    "icon": "/assets/logo/netroars-logo.png",
-    "websiteUrl": "https://github.com/princegaming06",
-    "downloadUrl": "https://github.com/princegaming06",
-    "repoUrl": "https://github.com/princegaming06",
-    "docsUrl": "https://github.com/princegaming06",
-    "features": [
-      "Curated developer packs, high-res UI icons, and audio mixers",
-      "Direct instant downloads with checksum verification",
-      "Seamless license management for indie developers"
-    ],
-    "rating": 4.7,
-    "reviewCount": 39,
-    "sku": "NETROAR-STORE-04",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
-  },
-  {
-    "id": "app_void_otaku",
-    "slug": "void-otaku",
-    "name": "Void Otaku",
-    "tagline": "High-Speed Media & Community Entertainment Platform",
-    "description": "Immersive community hub and streaming tracking portal built with cybernetic visuals, personalized watchlist recommendations, and discussion spaces for multimedia enthusiasts.",
-    "category": "Entertainment",
-    "platforms": [
-      "Web"
-    ],
-    "status": "Beta",
-    "isFeatured": false,
-    "version": "0.8.2",
-    "pricing": "Free",
-    "icon": "/assets/logo/netroars-logo.png",
-    "websiteUrl": "https://github.com/princegaming06",
-    "downloadUrl": "https://github.com/princegaming06",
-    "repoUrl": "https://github.com/princegaming06",
-    "docsUrl": "https://github.com/princegaming06",
-    "features": [
-      "Slick dark-mode responsive media catalog",
-      "Community review forum and trending tracker",
-      "Lightning-fast search with instant genre filtering"
-    ],
-    "rating": 4.6,
-    "reviewCount": 71,
-    "sku": "NETROAR-VOID-05",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
-  },
-  {
-    "id": "app_netroar_ipr",
-    "slug": "netroar-ipr",
-    "name": "Netroar IPR Portal",
-    "tagline": "Intellectual Property & Project Verification Portal",
-    "description": "Enterprise-grade digital rights registry and official software signature verification gateway for all software, libraries, and multimedia assets published by Netroar Studios.",
-    "category": "Security & Governance",
-    "platforms": [
-      "Web"
-    ],
-    "status": "Live",
-    "isFeatured": false,
-    "version": "1.0.4",
-    "pricing": "Free",
-    "icon": "/assets/logo/netroars-logo.png",
-    "websiteUrl": "https://github.com/princegaming06",
-    "downloadUrl": "https://github.com/princegaming06",
-    "repoUrl": "https://github.com/princegaming06",
-    "docsUrl": "https://github.com/princegaming06",
-    "features": [
-      "Cryptographic checksum and binary hash signature verification",
-      "Official certificate issuing and copyright ledger",
-      "Tamper-proof software authenticity check for clients"
-    ],
-    "rating": 4.9,
-    "reviewCount": 45,
-    "sku": "NETROAR-IPR-06",
-    "updatedAt": "2026-11-19T20:25:00.000Z"
+    "updatedAt": "2026-11-19T21:15:00.000Z"
   }
 ]

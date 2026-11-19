@@ -99,8 +99,8 @@ async function runTests() {
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');
-    assert(appsRes.status === 200 && appsRes.json?.success && Array.isArray(appsRes.json?.apps) && appsRes.json?.apps.length >= 6, 
-      `3.1 GET /api/apps returns seeded applications (Count: ${appsRes.json?.apps?.length})`);
+    assert(appsRes.status === 200 && appsRes.json?.success && Array.isArray(appsRes.json?.apps) && appsRes.json?.apps.length >= 1, 
+      `3.1 GET /api/apps returns flagship application (Count: ${appsRes.json?.apps?.length})`);
 
     const hasTaskflow = appsRes.json?.apps?.some(a => a.name.includes('TaskFlow'));
     assert(hasTaskflow, '3.2 Seed apps include Netroar TaskFlow');
@@ -116,7 +116,7 @@ async function runTests() {
       '5.1 GET /feed/products.xml returns valid Google Merchant RSS 2.0 XML');
 
     const jsonFeed = await request('GET', '/feed/products.json');
-    assert(jsonFeed.status === 200 && jsonFeed.json?.itemsCount >= 6, 
+    assert(jsonFeed.status === 200 && jsonFeed.json?.itemsCount >= 1, 
       '5.2 GET /feed/products.json returns structured products JSON');
 
     // Test 6: SEO

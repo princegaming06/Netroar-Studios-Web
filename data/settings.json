@@ -2,7 +2,7 @@
   "studioName": "Netroar Studios",
   "slogan": "Engineering High-Performance Digital Experiences",
   "heroTitle": "The Innovation Lab for Next-Gen Software & Ecosystems",
-  "heroDescription": "Explore our portfolio of high-performance desktop apps, cross-platform utilities, AI neural assistants, and cybernetic digital tools crafted by Netroar Studios.",
+  "heroDescription": "Explore our flagship software suite, Netroar TaskFlow — crafted with cyber-acrylic precision, real-time gamification, and seamless synchronization across Windows and Android.",
   "aboutText": "Netroar Studios is an independent technology and software engineering studio founded by Prince Singh. We specialize in developing fast, offline-first, visually distinctive applications across Windows, Android, and Web platforms with high-contrast cyber-acrylic design principles.",
   "contactEmail": "princegaming5555@gmail.com",
   "founderName": "Prince Singh",
@@ -14,7 +14,7 @@
     "youtube": "https://youtube.com/@princegaming"
   },
   "stats": {
-    "totalProjects": "12+",
+    "totalProjects": "1 Flagship Suite",
     "activeUsers": "15K+",
     "targetPlatforms": "Windows · Android · Web",
     "satisfactionRate": "99.4%"
@@ -24,5 +24,5 @@
     "secondary": "#00a4ef",
     "darkBg": "#05080c"
   },
-  "updatedAt": "2026-11-19T20:25:00.000Z"
+  "updatedAt": "2026-11-19T21:15:00.000Z"
 }

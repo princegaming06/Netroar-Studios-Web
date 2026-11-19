@@ -2330,14 +2330,14 @@ select.form-control option {
 }
 
 .bottom-auth-dock:hover {
-  width: auto;
-  border-radius: var(--radius-full);
-  gap: 12px;
-  padding: 6px 20px 6px 7px;
-  justify-content: flex-start;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  padding: 0;
+  justify-content: center;
   border-color: var(--neon-mint);
   box-shadow: 0 0 35px var(--neon-mint-glow), 0 20px 48px rgba(0, 0, 0, 0.95);
-  transform: translateY(-3px) scale(1.04) !important;
+  transform: translateY(-3px) scale(1.08) !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
@@ -2426,65 +2426,13 @@ select.form-control option {
   text-shadow: 0 0 8px rgba(0, 245, 184, 0.7);
 }
 
-/* Two-Line Micro-HUD Typography: Strictly hidden at rest, revealed smoothly on hover */
+/* Profile icon is a pure circular avatar badge — text on hover removed */
 .auth-dock-text-wrap {
-  display: none;
-  flex-direction: column;
-  text-align: left;
-  gap: 2px;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
+  display: none !important;
 }
 
 .bottom-auth-dock:hover .auth-dock-text-wrap {
-  display: flex;
-  pointer-events: auto;
-  animation: authTextGlissade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes authTextGlissade {
-  0% {
-    opacity: 0;
-    transform: translateX(-8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.auth-dock-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: var(--neon-mint);
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-.auth-dock-label {
-  font-family: var(--font-display);
-  font-size: 0.88rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #ffffff;
-  line-height: 1.1;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-
-.auth-dock-arrow {
-  color: var(--neon-mint);
-  font-size: 0.75rem;
-  transition: transform 0.25s ease;
-}
-
-.bottom-auth-dock:hover .auth-dock-arrow {
-  transform: translateX(3px);
+  display: none !important;
 }
 
 /* Active logged in styling */
@@ -2503,23 +2451,20 @@ select.form-control option {
     left: 20px;
     width: 46px;
     height: 46px;
-    padding: 5px;
+    padding: 0;
+    justify-content: center;
   }
   .bottom-auth-dock:hover,
   .bottom-auth-dock:active {
-    width: auto;
-    gap: 10px;
-    padding: 5px 16px 5px 5px;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    border-radius: 50%;
+    transform: translateY(-2px) scale(1.06) !important;
   }
   .auth-dock-avatar-slot {
     width: 34px;
     height: 34px;
-  }
-  .auth-dock-kicker {
-    font-size: 0.56rem;
-  }
-  .auth-dock-label {
-    font-size: 0.8rem;
   }
 }
 

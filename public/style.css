@@ -2150,20 +2150,20 @@ body {
 .form-control {
   width: 100%;
   padding: 12px 18px;
-  background: rgba(6, 10, 16, 0.85);
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: var(--font-main);
   font-size: 0.95rem;
   outline: none;
   transition: all 0.2s ease;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .form-control:focus {
   border-color: var(--neon-mint);
-  box-shadow: 0 0 16px rgba(0, 245, 184, 0.3);
+  box-shadow: 0 0 16px var(--neon-mint-glow);
 }
 
 textarea.form-control {
@@ -2182,8 +2182,183 @@ select.form-control {
 }
 
 select.form-control option {
-  background: #080c14;
-  color: #ffffff;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   ADMIN PANEL THEME ENGINE & ACCENT PALETTES
+   ========================================================================== */
+.theme-toggle-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.theme-toggle-pill:hover {
+  border-color: var(--neon-mint);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 16px var(--neon-mint-glow);
+}
+
+.theme-toggle-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-pill:hover .theme-toggle-icon {
+  transform: rotate(20deg) scale(1.1);
+}
+
+.admin-accent-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-full);
+}
+
+.accent-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.accent-swatch:hover {
+  transform: scale(1.25);
+}
+
+.accent-swatch.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 10px currentColor;
+  transform: scale(1.18);
+}
+
+/* --- Light Mode Refinements for Admin Suite --- */
+[data-theme='light'] .admin-login-screen {
+  background: radial-gradient(circle at 50% 20%, rgba(0, 184, 130, 0.08), transparent 60%);
+}
+
+[data-theme='light'] .login-hud-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .admin-header-row {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .admin-kpi-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .admin-tab-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-secondary);
+}
+
+[data-theme='light'] .admin-tab-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .admin-tab-btn.active {
+  background: var(--neon-mint);
+  color: #000000;
+  border-color: var(--neon-mint);
+}
+
+[data-theme='light'] .admin-filter-bar {
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .admin-filter-pill {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-secondary);
+}
+
+[data-theme='light'] .admin-filter-pill:hover {
+  background: rgba(0, 0, 0, 0.07);
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .admin-filter-pill.active {
+  background: rgba(0, 184, 130, 0.12);
+  border-color: var(--neon-mint);
+  color: var(--neon-mint);
+}
+
+[data-theme='light'] .form-control {
+  background: rgba(245, 247, 251, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .modal-card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .btn-card-outline {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .btn-card-outline:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='light'] .admin-icon-preview-box {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .checkbox-label {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .feed-copy-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+}
+
+[data-theme='light'] .feed-copy-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
 }
 
 .checkbox-group {

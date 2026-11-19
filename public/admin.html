@@ -69,7 +69,7 @@
         </ul>
       </nav>
 
-      <!-- Utility Cluster: Dedicated Apps Pill + Admin Suite Active Pill + Log Out -->
+      <!-- Utility Cluster: Dedicated Apps Pill + Theme Switcher + Log Out -->
       <div class="header-utility-cluster">
         <a href="/apps" class="apps-nav-pill" title="Explore Netroar Apps Showcase">
           <svg class="apps-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor">
@@ -81,6 +81,13 @@
           <span>APPS</span>
           <span class="page-arrow">↗</span>
         </a>
+
+        <!-- Interactive Theme Mode Toggle -->
+        <button id="theme-toggle" class="theme-toggle-pill" aria-label="Toggle Theme Mode" title="Toggle Light / Dark Cyber Theme">
+          <span class="theme-toggle-icon" id="theme-toggle-icon">🌙</span>
+          <span class="theme-toggle-label" id="theme-toggle-label">DARK</span>
+        </button>
+
         <button id="btn-logout" class="btn-card-outline" style="display: none; height: 38px; padding: 0 16px; border-radius: var(--radius-full); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
           LOG OUT
         </button>
@@ -148,19 +155,31 @@
             <span class="status-dot-pulse"></span>
             <span style="font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--neon-mint); text-transform: uppercase;">ADMIN COMMAND ACTIVE</span>
           </div>
-          <h1 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; color: #ffffff;">Studio Control Suite</h1>
+          <h1 style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary);">Studio Control Suite</h1>
           <p style="color: var(--text-secondary); font-size: 1rem; margin-top: 4px;">
             Manage software catalog, platform binaries, store links, and Google Merchant indexing.
           </p>
         </div>
 
-        <button class="btn-primary" id="btn-open-create-modal">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-          <span>Add New App</span>
-        </button>
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <!-- Real-time HUD Accent Theme Bar -->
+          <div class="admin-accent-swatches" title="Customize HUD Accent Color">
+            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-muted); margin-right: 2px;">THEME:</span>
+            <button type="button" class="accent-swatch active" data-accent="#00f5b8" style="background: #00f5b8;" title="Neon Mint"></button>
+            <button type="button" class="accent-swatch" data-accent="#f59e0b" style="background: #f59e0b;" title="Rockstar Amber"></button>
+            <button type="button" class="accent-swatch" data-accent="#00d4ff" style="background: #00d4ff;" title="Cyber Cobalt"></button>
+            <button type="button" class="accent-swatch" data-accent="#c084fc" style="background: #c084fc;" title="Holo Orchid"></button>
+            <button type="button" class="accent-swatch" data-accent="#ff3366" style="background: #ff3366;" title="Crimson Velocity"></button>
+          </div>
+
+          <button class="btn-primary" id="btn-open-create-modal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add New App</span>
+          </button>
+        </div>
       </div>
 
       <!-- Telemetry KPI HUD Tiles -->
@@ -249,7 +268,7 @@
       <!-- Tab 2: Studio Settings -->
       <div id="tab-settings" class="admin-tab-content" style="display: none;">
         <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 36px; max-width: 860px; box-shadow: var(--shadow-spatial);">
-          <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; color: #ffffff;">Studio Profile &amp; Customization</h3>
+          <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; color: var(--text-primary);">Studio Profile &amp; Customization</h3>
 
           <form id="studio-settings-form">
             <div class="form-group">
@@ -306,6 +325,28 @@
               <div class="form-group">
                 <label class="form-label" for="setting-social-youtube">YouTube URL</label>
                 <input type="url" id="setting-social-youtube" class="form-control">
+              </div>
+            </div>
+
+            <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 28px 0 16px; color: var(--neon-mint);">Studio Appearance &amp; Visual Persona</h4>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="form-group">
+                <label class="form-label" for="setting-theme-mode">Interface Theme Mode</label>
+                <select id="setting-theme-mode" class="form-control">
+                  <option value="dark">Cyber Obsidian Void (Dark)</option>
+                  <option value="light">Prism Holographic (Light)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">HUD Primary Accent</label>
+                <div style="display: flex; gap: 10px; margin-top: 8px; align-items: center;">
+                  <button type="button" class="accent-swatch active" data-accent="#00f5b8" style="background: #00f5b8; width: 26px; height: 26px;" title="Neon Mint"></button>
+                  <button type="button" class="accent-swatch" data-accent="#f59e0b" style="background: #f59e0b; width: 26px; height: 26px;" title="Rockstar Amber"></button>
+                  <button type="button" class="accent-swatch" data-accent="#00d4ff" style="background: #00d4ff; width: 26px; height: 26px;" title="Cyber Cobalt"></button>
+                  <button type="button" class="accent-swatch" data-accent="#c084fc" style="background: #c084fc; width: 26px; height: 26px;" title="Holo Orchid"></button>
+                  <button type="button" class="accent-swatch" data-accent="#ff3366" style="background: #ff3366; width: 26px; height: 26px;" title="Crimson Velocity"></button>
+                </div>
               </div>
             </div>
 

@@ -68,18 +68,89 @@ function showToast(message, isError = false) {
   }
 }
 
-// Theme
+// Theme & Cyber Visual Engine
 function initTheme() {
-  const saved = localStorage.getItem('netroar_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
+  const savedTheme = localStorage.getItem('netroar_theme') || 'dark';
+  applyTheme(savedTheme);
+
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
       const cur = document.documentElement.getAttribute('data-theme') || 'dark';
       const nxt = cur === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', nxt);
+      applyTheme(nxt);
       localStorage.setItem('netroar_theme', nxt);
+      showToast(`Switched to ${nxt === 'dark' ? 'Cyber Obsidian (Dark)' : 'Prism Holographic (Light)'} theme.`);
     });
+  }
+
+  // Studio Settings Theme Mode Dropdown sync
+  const settingThemeSelect = document.getElementById('setting-theme-mode');
+  if (settingThemeSelect) {
+    settingThemeSelect.addEventListener('change', () => {
+      const selected = settingThemeSelect.value;
+      applyTheme(selected);
+      localStorage.setItem('netroar_theme', selected);
+      showToast(`Switched to ${selected === 'dark' ? 'Cyber Obsidian (Dark)' : 'Prism Holographic (Light)'} theme.`);
+    });
+  }
+
+  // Accent Color Customizer
+  const savedAccent = localStorage.getItem('netroar_admin_accent') || '#00f5b8';
+  applyAccentColor(savedAccent, false);
+
+  const swatches = document.querySelectorAll('.accent-swatch');
+  swatches.forEach(swatch => {
+    swatch.addEventListener('click', () => {
+      const color = swatch.getAttribute('data-accent');
+      if (color) {
+        applyAccentColor(color, true);
+      }
+    });
+  });
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const themeToggleIcon = document.getElementById('theme-toggle-icon');
+  const themeToggleLabel = document.getElementById('theme-toggle-label');
+  const settingThemeSelect = document.getElementById('setting-theme-mode');
+
+  if (themeToggleIcon && themeToggleLabel) {
+    if (theme === 'light') {
+      themeToggleIcon.textContent = '☀️';
+      themeToggleLabel.textContent = 'LIGHT';
+    } else {
+      themeToggleIcon.textContent = '🌙';
+      themeToggleLabel.textContent = 'DARK';
+    }
+  }
+
+  if (settingThemeSelect) {
+    settingThemeSelect.value = theme;
+  }
+}
+
+function applyAccentColor(hex, notify = true) {
+  document.documentElement.style.setProperty('--neon-mint', hex);
+  document.documentElement.style.setProperty('--neon-mint-glow', `${hex}55`);
+  document.documentElement.style.setProperty('--border-neon', `${hex}77`);
+  document.documentElement.style.setProperty('--shadow-neon-mint', `0 0 30px ${hex}44`);
+
+  localStorage.setItem('netroar_admin_accent', hex);
+
+  // Update active swatch state
+  const swatches = document.querySelectorAll('.accent-swatch');
+  swatches.forEach(s => {
+    if (s.getAttribute('data-accent') === hex) {
+      s.classList.add('active');
+    } else {
+      s.classList.remove('active');
+    }
+  });
+
+  if (notify) {
+    showToast(`HUD Accent color updated to ${hex.toUpperCase()}.`);
   }
 }
 

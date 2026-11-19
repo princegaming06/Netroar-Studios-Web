@@ -1067,17 +1067,6 @@ body {
   color: var(--text-secondary);
 }
 
-.console-click-hint {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  color: var(--neon-mint);
-  letter-spacing: 0.06em;
-  background: rgba(0, 245, 184, 0.1);
-  padding: 3px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(0, 245, 184, 0.3);
-}
-
 /* 2. Middle: Clean Narrative */
 .console-description-body {
   font-size: 1.18rem;

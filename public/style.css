@@ -1894,668 +1894,168 @@ select.form-control option {
 }
 
 /* ==========================================================================
-   QUANTUM ELEMENT BREAK & CONCATENATE ENGINE STYLES
-   Bespoke, never-before-seen kinetic 3D deconstruction and magnetic seam reassembly
+   CINEMATIC AERO-SPATIAL SCROLL ENGINE
+   Ultra-smooth, luxury 3D perspective parallax, anamorphic optical glare,
+   and dynamic telemetry circular dial
    ========================================================================== */
 
-/* 1. Kinetic Controller Dock */
-.quantum-kinetic-dock {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
+/* 1. Monolith 3D Spatial Rig */
+.popular-spotlight-monolith,
+.flagship-console-rig {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+}
+
+/* Optical Anamorphic Glare Sheen */
+.monolith-optical-glare {
+  position: absolute;
+  top: -60%;
+  left: -40%;
+  width: 180%;
+  height: 220%;
+  background: linear-gradient(135deg, 
+    transparent 35%, 
+    rgba(255, 255, 255, 0.04) 45%, 
+    rgba(0, 245, 184, 0.12) 50%, 
+    rgba(0, 164, 239, 0.08) 54%, 
+    transparent 65%
+  );
+  transform: rotate(-22deg) translateY(-20%);
+  pointer-events: none;
+  opacity: 0.6;
+  border-radius: inherit;
+  z-index: 2;
+  will-change: transform, opacity;
+  transition: opacity 0.3s ease;
+}
+
+/* Corner Brackets Magnetic Scroll Concatenation */
+.console-corner-bracket {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
+}
+
+.popular-spotlight-monolith.in-focus .console-corner-bracket,
+.flagship-console-rig.in-focus .console-corner-bracket {
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 10px var(--neon-mint-glow);
+}
+
+/* 2. Scroll Laser Track & Bar */
+.scroll-laser-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.scroll-laser-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-mint), var(--electric-blue), var(--solar-amber));
+  box-shadow: 0 0 14px var(--neon-mint-glow);
+  transition: width 0.06s ease-out;
+}
+
+/* 3. Floating Teleport Beacon with Circular Progress Meter */
+.scroll-top-beacon {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 14px 22px;
-  margin-bottom: 20px;
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
-  position: relative;
-  z-index: 10;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.quantum-kinetic-dock.dock-broken {
-  border-color: rgba(245, 158, 11, 0.55);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 158, 11, 0.2);
-}
-
-.quantum-kinetic-dock.dock-concatenated {
-  border-color: var(--neon-mint);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 25px var(--neon-mint-glow);
-}
-
-.kinetic-telemetry-indicator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  user-select: none;
-}
-
-.kinetic-beacon {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--neon-mint);
-  box-shadow: 0 0 12px var(--neon-mint);
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.kinetic-beacon.broken {
-  background: var(--solar-amber);
-  box-shadow: 0 0 12px var(--solar-amber);
-  animation: beaconBlink 0.6s infinite alternate;
-}
-
-.kinetic-beacon.concatenating {
-  background: var(--electric-blue);
-  box-shadow: 0 0 16px var(--electric-blue);
-  animation: beaconPulseFast 0.3s infinite alternate;
-}
-
-@keyframes beaconBlink {
-  0% { opacity: 0.3; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1.15); }
-}
-
-@keyframes beaconPulseFast {
-  0% { opacity: 0.6; transform: scale(0.9); }
-  100% { opacity: 1; transform: scale(1.3); }
-}
-
-.kinetic-status-label, .kinetic-shard-label {
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.kinetic-status-val {
   color: var(--neon-mint);
-  font-weight: 700;
-  transition: color 0.3s ease;
-}
-
-.kinetic-status-val.broken {
-  color: var(--solar-amber);
-}
-
-.kinetic-status-val.concatenating {
-  color: var(--electric-blue);
-}
-
-.kinetic-status-divider {
-  color: var(--text-dim);
-}
-
-.kinetic-shard-val {
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.kinetic-trigger-group {
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.btn-kinetic-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-glass);
-  color: var(--text-secondary);
+  justify-content: center;
   cursor: pointer;
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.9);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
 }
 
-.btn-kinetic-trigger:hover {
+.scroll-top-beacon.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.scroll-top-beacon:hover {
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 25px var(--neon-mint-glow);
+  transform: translateY(-3px) scale(1.08);
+}
+
+.beacon-dial-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.beacon-dial-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 2.5;
+}
+
+.beacon-dial-progress {
+  fill: none;
+  stroke: var(--neon-mint);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 125.66;
+  stroke-dashoffset: 125.66;
+  transition: stroke-dashoffset 0.08s ease-out;
+}
+
+.beacon-arrow-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--neon-mint);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.25s ease;
+}
+
+.scroll-top-beacon:hover .beacon-arrow-icon {
   transform: translateY(-2px);
 }
 
-.btn-kinetic-trigger:active {
-  transform: translateY(1px);
-}
-
-.btn-kinetic-trigger.btn-break:hover {
-  border-color: var(--solar-amber);
-  color: var(--solar-amber);
-  background: rgba(245, 158, 11, 0.12);
-  box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
-}
-
-.btn-kinetic-trigger.btn-concatenate:hover {
-  border-color: var(--neon-mint);
-  color: var(--neon-mint);
-  background: rgba(0, 245, 184, 0.12);
-  box-shadow: 0 0 18px var(--neon-mint-glow);
-}
-
-.btn-kinetic-trigger.btn-cycle:hover {
-  border-color: var(--electric-blue);
-  color: var(--electric-blue);
-  background: rgba(0, 164, 239, 0.12);
-  box-shadow: 0 0 18px var(--electric-blue-glow);
-}
-
-.btn-kinetic-trigger .btn-icon {
-  font-size: 0.88rem;
-}
-
-/* Scroll Direction Telemetry Badge */
-.scroll-dir-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.03);
-  padding: 5px 12px;
-  border-radius: var(--radius-xs);
-  border: 1px solid var(--border-glass);
-  user-select: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scroll-dir-badge .cue-down {
-  color: var(--solar-amber);
-  font-weight: 600;
-}
-
-.scroll-dir-badge .cue-up {
-  color: var(--neon-mint);
-  font-weight: 600;
-}
-
-.scroll-dir-badge.dir-down {
-  border-color: var(--solar-amber);
-  color: var(--solar-amber);
-  background: rgba(245, 158, 11, 0.15);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
-  transform: translateY(1px);
-}
-
-.scroll-dir-badge.dir-up {
-  border-color: var(--neon-mint);
-  color: var(--neon-mint);
-  background: rgba(0, 245, 184, 0.15);
-  box-shadow: 0 0 16px var(--neon-mint-glow);
-  transform: translateY(-1px);
-}
-
-/* Hero Scroll Down Cue */
-.hero-scroll-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 32px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: all 0.25s ease;
-}
-
-.hero-scroll-cue:hover {
-  color: var(--neon-mint);
-  transform: translateY(2px);
-}
-
-.hero-scroll-cue-arrow {
-  color: var(--neon-mint);
-  animation: scrollCueBounce 1.6s infinite ease-in-out;
-  display: inline-block;
-  font-size: 0.95rem;
-}
-
-@keyframes scrollCueBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
-}
-
-/* 2. Quantum Break Chassis Container */
-.quantum-break-chassis {
-  perspective: 1800px;
-  transform-style: preserve-3d;
-  position: relative;
-  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-              box-shadow 0.7s ease,
-              border-color 0.5s ease,
-              background-color 0.5s ease;
-}
-
-/* Contents shatter and fade out on break, leaving empty hollow chassis crater */
-.quantum-break-chassis > * {
-  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.quantum-break-chassis.element-broken > *:not(.break-shards-layer):not(.concatenation-laser-seam):not(.concatenation-shockwave-ring):not(.console-corner-bracket) {
-  opacity: 0 !important;
-  transform: scale(0.95);
-  pointer-events: none !important;
-}
-
-/* Broken Chassis State - Hollow wireframe crater */
-.quantum-break-chassis.element-broken {
-  background: rgba(4, 7, 12, 0.35) !important;
-  border: 2px dashed rgba(245, 158, 11, 0.5) !important;
-  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.95), inset 0 0 50px rgba(245, 158, 11, 0.15) !important;
-  transform: scale(0.985);
-}
-
-/* Concatenating Magnetic Reassembly State */
-.quantum-break-chassis.element-concatenating {
-  transform: scale(1);
-  border-color: var(--electric-blue) !important;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--electric-blue-glow) !important;
-}
-
-/* Concatenated Solid State */
-.quantum-break-chassis.element-concatenated {
-  transform: scale(1);
-  border-color: var(--neon-mint) !important;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--neon-mint-glow) !important;
-  animation: monolithFusePulse 0.8s ease-out;
-}
-
-@keyframes monolithFusePulse {
-  0% { filter: brightness(1.2) drop-shadow(0 0 25px var(--neon-mint)); }
-  50% { filter: brightness(1.4) drop-shadow(0 0 45px var(--neon-mint)); }
-  100% { filter: brightness(1) drop-shadow(0 0 0 transparent); }
-}
-
-/* 3. Break Shards Holographic Layer */
-.break-shards-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
+/* 4. Scroll-Driven Reveal Animations */
+.scroll-reveal {
   opacity: 0;
-  transform-style: preserve-3d;
-  transition: opacity 0.25s ease;
-  z-index: 25;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
-.quantum-break-chassis.element-broken .break-shards-layer {
+.scroll-reveal.revealed {
   opacity: 1;
+  transform: translateY(0);
 }
 
-.quantum-break-chassis.element-concatenating .break-shards-layer {
-  opacity: 0.95;
-}
-
-/* Broken Physics Pieces */
-.quantum-shard {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(16, 24, 38, 0.92), rgba(10, 16, 26, 0.95));
-  border: 1.5px solid rgba(245, 158, 11, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: inset 0 0 25px rgba(245, 158, 11, 0.35), 0 0 20px rgba(245, 158, 11, 0.3);
-  transform-style: preserve-3d;
-  will-change: transform, box-shadow, opacity;
-  transform: translate3d(0, 0, 0) rotate(0);
-}
-
-.shard-tag {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--solar-amber);
-  background: rgba(0, 0, 0, 0.85);
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
-  border: 1px solid rgba(245, 158, 11, 0.5);
-  pointer-events: none;
-  user-select: none;
-  z-index: 2;
-}
-
-/* 12 Precision Pieces Geometric Slicing (Complete tiling of card surface) */
-.piece-01 {
-  clip-path: polygon(0 0, 26% 0, 22% 34%, 0 30%);
-  -webkit-clip-path: polygon(0 0, 26% 0, 22% 34%, 0 30%);
-}
-.piece-01 .shard-tag { top: 12px; left: 12px; }
-
-.piece-02 {
-  clip-path: polygon(26% 0, 54% 0, 48% 36%, 22% 34%);
-  -webkit-clip-path: polygon(26% 0, 54% 0, 48% 36%, 22% 34%);
-}
-.piece-02 .shard-tag { top: 12px; left: 32%; }
-
-.piece-03 {
-  clip-path: polygon(54% 0, 78% 0, 74% 33%, 48% 36%);
-  -webkit-clip-path: polygon(54% 0, 78% 0, 74% 33%, 48% 36%);
-}
-.piece-03 .shard-tag { top: 12px; left: 60%; }
-
-.piece-04 {
-  clip-path: polygon(78% 0, 100% 0, 100% 32%, 74% 33%);
-  -webkit-clip-path: polygon(78% 0, 100% 0, 100% 32%, 74% 33%);
-}
-.piece-04 .shard-tag { top: 12px; right: 12px; }
-
-.piece-05 {
-  clip-path: polygon(0 30%, 22% 34%, 26% 68%, 0 65%);
-  -webkit-clip-path: polygon(0 30%, 22% 34%, 26% 68%, 0 65%);
-}
-.piece-05 .shard-tag { top: 44%; left: 12px; }
-
-.piece-06 {
-  clip-path: polygon(22% 34%, 48% 36%, 44% 70%, 26% 68%);
-  -webkit-clip-path: polygon(22% 34%, 48% 36%, 44% 70%, 26% 68%);
-}
-.piece-06 .shard-tag { top: 44%; left: 30%; }
-
-.piece-07 {
-  clip-path: polygon(48% 36%, 74% 33%, 78% 67%, 44% 70%);
-  -webkit-clip-path: polygon(48% 36%, 74% 33%, 78% 67%, 44% 70%);
-}
-.piece-07 .shard-tag { top: 44%; left: 54%; }
-
-.piece-08 {
-  clip-path: polygon(74% 33%, 100% 32%, 100% 66%, 78% 67%);
-  -webkit-clip-path: polygon(74% 33%, 100% 32%, 100% 66%, 78% 67%);
-}
-.piece-08 .shard-tag { top: 44%; right: 12px; }
-
-.piece-09 {
-  clip-path: polygon(0 65%, 26% 68%, 24% 100%, 0 100%);
-  -webkit-clip-path: polygon(0 65%, 26% 68%, 24% 100%, 0 100%);
-}
-.piece-09 .shard-tag { bottom: 12px; left: 12px; }
-
-.piece-10 {
-  clip-path: polygon(26% 68%, 44% 70%, 48% 100%, 24% 100%);
-  -webkit-clip-path: polygon(26% 68%, 44% 70%, 48% 100%, 24% 100%);
-}
-.piece-10 .shard-tag { bottom: 12px; left: 30%; }
-
-.piece-11 {
-  clip-path: polygon(44% 70%, 78% 67%, 74% 100%, 48% 100%);
-  -webkit-clip-path: polygon(44% 70%, 78% 67%, 74% 100%, 48% 100%);
-}
-.piece-11 .shard-tag { bottom: 12px; left: 56%; }
-
-.piece-12 {
-  clip-path: polygon(78% 67%, 100% 66%, 100% 100%, 74% 100%);
-  -webkit-clip-path: polygon(78% 67%, 100% 66%, 100% 100%, 74% 100%);
-}
-.piece-12 .shard-tag { bottom: 12px; right: 12px; }
-
-/* ==========================================================================
-   PHYSICS GRAVITY: BREAK & FALL IN PIECES ANIMATIONS
-   Each piece shatters with explosive impulse, then falls down to the floor
-   ========================================================================== */
-.quantum-break-chassis.element-broken .piece-01 {
-  animation: fallPiece01 1.25s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
-}
-.quantum-break-chassis.element-broken .piece-02 {
-  animation: fallPiece02 1.3s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.03s forwards;
-}
-.quantum-break-chassis.element-broken .piece-03 {
-  animation: fallPiece03 1.28s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.02s forwards;
-}
-.quantum-break-chassis.element-broken .piece-04 {
-  animation: fallPiece04 1.35s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.04s forwards;
-}
-.quantum-break-chassis.element-broken .piece-05 {
-  animation: fallPiece05 1.22s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.01s forwards;
-}
-.quantum-break-chassis.element-broken .piece-06 {
-  animation: fallPiece06 1.26s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.02s forwards;
-}
-.quantum-break-chassis.element-broken .piece-07 {
-  animation: fallPiece07 1.24s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.03s forwards;
-}
-.quantum-break-chassis.element-broken .piece-08 {
-  animation: fallPiece08 1.32s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.05s forwards;
-}
-.quantum-break-chassis.element-broken .piece-09 {
-  animation: fallPiece09 1.18s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
-}
-.quantum-break-chassis.element-broken .piece-10 {
-  animation: fallPiece10 1.2s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.01s forwards;
-}
-.quantum-break-chassis.element-broken .piece-11 {
-  animation: fallPiece11 1.19s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.02s forwards;
-}
-.quantum-break-chassis.element-broken .piece-12 {
-  animation: fallPiece12 1.23s cubic-bezier(0.55, 0.055, 0.675, 0.19) 0.02s forwards;
-}
-
-@keyframes fallPiece01 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-35px, -30px, 40px) rotateX(25deg) rotateZ(-18deg); }
-  65%  { transform: translate3d(-140px, 450px, 80px) rotateX(160deg) rotateZ(-95deg); }
-  86%  { transform: translate3d(-190px, 780px, 20px) rotateX(220deg) rotateZ(-150deg); }
-  94%  { transform: translate3d(-200px, 745px, 15px) rotateX(240deg) rotateZ(-165deg); }
-  100% { transform: translate3d(-205px, 765px, 0px) rotateX(250deg) rotateZ(-170deg); }
-}
-
-@keyframes fallPiece02 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-15px, -38px, 35px) rotateX(20deg) rotateY(15deg); }
-  65%  { transform: translate3d(-60px, 480px, 60px) rotateX(90deg) rotateZ(60deg); }
-  86%  { transform: translate3d(-85px, 795px, 15px) rotateX(120deg) rotateZ(110deg); }
-  94%  { transform: translate3d(-90px, 765px, 10px) rotateX(128deg) rotateZ(125deg); }
-  100% { transform: translate3d(-92px, 780px, 0px) rotateX(130deg) rotateZ(128deg); }
-}
-
-@keyframes fallPiece03 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(18px, -35px, 30px) rotateX(22deg) rotateY(-18deg); }
-  65%  { transform: translate3d(25px, 470px, 50px) rotateX(-120deg) rotateZ(-70deg); }
-  86%  { transform: translate3d(30px, 775px, 15px) rotateX(-175deg) rotateZ(-115deg); }
-  94%  { transform: translate3d(32px, 748px, 10px) rotateX(-185deg) rotateZ(-122deg); }
-  100% { transform: translate3d(34px, 760px, 0px) rotateX(-190deg) rotateZ(-125deg); }
-}
-
-@keyframes fallPiece04 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(40px, -28px, 45px) rotateX(30deg) rotateZ(22deg); }
-  65%  { transform: translate3d(160px, 440px, 70px) rotateX(180deg) rotateZ(120deg); }
-  86%  { transform: translate3d(225px, 740px, 20px) rotateX(280deg) rotateZ(195deg); }
-  94%  { transform: translate3d(235px, 705px, 15px) rotateX(300deg) rotateZ(205deg); }
-  100% { transform: translate3d(240px, 725px, 0px) rotateX(310deg) rotateZ(210deg); }
-}
-
-@keyframes fallPiece05 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-38px, -15px, 30px) rotateY(-25deg) rotateZ(-12deg); }
-  65%  { transform: translate3d(-120px, 510px, 55px) rotateX(75deg) rotateZ(-80deg); }
-  86%  { transform: translate3d(-165px, 825px, 15px) rotateX(100deg) rotateZ(-105deg); }
-  94%  { transform: translate3d(-170px, 795px, 10px) rotateX(106deg) rotateZ(-108deg); }
-  100% { transform: translate3d(-172px, 810px, 0px) rotateX(110deg) rotateZ(-110deg); }
-}
-
-@keyframes fallPiece06 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-12px, -20px, 60px) rotateX(15deg) rotateY(-10deg); }
-  65%  { transform: translate3d(-35px, 530px, 85px) rotateX(60deg) rotateZ(45deg); }
-  86%  { transform: translate3d(-48px, 845px, 20px) rotateX(80deg) rotateZ(75deg); }
-  94%  { transform: translate3d(-50px, 818px, 12px) rotateX(83deg) rotateZ(80deg); }
-  100% { transform: translate3d(-52px, 830px, 0px) rotateX(85deg) rotateZ(82deg); }
-}
-
-@keyframes fallPiece07 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(14px, -18px, 55px) rotateX(18deg) rotateY(12deg); }
-  65%  { transform: translate3d(45px, 520px, 75px) rotateX(-85deg) rotateZ(-65deg); }
-  86%  { transform: translate3d(65px, 835px, 20px) rotateX(-125deg) rotateZ(-95deg); }
-  94%  { transform: translate3d(68px, 808px, 12px) rotateX(-135deg) rotateZ(-100deg); }
-  100% { transform: translate3d(70px, 820px, 0px) rotateX(-140deg) rotateZ(-102deg); }
-}
-
-@keyframes fallPiece08 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(36px, -12px, 35px) rotateY(28deg) rotateZ(16deg); }
-  65%  { transform: translate3d(135px, 500px, 60px) rotateX(140deg) rotateZ(90deg); }
-  86%  { transform: translate3d(180px, 805px, 15px) rotateX(205deg) rotateZ(145deg); }
-  94%  { transform: translate3d(186px, 775px, 10px) rotateX(215deg) rotateZ(155deg); }
-  100% { transform: translate3d(190px, 790px, 0px) rotateX(220deg) rotateZ(160deg); }
-}
-
-@keyframes fallPiece09 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-25px, -8px, 25px) rotateZ(-15deg); }
-  65%  { transform: translate3d(-95px, 560px, 45px) rotateX(110deg) rotateZ(65deg); }
-  86%  { transform: translate3d(-125px, 875px, 10px) rotateX(150deg) rotateZ(95deg); }
-  94%  { transform: translate3d(-128px, 848px, 6px) rotateX(156deg) rotateZ(100deg); }
-  100% { transform: translate3d(-130px, 860px, 0px) rotateX(160deg) rotateZ(105deg); }
-}
-
-@keyframes fallPiece10 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(-10px, -6px, 20px) rotateX(10deg); }
-  65%  { transform: translate3d(-15px, 570px, 40px) rotateX(-45deg) rotateY(50deg); }
-  86%  { transform: translate3d(-18px, 890px, 10px) rotateX(-65deg) rotateY(65deg); }
-  94%  { transform: translate3d(-19px, 865px, 5px) rotateX(-68deg) rotateY(68deg); }
-  100% { transform: translate3d(-20px, 875px, 0px) rotateX(-70deg) rotateY(70deg); }
-}
-
-@keyframes fallPiece11 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(10px, -6px, 20px) rotateX(12deg); }
-  65%  { transform: translate3d(55px, 565px, 40px) rotateX(75deg) rotateZ(-55deg); }
-  86%  { transform: translate3d(85px, 880px, 10px) rotateX(115deg) rotateZ(-75deg); }
-  94%  { transform: translate3d(88px, 855px, 5px) rotateX(122deg) rotateZ(-78deg); }
-  100% { transform: translate3d(90px, 865px, 0px) rotateX(125deg) rotateZ(-80deg); }
-}
-
-@keyframes fallPiece12 {
-  0%   { transform: translate3d(0, 0, 0) rotate(0); }
-  12%  { transform: translate3d(28px, -8px, 25px) rotateZ(15deg); }
-  65%  { transform: translate3d(115px, 550px, 45px) rotateX(-150deg) rotateZ(110deg); }
-  86%  { transform: translate3d(155px, 865px, 10px) rotateX(-225deg) rotateZ(155deg); }
-  94%  { transform: translate3d(158px, 838px, 6px) rotateX(-235deg) rotateZ(162deg); }
-  100% { transform: translate3d(160px, 850px, 0px) rotateX(-240deg) rotateZ(165deg); }
-}
-
-/* ==========================================================================
-   MAGNETIC REVERSE GRAVITY: CONCATENATION REASSEMBLY
-   Every fallen piece lifts off the floor and snaps back to original place
-   ========================================================================== */
-.quantum-break-chassis.element-concatenating .quantum-shard {
-  animation: none !important;
-  transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1) !important;
-  border-color: var(--neon-mint) !important;
-  box-shadow: inset 0 0 25px var(--neon-mint-glow), 0 0 35px var(--neon-mint-glow) !important;
-  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.4s ease,
-              box-shadow 0.4s ease !important;
-}
-
-/* 4. Concatenation Laser Seam Scanner */
-.concatenation-laser-seam {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 30;
-  background: linear-gradient(135deg, 
-    transparent 45%, 
-    rgba(0, 245, 184, 0.8) 50%, 
-    rgba(0, 164, 239, 0.9) 52%, 
-    transparent 57%
-  );
-  transform: translateY(-100%);
-  border-radius: inherit;
-}
-
-.quantum-break-chassis.element-concatenating .concatenation-laser-seam {
-  animation: laserSeamScan 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes laserSeamScan {
-  0% {
-    opacity: 0;
-    transform: translateY(-100%) scaleY(1);
-  }
-  30% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(100%) scaleY(1);
-  }
-}
-
-/* 5. Concatenation Radial Shockwave Ring */
-.concatenation-shockwave-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 140px;
-  height: 140px;
-  margin-top: -70px;
-  margin-left: -70px;
-  border-radius: 50%;
-  border: 2px solid var(--neon-mint);
-  box-shadow: 0 0 35px var(--neon-mint), inset 0 0 25px var(--neon-mint);
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.1);
-  z-index: 31;
-}
-
-.quantum-break-chassis.element-concatenating .concatenation-shockwave-ring {
-  animation: shockwaveExpand 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes shockwaveExpand {
-  0% {
-    opacity: 0;
-    transform: scale(0.1);
-  }
-  25% {
-    opacity: 1;
-    border-color: var(--neon-mint);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(3.5);
-    border-color: var(--electric-blue);
-  }
-}
-
-/* 6. Kinetic Scroll Velocity Micro-Break */
-.quantum-break-chassis.kinetic-scroll-break {
-  transition: transform 0.15s ease-out;
-}
 
 

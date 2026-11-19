@@ -92,17 +92,17 @@ async function runTests() {
     assert(index.status === 200 && index.data.includes('Netroar Studios'), '2.1 GET / serves Rockstar style index.html');
     assert(index.data.includes('POPULAR APPLICATION') && index.data.includes('Netroar TaskFlow') && index.data.includes('Cyber-Acrylic'), 
       '2.1b GET / prominently features popular app details (Netroar TaskFlow)');
-    assert(index.data.includes('quantum-kinetic-dock') && index.data.includes('break-shards-layer') && index.data.includes('btn-trigger-break'),
-      '2.1c GET / includes element break and concatenate HUD & shard layers');
-    assert(index.data.includes('hero-scroll-cue') && index.data.includes('scroll-dir-badge'),
-      '2.1d GET / includes bidirectional scroll up & scroll down cues');
+    assert(!index.data.includes('quantum-kinetic-dock') && index.data.includes('monolith-optical-glare') && index.data.includes('beacon-dial-progress'),
+      '2.1c GET / includes continuous cinematic optical glare, circular beacon progress dial, and no kinetic dock');
+    assert(index.data.includes('hero-scroll-cue') && index.data.includes('hero-scroll-cue-arrow'),
+      '2.1d GET / includes cinematic hero scroll navigation cues');
 
     const appStudios = await request('GET', '/apps');
     assert(appStudios.status === 200 && appStudios.data.includes('APP STUDIOS SPOTLIGHT'), '2.2 GET /apps serves App Studios showcase');
     assert(appStudios.data.includes('STUDIO APPS') && appStudios.data.includes('flagship-console-rig') && appStudios.data.includes('app-minimal-card'),
       '2.2b GET /apps includes minimal icon+name apps section and flagship console rig');
-    assert(appStudios.data.includes('quantum-break-chassis') && appStudios.data.includes('btn-trigger-break'),
-      '2.2c GET /apps includes flagship console break & concatenate controls');
+    assert(!appStudios.data.includes('quantum-kinetic-dock') && appStudios.data.includes('console-optical-glare'),
+      '2.2c GET /apps includes flagship console continuous optical glare and clean layout without kinetic dock');
 
     const admin = await request('GET', '/admin');
     assert(admin.status === 200 && admin.data.includes('Admin Control Panel'), '2.3 GET /admin serves admin.html');
@@ -115,16 +115,16 @@ async function runTests() {
       '2.4b GET /style.css includes full Admin Panel cyber-acrylic suite styles');
     assert(css.data.includes('.scroll-laser-track') && css.data.includes('.scroll-top-beacon') && css.data.includes('.scroll-reveal'),
       '2.4c GET /style.css includes scroll laser progress, scroll-to-top beacon & reveal styles');
-    assert(css.data.includes('.quantum-kinetic-dock') && css.data.includes('.quantum-shard') && css.data.includes('.concatenation-laser-seam'),
-      '2.4d GET /style.css includes element break and concatenate kinetic styles');
+    assert(css.data.includes('.monolith-optical-glare') && css.data.includes('.beacon-dial-svg') && css.data.includes('.beacon-dial-progress'),
+      '2.4d GET /style.css includes continuous optical glare sweep and circular dial beacon telemetry styles');
 
     const js = await request('GET', '/quantum-engine.js');
     assert(js.status === 200 && js.data.includes('initScrollEngine') && js.data.includes('wheelDebounce'),
       '2.5 GET /quantum-engine.js includes scroll progress, scrollspy, and mouse wheel navigation');
-    assert(js.data.includes('initBreakConcatenateEngine') && js.data.includes('playBreakSound') && js.data.includes('netroarConcatenate'),
-      '2.5b GET /quantum-engine.js includes element break and concatenate event engine & synthesizers');
-    assert(js.data.includes('scrollSensitivity') && js.data.includes('delta > scrollSensitivity') && js.data.includes('delta < -scrollSensitivity'),
-      '2.5c GET /quantum-engine.js includes scroll down (break) & scroll up (concatenate) physics controller');
+    assert(js.data.includes('initSpatialScrollEffects') && js.data.includes('beaconProgressCircle'),
+      '2.5b GET /quantum-engine.js includes continuous cinematic 3D spatial scroll effects and circular dial beacon');
+    assert(js.data.includes('scrollVelocity') && js.data.includes('scrollVelocity *= 0.94'),
+      '2.5c GET /quantum-engine.js includes scroll velocity momentum and particle warp drive trails');
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');

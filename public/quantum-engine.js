@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTelemetryClock();
   syncActiveNav();
   initScrollEngine();
-  initBreakConcatenateEngine();
+  initSpatialScrollEffects();
   initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
@@ -269,11 +269,20 @@ function initQuantumCanvas() {
       if (p.y < 0) p.y = height;
       if (p.y > height) p.y = 0;
 
-      // Draw particle
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 245, 184, ${p.baseAlpha})`;
-      ctx.fill();
+      // Draw particle with hyperdrive streak on fast scroll
+      if (Math.abs(scrollVelocity) > 0.35) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x, p.y - scrollVelocity * 4.2);
+        ctx.strokeStyle = `rgba(0, 245, 184, ${p.baseAlpha * 0.9})`;
+        ctx.lineWidth = p.radius * 0.95;
+        ctx.stroke();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 245, 184, ${p.baseAlpha})`;
+        ctx.fill();
+      }
 
       // Connect nearby particles with subtle energy lines
       for (let j = i + 1; j < particles.length; j++) {
@@ -877,12 +886,19 @@ function initScrollEngine() {
           }
         }
 
-        // Floating Scroll-To-Top Beacon
+        // Floating Scroll-To-Top Beacon with Circular Progress Ring
         if (scrollTopBtn) {
-          if (scrollTop > 350) {
+          if (scrollTop > 320) {
             scrollTopBtn.classList.add('visible');
           } else {
             scrollTopBtn.classList.remove('visible');
+          }
+
+          const beaconProgressCircle = document.getElementById('beacon-dial-progress');
+          if (beaconProgressCircle) {
+            const circumference = 125.66; // 2 * PI * 20
+            const offset = circumference - (Math.min(100, Math.max(0, progress)) / 100) * circumference;
+            beaconProgressCircle.style.strokeDashoffset = offset.toFixed(2);
           }
         }
 
@@ -962,228 +978,81 @@ function initScrollEngine() {
 }
 
 // ==========================================================================
-// 10. QUANTUM ELEMENT BREAK & CONCATENATE ENGINE
+// 10. CINEMATIC SPATIAL SCROLL ENGINE
 // Features:
-// - Dynamic 3D Polygonal Sharding & Fracture Mechanics (Element Break)
-// - Magnetic Quantum Velocity Reassembly & Seam Fusion (Concatenate Event)
-// - Custom DOM Events: 'netroar:elementBreak', 'netroar:elementConcatenate', 'netroar:elementCycle'
-// - Velocity Scroll Integration & Interactive Cyber HUD Controls
-// - Full Web Audio Haptic Feedback (playBreakSound, playConcatenateSound)
+// - Continuous 3D Perspective Parallax & Dynamic Horizon Tilt on Scroll
+// - Anamorphic Optical Glare Sweep across Cyber Acrylic Glass
+// - Center Viewport Magnetic Lock & Focus Illumination (Concinnity)
+// - Living Quantum Particle Hyperspace Streak Inertia on Scroll Velocity
+// - Dynamic Circular Progress Meter on Teleport Beacon
+// - Butter-Smooth 60-144 FPS Hardware Accelerated Motion
 // ==========================================================================
-function initBreakConcatenateEngine() {
-  const dock = document.getElementById('quantum-kinetic-dock');
-  const beacon = document.getElementById('kinetic-beacon-dot');
-  const cohesionVal = document.getElementById('kinetic-cohesion-status');
-  const shardVal = document.getElementById('kinetic-shard-count');
-  const btnBreak = document.getElementById('btn-trigger-break');
-  const btnConcatenate = document.getElementById('btn-trigger-concatenate');
-  const btnCycle = document.getElementById('btn-trigger-cycle');
-  const heroTitle = document.getElementById('hero-quantum-title');
+function initSpatialScrollEffects() {
+  const monolith = document.getElementById('popular-spotlight-monolith');
+  const consoleRig = document.getElementById('flagship-console-rig');
+  const glare = document.getElementById('monolith-optical-glare') || document.getElementById('console-optical-glare');
+  const quadCards = document.querySelectorAll('.popular-quad-card');
 
-  function getActiveChassis(selector) {
-    if (selector && typeof selector === 'string') {
-      return document.querySelector(selector);
-    }
-    return document.getElementById('popular-spotlight-monolith') ||
-           document.getElementById('flagship-console-rig') ||
-           document.querySelector('.quantum-break-chassis');
-  }
+  let ticking = false;
 
-  // 1. Element Break Function
-  function triggerBreak(targetSelector) {
-    const chassis = getActiveChassis(targetSelector);
-    if (!chassis) return;
+  function updateSpatialScroll() {
+    const target = monolith || consoleRig;
+    const windowH = window.innerHeight;
 
-    chassis.classList.remove('element-concatenating', 'element-concatenated');
-    chassis.classList.add('element-broken');
+    if (target) {
+      const rect = target.getBoundingClientRect();
+      const centerY = rect.top + rect.height / 2;
+      const progress = (centerY - windowH / 2) / (windowH / 2); // -1 (top) to 0 (center) to +1 (bottom)
 
-    if (dock) {
-      dock.classList.remove('dock-concatenated');
-      dock.classList.add('dock-broken');
-    }
-    if (beacon) {
-      beacon.className = 'kinetic-beacon broken';
-    }
-    if (cohesionVal) {
-      cohesionVal.textContent = 'SHATTERED (0% COHESION)';
-      cohesionVal.className = 'kinetic-status-val broken';
-    }
-    if (shardVal) {
-      shardVal.textContent = '12 PIECES (FALLEN TO FLOOR)';
-    }
+      // Only calculate if target is in active viewing area
+      if (rect.bottom > -100 && rect.top < windowH + 100) {
+        // 1. Smooth 3D Perspective Horizon Tilt
+        const clampedProg = Math.max(-1.2, Math.min(1.2, progress));
+        const rotX = -clampedProg * 6.5; // Smooth tilt based on scroll horizon
+        const rotY = clampedProg * 1.8;
+        const scale = 1 - Math.abs(clampedProg) * 0.025;
 
-    playBreakSound();
+        target.style.transform = `perspective(1600px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
 
-    // Dispatch Standard Custom Events
-    const breakEvent = new CustomEvent('netroar:elementBreak', {
-      bubbles: true,
-      detail: { target: chassis, shards: 12, state: 'broken', timestamp: Date.now() }
-    });
-    document.dispatchEvent(breakEvent);
-    document.dispatchEvent(new CustomEvent('element:break', { bubbles: true, detail: breakEvent.detail }));
-
-    showToast('⚡ [QUANTUM KINETIC] Element Shattered: 12 Pieces Fallen to Ground Plane');
-  }
-
-  // 2. Element Concatenate / Concinnate Function
-  function triggerConcatenate(targetSelector) {
-    const chassis = getActiveChassis(targetSelector);
-    if (!chassis) return;
-
-    chassis.classList.remove('element-broken');
-    chassis.classList.add('element-concatenating');
-
-    if (dock) {
-      dock.classList.remove('dock-broken');
-    }
-    if (beacon) {
-      beacon.className = 'kinetic-beacon concatenating';
-    }
-    if (cohesionVal) {
-      cohesionVal.textContent = 'CONCATENATING... [REVERSE GRAVITY]';
-      cohesionVal.className = 'kinetic-status-val concatenating';
-    }
-    if (shardVal) {
-      shardVal.textContent = 'REASSEMBLING PIECES FROM FLOOR...';
-    }
-
-    playConcatenateSound();
-
-    // Dispatch Standard Custom Events
-    const concatEvent = new CustomEvent('netroar:elementConcatenate', {
-      bubbles: true,
-      detail: { target: chassis, state: 'concatenating', timestamp: Date.now() }
-    });
-    document.dispatchEvent(concatEvent);
-    document.dispatchEvent(new CustomEvent('element:concatenate', { bubbles: true, detail: concatEvent.detail }));
-
-    setTimeout(() => {
-      chassis.classList.remove('element-concatenating');
-      chassis.classList.add('element-concatenated');
-
-      if (dock) {
-        dock.classList.add('dock-concatenated');
-      }
-      if (beacon) {
-        beacon.className = 'kinetic-beacon';
-      }
-      if (cohesionVal) {
-        cohesionVal.textContent = '100% MONOLITH';
-        cohesionVal.className = 'kinetic-status-val';
-      }
-      if (shardVal) {
-        shardVal.textContent = '0 (SOLID COHESION)';
-      }
-
-      showToast('🔗 [QUANTUM KINETIC] Concatenate Complete: Monolithic Cohesion Restored (100%)');
-
-      setTimeout(() => {
-        chassis.classList.remove('element-concatenated');
-        if (dock) dock.classList.remove('dock-concatenated');
-      }, 900);
-    }, 850);
-  }
-
-  // 3. Auto-Cycle Break and Concatenate
-  let isCycling = false;
-  function triggerCycle(targetSelector) {
-    if (isCycling) return;
-    isCycling = true;
-    showToast('↺ [QUANTUM KINETIC] Initiating Break & Concatenate Kinetic Cycle...');
-
-    triggerBreak(targetSelector);
-
-    setTimeout(() => {
-      triggerConcatenate(targetSelector);
-      setTimeout(() => { isCycling = false; }, 1000);
-    }, 2200);
-  }
-
-  // Bind Buttons
-  if (btnBreak) btnBreak.addEventListener('click', () => triggerBreak());
-  if (btnConcatenate) btnConcatenate.addEventListener('click', () => triggerConcatenate());
-  if (btnCycle) btnCycle.addEventListener('click', () => triggerCycle());
-
-  // Listen to Global Custom Events
-  document.addEventListener('netroar:break', (e) => triggerBreak(e.detail?.target));
-  document.addEventListener('netroar:concatenate', (e) => triggerConcatenate(e.detail?.target));
-  document.addEventListener('netroar:concinnate', (e) => triggerConcatenate(e.detail?.target));
-  document.addEventListener('netroar:cycle', (e) => triggerCycle(e.detail?.target));
-
-  // Expose API to Window
-  window.netroarBreak = triggerBreak;
-  window.netroarConcatenate = triggerConcatenate;
-  window.netroarConcinnate = triggerConcatenate;
-  window.netroarCycle = triggerCycle;
-
-  // ========================================================================
-  // SCROLL DOWN & SCROLL UP EVENT CONTROLLER
-  // Scroll Down -> Break and Fall in Pieces
-  // Scroll Up   -> Concatenate and Reassemble in Place
-  // ========================================================================
-  let lastScrollY = window.scrollY || document.documentElement.scrollTop;
-  const scrollSensitivity = 18; // px delta required to trigger
-  let scrollTicking = false;
-  let scrollResetTimer = null;
-
-  window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      window.requestAnimationFrame(() => {
-        const currentScrollY = window.scrollY || document.documentElement.scrollTop;
-        const delta = currentScrollY - lastScrollY;
-        const chassis = getActiveChassis();
-
-        if (chassis) {
-          const rect = chassis.getBoundingClientRect();
-          // Active interaction zone: card is in view
-          const inActiveZone = rect.top < window.innerHeight * 0.85 && rect.bottom > 120;
-
-          if (inActiveZone) {
-            const scrollDirBadge = document.getElementById('scroll-dir-badge');
-
-            // 1. SCROLL DOWN -> BREAK AND FALL IN PIECES
-            if (delta > scrollSensitivity) {
-              if (scrollDirBadge) {
-                scrollDirBadge.classList.add('dir-down');
-                scrollDirBadge.classList.remove('dir-up');
-              }
-              if (!chassis.classList.contains('element-broken') && !chassis.classList.contains('element-concatenating')) {
-                triggerBreak(chassis);
-              }
-            } 
-            // 2. SCROLL UP -> CONCATENATE AND REASSEMBLE
-            else if (delta < -scrollSensitivity) {
-              if (scrollDirBadge) {
-                scrollDirBadge.classList.add('dir-up');
-                scrollDirBadge.classList.remove('dir-down');
-              }
-              if (chassis.classList.contains('element-broken') && !chassis.classList.contains('element-concatenating')) {
-                triggerConcatenate(chassis);
-              }
-            }
-
-            clearTimeout(scrollResetTimer);
-            scrollResetTimer = setTimeout(() => {
-              if (scrollDirBadge) {
-                scrollDirBadge.classList.remove('dir-down', 'dir-up');
-              }
-            }, 600);
-          }
+        // 2. Anamorphic Optical Glare Sweep
+        if (glare) {
+          const glareY = (-clampedProg * 45).toFixed(1);
+          const glareOpacity = Math.max(0.12, 0.65 - Math.abs(clampedProg) * 0.45);
+          glare.style.transform = `rotate(-22deg) translateY(${glareY}%)`;
+          glare.style.opacity = glareOpacity.toFixed(2);
         }
 
-        lastScrollY = currentScrollY;
-        scrollTicking = false;
-      });
-      scrollTicking = true;
+        // 3. Center Focus Magnetic Lock
+        if (Math.abs(progress) < 0.28) {
+          target.classList.add('in-focus');
+        } else {
+          target.classList.remove('in-focus');
+        }
+
+        // 4. Staggered Quad Cards Parallax Depth
+        quadCards.forEach((card, idx) => {
+          const depth = ((idx % 2 === 0 ? 1 : -1) * clampedProg * 8).toFixed(1);
+          card.style.transform = `translateY(${depth}px)`;
+        });
+      }
+    }
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateSpatialScroll);
+      ticking = true;
     }
   }, { passive: true });
 
-  // Optional Hero Title Click to trigger Break & Concatenate
-  if (heroTitle) {
-    heroTitle.style.cursor = 'pointer';
-    heroTitle.title = 'Click to trigger Quantum Break & Concatenate on Monolith';
-    heroTitle.addEventListener('click', () => {
-      triggerCycle();
-    });
-  }
+  // Initial calculation
+  updateSpatialScroll();
+
+  // Expose API helpers for backward compatibility
+  window.netroarBreak = () => showToast('⚡ [SPATIAL SCROLL] Active 3D Horizon Tilt in Effect');
+  window.netroarConcatenate = () => showToast('🔗 [SPATIAL SCROLL] Center Monolithic Focus Locked');
+  window.netroarConcinnate = window.netroarConcatenate;
+  window.netroarCycle = () => showToast('↺ [SPATIAL SCROLL] Continuous Parallax Scrub Active');
 }

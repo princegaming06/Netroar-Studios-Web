@@ -785,15 +785,7 @@ body {
   line-height: 1.55;
 }
 
-.popular-actions-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  margin-top: 36px;
-  padding-top: 28px;
-  border-top: 1px solid var(--border-ultra-subtle);
-}
+
 
 /* ==========================================================================
    MINIMALIST APPS SECTION (ICON + NAME ONLY)

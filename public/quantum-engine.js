@@ -1116,30 +1116,66 @@ function initBreakConcatenateEngine() {
   window.netroarConcinnate = triggerConcatenate;
   window.netroarCycle = triggerCycle;
 
-  // Kinetic Scroll Velocity Integration
-  let scrollBreakActive = false;
-  let scrollBreakTimeout = null;
+  // ========================================================================
+  // SCROLL DOWN & SCROLL UP EVENT CONTROLLER
+  // Scroll Down -> Break and Fall in Pieces
+  // Scroll Up   -> Concatenate and Reassemble in Place
+  // ========================================================================
+  let lastScrollY = window.scrollY || document.documentElement.scrollTop;
+  const scrollSensitivity = 18; // px delta required to trigger
+  let scrollTicking = false;
+  let scrollResetTimer = null;
 
   window.addEventListener('scroll', () => {
-    const chassis = getActiveChassis();
-    if (!chassis) return;
+    if (!scrollTicking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+        const delta = currentScrollY - lastScrollY;
+        const chassis = getActiveChassis();
 
-    const rect = chassis.getBoundingClientRect();
-    const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
-    if (!inViewport) return;
+        if (chassis) {
+          const rect = chassis.getBoundingClientRect();
+          // Active interaction zone: card is in view
+          const inActiveZone = rect.top < window.innerHeight * 0.85 && rect.bottom > 120;
 
-    if (!scrollBreakActive && !chassis.classList.contains('element-broken')) {
-      scrollBreakActive = true;
-      chassis.classList.add('kinetic-scroll-break');
+          if (inActiveZone) {
+            const scrollDirBadge = document.getElementById('scroll-dir-badge');
+
+            // 1. SCROLL DOWN -> BREAK AND FALL IN PIECES
+            if (delta > scrollSensitivity) {
+              if (scrollDirBadge) {
+                scrollDirBadge.classList.add('dir-down');
+                scrollDirBadge.classList.remove('dir-up');
+              }
+              if (!chassis.classList.contains('element-broken') && !chassis.classList.contains('element-concatenating')) {
+                triggerBreak(chassis);
+              }
+            } 
+            // 2. SCROLL UP -> CONCATENATE AND REASSEMBLE
+            else if (delta < -scrollSensitivity) {
+              if (scrollDirBadge) {
+                scrollDirBadge.classList.add('dir-up');
+                scrollDirBadge.classList.remove('dir-down');
+              }
+              if (chassis.classList.contains('element-broken') && !chassis.classList.contains('element-concatenating')) {
+                triggerConcatenate(chassis);
+              }
+            }
+
+            clearTimeout(scrollResetTimer);
+            scrollResetTimer = setTimeout(() => {
+              if (scrollDirBadge) {
+                scrollDirBadge.classList.remove('dir-down', 'dir-up');
+              }
+            }, 600);
+          }
+        }
+
+        lastScrollY = currentScrollY;
+        scrollTicking = false;
+      });
+      scrollTicking = true;
     }
-
-    clearTimeout(scrollBreakTimeout);
-    scrollBreakTimeout = setTimeout(() => {
-      if (scrollBreakActive) {
-        scrollBreakActive = false;
-        chassis.classList.remove('kinetic-scroll-break');
-      }
-    }, 160);
   }, { passive: true });
 
   // Optional Hero Title Click to trigger Break & Concatenate

@@ -94,6 +94,8 @@ async function runTests() {
       '2.1b GET / prominently features popular app details (Netroar TaskFlow)');
     assert(index.data.includes('quantum-kinetic-dock') && index.data.includes('break-shards-layer') && index.data.includes('btn-trigger-break'),
       '2.1c GET / includes element break and concatenate HUD & shard layers');
+    assert(index.data.includes('hero-scroll-cue') && index.data.includes('scroll-dir-badge'),
+      '2.1d GET / includes bidirectional scroll up & scroll down cues');
 
     const appStudios = await request('GET', '/apps');
     assert(appStudios.status === 200 && appStudios.data.includes('APP STUDIOS SPOTLIGHT'), '2.2 GET /apps serves App Studios showcase');
@@ -121,6 +123,8 @@ async function runTests() {
       '2.5 GET /quantum-engine.js includes scroll progress, scrollspy, and mouse wheel navigation');
     assert(js.data.includes('initBreakConcatenateEngine') && js.data.includes('playBreakSound') && js.data.includes('netroarConcatenate'),
       '2.5b GET /quantum-engine.js includes element break and concatenate event engine & synthesizers');
+    assert(js.data.includes('scrollSensitivity') && js.data.includes('delta > scrollSensitivity') && js.data.includes('delta < -scrollSensitivity'),
+      '2.5c GET /quantum-engine.js includes scroll down (break) & scroll up (concatenate) physics controller');
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');

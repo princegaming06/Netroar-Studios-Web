@@ -2057,6 +2057,81 @@ select.form-control option {
   font-size: 0.88rem;
 }
 
+/* Scroll Direction Telemetry Badge */
+.scroll-dir-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 5px 12px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-glass);
+  user-select: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-dir-badge .cue-down {
+  color: var(--solar-amber);
+  font-weight: 600;
+}
+
+.scroll-dir-badge .cue-up {
+  color: var(--neon-mint);
+  font-weight: 600;
+}
+
+.scroll-dir-badge.dir-down {
+  border-color: var(--solar-amber);
+  color: var(--solar-amber);
+  background: rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+  transform: translateY(1px);
+}
+
+.scroll-dir-badge.dir-up {
+  border-color: var(--neon-mint);
+  color: var(--neon-mint);
+  background: rgba(0, 245, 184, 0.15);
+  box-shadow: 0 0 16px var(--neon-mint-glow);
+  transform: translateY(-1px);
+}
+
+/* Hero Scroll Down Cue */
+.hero-scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.hero-scroll-cue:hover {
+  color: var(--neon-mint);
+  transform: translateY(2px);
+}
+
+.hero-scroll-cue-arrow {
+  color: var(--neon-mint);
+  animation: scrollCueBounce 1.6s infinite ease-in-out;
+  display: inline-block;
+  font-size: 0.95rem;
+}
+
+@keyframes scrollCueBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
 /* 2. Quantum Break Chassis Container */
 .quantum-break-chassis {
   perspective: 1800px;

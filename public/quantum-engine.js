@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioSystem();
   initTelemetryClock();
   syncActiveNav();
+  initBottomAuthDock();
   initScrollEngine();
   initSpatialScrollEffects();
   initAppsPageRouting();
@@ -79,6 +80,110 @@ function syncActiveNav() {
 
 window.addEventListener('hashchange', syncActiveNav);
 window.addEventListener('popstate', syncActiveNav);
+
+// ==========================================================================
+// FLOATING BOTTOM-LEFT AUTH & USER PROFILE CONTROLLER
+// Real-time synchronization of Google Avatar image or Name initial
+// ==========================================================================
+function syncBottomAuthDock(user) {
+  const dock = document.getElementById('bottom-auth-dock');
+  const avatarSlot = document.getElementById('auth-dock-avatar-slot');
+  const label = document.getElementById('auth-dock-label');
+  if (!dock || !avatarSlot) return;
+
+  if (user && (user.displayName || user.email || user.photoURL)) {
+    dock.classList.add('logged-in');
+    const name = user.displayName || (user.email ? user.email.split('@')[0] : 'Account');
+    const initial = name.charAt(0).toUpperCase() || 'U';
+
+    if (user.photoURL) {
+      avatarSlot.innerHTML = `<img src="${user.photoURL}" class="auth-dock-circle-img" alt="${name}" referrerpolicy="no-referrer">`;
+    } else {
+      avatarSlot.innerHTML = `<div class="auth-dock-letter-circle">${initial}</div>`;
+    }
+
+    if (label) {
+      const firstName = name.split(' ')[0];
+      label.textContent = firstName.toUpperCase();
+    }
+    dock.title = `Signed in as ${name} (${user.email || ''})`;
+  } else {
+    dock.classList.remove('logged-in');
+    avatarSlot.innerHTML = `
+      <svg class="login-user-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+        <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
+        <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
+      </svg>
+    `;
+    if (label) {
+      label.textContent = 'LOGIN';
+    }
+    dock.title = 'Netroar Account / Login';
+  }
+}
+window.syncBottomAuthDock = syncBottomAuthDock;
+
+function initBottomAuthDock() {
+  try {
+    const raw = localStorage.getItem('netroar_auth_user');
+    if (raw) {
+      const user = JSON.parse(raw);
+      syncBottomAuthDock(user);
+    } else {
+      syncBottomAuthDock(null);
+    }
+  } catch (e) {
+    syncBottomAuthDock(null);
+  }
+
+  // Cross-tab sync
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'netroar_auth_user') {
+      try {
+        const user = e.newValue ? JSON.parse(e.newValue) : null;
+        syncBottomAuthDock(user);
+      } catch (err) {
+        syncBottomAuthDock(null);
+      }
+    }
+  });
+
+  // Background Firebase auth listener if connected
+  if (typeof window !== 'undefined' && window.location.protocol !== 'file:') {
+    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js').then(({ initializeApp, getApps }) => {
+      import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js').then(({ getAuth, onAuthStateChanged }) => {
+        const firebaseConfig = {
+          apiKey: "AIzaSyD4l_2GeTiD0DsZOAI0EOjjmwglX93GzZA",
+          authDomain: "netroar-to-do-web.firebaseapp.com",
+          projectId: "netroar-to-do-web",
+          storageBucket: "netroar-to-do-web.firebasestorage.app",
+          messagingSenderId: "92413755790",
+          appId: "1:92413755790:web:c50f156fc1bd1ad27d24df"
+        };
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
+        const auth = getAuth(app);
+        onAuthStateChanged(auth, (fbUser) => {
+          if (fbUser) {
+            const payload = {
+              displayName: fbUser.displayName || (fbUser.email ? fbUser.email.split('@')[0] : 'User'),
+              email: fbUser.email || '',
+              photoURL: fbUser.photoURL || '',
+              uid: fbUser.uid
+            };
+            localStorage.setItem('netroar_auth_user', JSON.stringify(payload));
+            syncBottomAuthDock(payload);
+          } else {
+            const adminToken = sessionStorage.getItem('netroar_admin_token') || localStorage.getItem('netroar_admin_token');
+            if (!adminToken) {
+              localStorage.removeItem('netroar_auth_user');
+              syncBottomAuthDock(null);
+            }
+          }
+        });
+      }).catch(() => {});
+    }).catch(() => {});
+  }
+}
 
 // ==========================================================================
 // 0. APPS PAGE DUAL-VIEW ROUTER & CONTROLLER

@@ -86,7 +86,7 @@
         </ul>
       </nav>
 
-      <!-- Utility Cluster: Dedicated Apps Page + Login Page -->
+      <!-- Utility Cluster: Dedicated Apps Page -->
       <div class="header-utility-cluster">
         <a href="/apps" class="apps-nav-pill" title="Explore Netroar Apps Showcase">
           <svg class="apps-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor">
@@ -97,14 +97,6 @@
           </svg>
           <span>APPS</span>
           <span class="page-arrow">↗</span>
-        </a>
-
-        <a href="/login" class="admin-suite-pill" title="Studio Admin Login">
-          <svg class="login-user-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor">
-            <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
-            <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
-          </svg>
-          <span>LOGIN</span>
         </a>
       </div>
     </div>
@@ -499,6 +491,17 @@
     <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">&times;</button>
     <img src="" alt="Screenshot HD View" class="lightbox-img" id="lightbox-img">
   </div>
+
+  <!-- Floating Bottom-Left Auth / User Profile Beacon -->
+  <a href="/login" class="bottom-auth-dock admin-suite-pill" id="bottom-auth-dock" aria-label="Account Portal" title="Netroar Account / Login">
+    <div class="auth-dock-avatar-slot" id="auth-dock-avatar-slot">
+      <svg class="login-user-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+        <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
+        <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <span class="auth-dock-label" id="auth-dock-label">LOGIN</span>
+  </a>
 
   <!-- Floating Scroll-To-Top Beacon with Circular Progress Ring -->
   <button class="scroll-top-beacon" id="scroll-top-beacon" aria-label="Scroll back to top" title="Scroll back to top">

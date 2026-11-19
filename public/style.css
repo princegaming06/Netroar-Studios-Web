@@ -2244,6 +2244,123 @@ select.form-control option {
 
 
 
+/* 2.5 Floating Bottom-Left Auth & User Profile Dock */
+.bottom-auth-dock {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 950;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px 6px 6px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  outline: none;
+}
+
+.bottom-auth-dock:hover {
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 25px var(--neon-mint-glow), 0 12px 40px rgba(0, 0, 0, 0.85);
+  transform: translateY(-3px) scale(1.03);
+  color: var(--neon-mint);
+}
+
+.auth-dock-avatar-slot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bottom-auth-dock:hover .auth-dock-avatar-slot {
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 12px var(--neon-mint-glow);
+}
+
+.auth-dock-avatar-slot svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--neon-mint);
+}
+
+/* User Logged In: Circle image of Google account */
+.auth-dock-circle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* User Logged In without Image: Circle with First Letter of Name */
+.auth-dock-letter-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 245, 184, 0.35), rgba(0, 164, 239, 0.35));
+  border: 1px solid var(--neon-mint);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+/* Active logged in styling */
+.bottom-auth-dock.logged-in {
+  border-color: rgba(0, 245, 184, 0.35);
+}
+
+.bottom-auth-dock.logged-in .auth-dock-avatar-slot {
+  border-color: var(--neon-mint);
+  box-shadow: 0 0 14px var(--neon-mint-glow);
+}
+
+.auth-dock-label {
+  white-space: nowrap;
+  letter-spacing: 0.08em;
+  transition: color 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .bottom-auth-dock {
+    bottom: 20px;
+    left: 20px;
+    height: 44px;
+    padding: 4px 14px 4px 5px;
+    font-size: 0.75rem;
+  }
+  .auth-dock-avatar-slot {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 /* 3. Floating Teleport Beacon with Circular Progress Meter */
 .scroll-top-beacon {
   position: fixed;

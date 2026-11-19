@@ -296,6 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sessionBadgeCard) {
       sessionBadgeCard.classList.add('visible');
     }
+
+    // Synchronize global bottom-left auth dock
+    try {
+      const authPayload = {
+        displayName: name,
+        email: email,
+        photoURL: avatar || '',
+        isAdmin: isAdmin,
+        uid: user.uid || ''
+      };
+      localStorage.setItem('netroar_auth_user', JSON.stringify(authPayload));
+      if (typeof window.syncBottomAuthDock === 'function') {
+        window.syncBottomAuthDock(authPayload);
+      }
+    } catch (e) {}
   }
 
   // 6. Real-time Firebase Auth State Listener
@@ -500,6 +515,10 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSessionLogout?.addEventListener('click', async () => {
     sessionStorage.removeItem('netroar_admin_token');
     localStorage.removeItem('netroar_admin_token');
+    localStorage.removeItem('netroar_auth_user');
+    if (typeof window.syncBottomAuthDock === 'function') {
+      window.syncBottomAuthDock(null);
+    }
 
     if (firebaseReady && auth) {
       try {

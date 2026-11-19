@@ -70,13 +70,6 @@
           <span>APPS</span>
           <span class="page-arrow">↗</span>
         </a>
-        <a href="/login" class="admin-suite-pill active" title="Studio Admin Login">
-          <svg class="login-user-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor">
-            <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
-            <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
-          </svg>
-          <span id="header-auth-label">LOGIN</span>
-        </a>
         <button id="btn-logout" class="btn-card-outline" style="display: none; height: 38px; padding: 0 16px; border-radius: var(--radius-full); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
           LOG OUT
         </button>
@@ -434,6 +427,17 @@
 
   <!-- Toast Notification -->
   <div class="toast" id="toast-notify">Action completed successfully</div>
+
+  <!-- Floating Bottom-Left Auth / User Profile Beacon -->
+  <a href="/login" class="bottom-auth-dock admin-suite-pill active" id="bottom-auth-dock" aria-label="Account Portal" title="Netroar Account / Login">
+    <div class="auth-dock-avatar-slot" id="auth-dock-avatar-slot">
+      <svg class="login-user-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+        <circle cx="8" cy="5" r="3" stroke-width="1.5"/>
+        <path d="M2.5 14c0-2.8 2.5-5 5.5-5s5.5 2.2 5.5 5" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <span class="auth-dock-label" id="auth-dock-label">ADMIN</span>
+  </a>
 
   <!-- Floating Scroll-To-Top Beacon -->
   <button class="scroll-top-beacon" id="scroll-top-beacon" aria-label="Scroll back to top" title="Scroll back to top">

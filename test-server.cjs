@@ -107,6 +107,12 @@ async function runTests() {
     assert(css.status === 200 && css.data.includes('--accent-rockstar'), '2.4 GET /style.css serves Rockstar palette');
     assert(css.data.includes('.admin-login-screen') && css.data.includes('.login-hud-card') && css.data.includes('.admin-tab-btn.active'),
       '2.4b GET /style.css includes full Admin Panel cyber-acrylic suite styles');
+    assert(css.data.includes('.scroll-laser-track') && css.data.includes('.scroll-top-beacon') && css.data.includes('.scroll-reveal'),
+      '2.4c GET /style.css includes scroll laser progress, scroll-to-top beacon & reveal styles');
+
+    const js = await request('GET', '/quantum-engine.js');
+    assert(js.status === 200 && js.data.includes('initScrollEngine') && js.data.includes('wheelDebounce'),
+      '2.5 GET /quantum-engine.js includes scroll progress, scrollspy, and mouse wheel navigation');
 
     // Test 3: Public Apps API
     const appsRes = await request('GET', '/api/apps');

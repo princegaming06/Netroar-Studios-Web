@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAudioSystem();
   initTelemetryClock();
   syncActiveNav();
+  initScrollEngine();
   initAppsPageRouting();
   initMinimalAppsGrid();
   initFlagshipConsole();
@@ -213,6 +214,15 @@ function initQuantumCanvas() {
     isMouseOver = false;
   });
 
+  // Track scroll velocity for kinetic particle drift
+  let lastScrollY = window.scrollY;
+  let scrollVelocity = 0;
+  window.addEventListener('scroll', () => {
+    const currentY = window.scrollY;
+    scrollVelocity = (currentY - lastScrollY) * 0.04;
+    lastScrollY = currentY;
+  }, { passive: true });
+
   // Generate particle nodes
   const particleCount = Math.min(Math.floor((width * height) / 18000), 70);
   const particles = [];
@@ -250,7 +260,7 @@ function initQuantumCanvas() {
       p.vy *= 0.985;
 
       p.x += p.vx;
-      p.y += p.vy;
+      p.y += p.vy - (scrollVelocity * 0.35);
 
       // Wrap edges
       if (p.x < 0) p.x = width;
@@ -279,6 +289,7 @@ function initQuantumCanvas() {
       }
     }
 
+    scrollVelocity *= 0.94;
     requestAnimationFrame(renderFrame);
   }
 
@@ -493,6 +504,24 @@ async function initFlagshipConsole() {
       const current = screenshotData[currentScreenshotIndex];
       if (current && current.src) openLightbox(current.src);
     });
+
+    // Mouse wheel & trackpad scroll navigation over showcase bay
+    let wheelDebounce = false;
+    stage.addEventListener('wheel', (e) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < 20) return;
+      e.preventDefault();
+
+      if (!wheelDebounce) {
+        wheelDebounce = true;
+        if (delta > 0) {
+          goToNextScreenshot();
+        } else {
+          goToPrevScreenshot();
+        }
+        setTimeout(() => { wheelDebounce = false; }, 280);
+      }
+    }, { passive: false });
   }
 }
 
@@ -696,4 +725,129 @@ function showToast(msg) {
   toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 3200);
+}
+
+// ==========================================================================
+// 9. SCROLL ENGINE & KINETIC SYSTEM
+// Features:
+// - Laser scroll progress indicator bar
+// - Spatial Header elevation & compression
+// - Active page section scrollspy (Studio vs Newswire)
+// - IntersectionObserver scroll-reveal animations
+// - Floating teleport beacon (Scroll-to-top)
+// - Smooth anchor jumps with header height offset
+// ==========================================================================
+function initScrollEngine() {
+  const progressBar = document.getElementById('scroll-laser-bar');
+  const header = document.querySelector('.spatial-header');
+  const scrollTopBtn = document.getElementById('scroll-top-beacon');
+  const chroniclesSection = document.getElementById('chronicles');
+  const studioNav = document.querySelector('.spatial-nav-dock a[href="/"]');
+  const newswireNav = document.querySelector('.spatial-nav-dock a[href*="chronicles"]');
+
+  // 1. Scroll listener for progress, header elevation, and scroll-top beacon
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+        // Laser Progress Bar
+        if (progressBar) {
+          progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+        }
+
+        // Header Elevation & Compression
+        if (header) {
+          if (scrollTop > 45) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+        }
+
+        // Floating Scroll-To-Top Beacon
+        if (scrollTopBtn) {
+          if (scrollTop > 350) {
+            scrollTopBtn.classList.add('visible');
+          } else {
+            scrollTopBtn.classList.remove('visible');
+          }
+        }
+
+        // Dynamic Section Scrollspy on Home
+        if (chroniclesSection && studioNav && newswireNav && (window.location.pathname === '/' || window.location.pathname.endsWith('index.html'))) {
+          const rect = chroniclesSection.getBoundingClientRect();
+          if (rect.top <= 200 && rect.bottom >= 150) {
+            studioNav.classList.remove('active');
+            newswireNav.classList.add('active');
+          } else if (rect.top > 200) {
+            newswireNav.classList.remove('active');
+            studioNav.classList.add('active');
+          }
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // 2. Scroll to top button trigger
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', () => {
+      playLaserBeep(700, 0.06, 'triangle');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // 3. Smooth Anchor Scroll with Header Offset
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (!targetId || targetId === '#' || targetId.length <= 1) return;
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        playSlideSound();
+        const headerHeight = header ? header.offsetHeight + 24 : 80;
+        const targetPos = targetEl.getBoundingClientRect().top + window.scrollY - headerHeight;
+        window.scrollTo({
+          top: Math.max(0, targetPos),
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // 4. Scroll-Reveal IntersectionObserver
+  const revealElements = document.querySelectorAll(
+    '.scroll-reveal, .popular-spotlight-monolith, .chronicle-card, .terminal-box, .app-minimal-card, .popular-quad-card, .login-hud-card, .admin-tabs-nav'
+  );
+
+  if ('IntersectionObserver' in window && revealElements.length > 0) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach((el, index) => {
+      el.classList.add('scroll-reveal');
+      if (el.classList.contains('chronicle-card') || el.classList.contains('popular-quad-card')) {
+        el.style.transitionDelay = `${(index % 4) * 0.1}s`;
+      }
+      revealObserver.observe(el);
+    });
+  } else {
+    revealElements.forEach(el => el.classList.add('revealed'));
+  }
 }

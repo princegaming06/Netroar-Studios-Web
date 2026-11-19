@@ -14,6 +14,11 @@
 </head>
 <body>
 
+  <!-- Laser Scroll Progress Bar -->
+  <div class="scroll-laser-track" id="scroll-laser-track" aria-hidden="true">
+    <div class="scroll-laser-bar" id="scroll-laser-bar"></div>
+  </div>
+
   <!-- Ambient Interactive Canvas & Spotlight -->
   <canvas id="ambient-quantum-canvas"></canvas>
   <div class="mouse-spotlight"></div>
@@ -187,6 +192,13 @@
     <button class="lightbox-close" id="lightbox-close" aria-label="Close Lightbox">&times;</button>
     <img src="" alt="Screenshot HD View" class="lightbox-img" id="lightbox-img">
   </div>
+
+  <!-- Floating Scroll-To-Top Beacon -->
+  <button class="scroll-top-beacon" id="scroll-top-beacon" aria-label="Scroll back to top" title="Scroll back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
 
   <script src="/quantum-engine.js"></script>
 </body>

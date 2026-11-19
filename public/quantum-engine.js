@@ -16,6 +16,23 @@ let screenshotData = [];
 const OFFICIAL_TASKFLOW_URL = 'https://netroar-to-do.onrender.com';
 
 // ==========================================================================
+// SCROLL RESTORATION & INITIAL LOAD ENGINE
+// Guarantees browser always starts from top (Home) on page refresh or new visit
+// ==========================================================================
+if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+function resetScrollToTop() {
+  window.scrollTo(0, 0);
+  if (document.documentElement) document.documentElement.scrollTop = 0;
+  if (document.body) document.body.scrollTop = 0;
+}
+
+resetScrollToTop();
+window.addEventListener('beforeunload', resetScrollToTop);
+
+// ==========================================================================
 // WEB SKELETON PRELOADER CONTROLLER
 // Seamless holographic dissolve transition once DOM and assets initialize
 // ==========================================================================
@@ -29,9 +46,18 @@ function dismissWebSkeleton() {
   }
 }
 window.dismissWebSkeleton = dismissWebSkeleton;
-window.addEventListener('load', dismissWebSkeleton);
+window.addEventListener('load', () => {
+  dismissWebSkeleton();
+  resetScrollToTop();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
+  resetScrollToTop();
+  if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+    if (window.location.hash) {
+      history.replaceState(null, null, window.location.pathname);
+    }
+  }
   initQuantumCanvas();
   initAudioSystem();
   initTelemetryClock();
@@ -44,7 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initFlagshipConsole();
   init3DRigTilt();
   initLightbox();
-  setTimeout(dismissWebSkeleton, 160);
+  setTimeout(() => {
+    dismissWebSkeleton();
+    resetScrollToTop();
+  }, 160);
 });
 
 // ==========================================================================
@@ -1161,18 +1190,6 @@ function initScrollEngine() {
       }
     });
   });
-
-  // Smooth scroll to anchor on initial load if URL contains hash
-  if (window.location.hash && window.location.hash.length > 1) {
-    setTimeout(() => {
-      const targetEl = document.querySelector(window.location.hash);
-      if (targetEl) {
-        const headerHeight = header ? header.offsetHeight + 24 : 80;
-        const targetPos = Math.max(0, targetEl.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - headerHeight);
-        window.scrollTo({ top: targetPos, behavior: 'smooth' });
-      }
-    }, 200);
-  }
 
   // 4. Scroll-Reveal IntersectionObserver
   const revealElements = document.querySelectorAll(

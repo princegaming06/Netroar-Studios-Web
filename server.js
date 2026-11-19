@@ -359,6 +359,41 @@ Sitemap: https://${host}/sitemap.xml
     }
   }
 
+  if (req.method === 'POST' && pathname === '/api/admin/firebase-auth') {
+    try {
+      const { email, uid } = await parseBody(req);
+      if (!email) {
+        return sendJson(res, 400, { success: false, error: 'Email required.' });
+      }
+      const cleanEmail = String(email).trim().toLowerCase();
+      const adminList = [
+        'princegaming5555@netroar.dev',
+        'princegaming5555@gmail.com',
+        'admin@netroar.dev'
+      ];
+      const isAdmin = adminList.includes(cleanEmail) || cleanEmail.endsWith('@netroar.dev');
+      if (!isAdmin) {
+        return sendJson(res, 200, {
+          success: true,
+          isAdmin: false,
+          role: 'user',
+          message: 'Authenticated as standard user.'
+        });
+      }
+      const token = generateSessionToken();
+      return sendJson(res, 200, {
+        success: true,
+        isAdmin: true,
+        role: 'admin',
+        token,
+        expiresIn: SESSION_TTL_MS / 1000,
+        message: 'Admin authorization granted via Firebase identity.'
+      });
+    } catch (err) {
+      return sendJson(res, 400, { success: false, error: err.message });
+    }
+  }
+
   if (req.method === 'GET' && pathname === '/api/admin/verify-token') {
     const token = extractBearerToken(req);
     if (!isValidSession(token)) {

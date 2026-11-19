@@ -242,7 +242,7 @@ function initQuantumCanvas() {
   let scrollVelocity = 0;
   window.addEventListener('scroll', () => {
     const currentY = window.scrollY;
-    scrollVelocity = (currentY - lastScrollY) * 0.04;
+    scrollVelocity = (currentY - lastScrollY) * 0.055;
     lastScrollY = currentY;
   }, { passive: true });
 
@@ -311,12 +311,12 @@ function initQuantumCanvas() {
       if (p.y < 0) p.y = height;
       if (p.y > height) p.y = 0;
 
-      // Draw particle with hyperdrive streak on fast scroll
-      if (Math.abs(scrollVelocity) > 0.35) {
+      // Draw particle with hyperdrive streak on fast scroll (extended silky streak)
+      if (Math.abs(scrollVelocity) > 0.2) {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p.x, p.y - scrollVelocity * 4.2);
-        ctx.strokeStyle = `rgba(0, 245, 184, ${p.baseAlpha * 0.9})`;
+        ctx.lineTo(p.x, p.y - scrollVelocity * 5.8);
+        ctx.strokeStyle = `rgba(0, 245, 184, ${p.baseAlpha * 0.95})`;
         ctx.lineWidth = p.radius * 0.95;
         ctx.stroke();
       } else {
@@ -1025,23 +1025,23 @@ function initSpatialScrollEffects() {
       const centerY = rect.top + rect.height / 2;
       const progress = (centerY - windowH / 2) / (windowH / 2); // -1 (top) to 0 (center) to +1 (bottom)
 
-      // Only calculate if target is in active viewing area
-      if (rect.bottom > -100 && rect.top < windowH + 100) {
-        const clampedProg = Math.max(-1.2, Math.min(1.2, progress));
+      // Extended active viewing area so scroll effects start earlier & linger longer
+      if (rect.bottom > -240 && rect.top < windowH + 240) {
+        const clampedProg = Math.max(-1.5, Math.min(1.5, progress));
 
         // 1. Monolith and images remain rock-solid and stable with zero vertical scroll tilt distortion
         target.style.transform = 'none';
 
-        // 2. Anamorphic Optical Glare Sweep
+        // 2. Anamorphic Optical Glare Sweep across extended scroll zone
         if (glare) {
-          const glareY = (-clampedProg * 45).toFixed(1);
-          const glareOpacity = Math.max(0.12, 0.65 - Math.abs(clampedProg) * 0.45);
+          const glareY = (-clampedProg * 58).toFixed(1);
+          const glareOpacity = Math.max(0.12, 0.72 - Math.abs(clampedProg) * 0.35);
           glare.style.transform = `rotate(-22deg) translateY(${glareY}%)`;
           glare.style.opacity = glareOpacity.toFixed(2);
         }
 
-        // 3. Center Focus Magnetic Lock
-        if (Math.abs(progress) < 0.28) {
+        // 3. Center Focus Magnetic Lock (extended focus zone so effect stays longer)
+        if (Math.abs(progress) < 0.44) {
           target.classList.add('in-focus');
         } else {
           target.classList.remove('in-focus');

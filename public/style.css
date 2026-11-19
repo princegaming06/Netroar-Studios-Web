@@ -2222,16 +2222,24 @@ select.form-control option {
   transition: opacity 0.3s ease;
 }
 
-/* Corner Brackets Magnetic Scroll Concatenation */
+/* Corner Brackets Magnetic Scroll Concatenation & In-Focus Illumination */
 .console-corner-bracket {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+.popular-spotlight-monolith.in-focus,
+.flagship-console-rig.in-focus {
+  border-color: rgba(0, 245, 184, 0.32);
+  box-shadow: 0 35px 120px -20px rgba(0, 0, 0, 0.95), 0 0 45px rgba(0, 245, 184, 0.14);
 }
 
 .popular-spotlight-monolith.in-focus .console-corner-bracket,
 .flagship-console-rig.in-focus .console-corner-bracket {
   border-color: var(--neon-mint);
-  box-shadow: 0 0 10px var(--neon-mint-glow);
+  box-shadow: 0 0 12px var(--neon-mint-glow);
+  transform: scale(1.05);
 }
 
 
@@ -2322,12 +2330,12 @@ select.form-control option {
   filter: drop-shadow(0 0 6px var(--neon-mint));
 }
 
-/* 4. Scroll-Driven Reveal Animations */
+/* 4. Scroll-Driven Reveal Animations (Silky longer duration entrance) */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 

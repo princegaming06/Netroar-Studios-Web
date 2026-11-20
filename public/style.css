@@ -4653,13 +4653,18 @@ html, body {
     padding: 14px 22px;
     font-size: 0.9rem;
   }
-  /* --- Flagship Console & Spotlight Monolith Mobile Cards --- */
+  /* --- Box-Free Seamless Mobile Experience (No Nested Boxes) --- */
   .flagship-console-rig, .flagship-card, .popular-spotlight-monolith {
-    padding: 16px 14px !important;
-    border-radius: 18px !important;
-    margin-bottom: 24px;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    margin-bottom: 32px !important;
   }
-  .console-corner-bracket {
+  .console-corner-bracket, .monolith-optical-glare {
     display: none !important;
   }
   .console-header-deck, .flagship-header-row, .popular-top-bar {
@@ -4670,20 +4675,22 @@ html, body {
     margin-bottom: 14px !important;
   }
   .teleport-icon-anchor, .flagship-icon-box, .popular-app-icon-link {
-    width: 54px !important;
-    height: 54px !important;
-    min-width: 54px !important;
-    border-radius: 14px !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    border-radius: 12px !important;
     padding: 4px !important;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
   .popular-app-icon-img, .teleport-icon-img, .flagship-icon-img {
     width: 100% !important;
     height: 100% !important;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     object-fit: contain;
   }
   .popular-meta-info, .console-title-module {
@@ -4710,9 +4717,9 @@ html, body {
     margin-top: 3px !important;
   }
   .flagship-description-text, .console-description-body, .popular-app-narrative {
-    font-size: clamp(0.84rem, 3.3vw, 0.94rem) !important;
-    line-height: 1.6 !important;
-    margin-bottom: 16px !important;
+    font-size: clamp(0.85rem, 3.4vw, 0.95rem) !important;
+    line-height: 1.65 !important;
+    margin-bottom: 20px !important;
   }
   .flagship-pills-row {
     gap: 6px;
@@ -4734,7 +4741,9 @@ html, body {
   }
   .viewport-stage {
     height: clamp(180px, 50vw, 240px) !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    border: 1px solid var(--border-glass) !important;
   }
   .bay-nav-trigger {
     width: 36px;
@@ -4742,10 +4751,10 @@ html, body {
     font-size: 0.95rem;
   }
 
-  /* --- Popular Section Quad Feature Cards: Horizontal Mobile Tiles --- */
+  /* --- Box-Free Feature Highlights: Seamless Borderless List --- */
   .popular-feature-quad {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 0 !important;
     margin-bottom: 24px !important;
   }
   .popular-quad-card {
@@ -4753,27 +4762,24 @@ html, body {
     flex-direction: row !important;
     align-items: flex-start !important;
     gap: 14px !important;
-    padding: 14px 14px !important;
-    border-radius: 16px !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid var(--border-glass) !important;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-  .popular-quad-card:active {
-    transform: scale(0.985);
-    border-color: var(--neon-mint);
+    padding: 14px 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: none !important;
   }
   .popular-quad-icon {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    border-radius: 12px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 10px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(0, 245, 184, 0.1) !important;
-    border: 1px solid rgba(0, 245, 184, 0.25) !important;
-    font-size: 1.25rem !important;
+    background: rgba(0, 245, 184, 0.08) !important;
+    border: 1px solid rgba(0, 245, 184, 0.2) !important;
+    font-size: 1.15rem !important;
     margin-bottom: 0 !important;
     flex-shrink: 0;
   }
@@ -4789,13 +4795,13 @@ html, body {
     line-height: 1.3 !important;
   }
   .popular-quad-desc {
-    font-size: clamp(0.8rem, 3.1vw, 0.88rem) !important;
-    line-height: 1.5 !important;
+    font-size: clamp(0.82rem, 3.2vw, 0.9rem) !important;
+    line-height: 1.55 !important;
     color: var(--text-muted) !important;
     margin: 0 !important;
   }
 
-  /* --- Apps Showcase Minimal Grid: Native Android Horizontal Cards --- */
+  /* --- Box-Free Apps Showcase: Native Mobile List Stream --- */
   .apps-section-header-bar {
     flex-direction: column;
     align-items: flex-start;
@@ -4807,7 +4813,7 @@ html, body {
   }
   .apps-minimal-grid {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 0 !important;
   }
   .app-minimal-card {
     display: flex !important;
@@ -4815,30 +4821,31 @@ html, body {
     align-items: center !important;
     justify-content: flex-start !important;
     text-align: left !important;
-    padding: 14px 16px !important;
-    border-radius: 16px !important;
+    padding: 16px 0 !important;
+    border-radius: 0 !important;
     width: 100% !important;
     gap: 14px !important;
-    min-height: 76px !important;
-    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6) !important;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%) !important;
-    border: 1px solid var(--border-glass) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
+    min-height: 70px !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   .app-minimal-card:active {
-    transform: scale(0.985);
-    border-color: var(--neon-mint) !important;
-    background: rgba(0, 245, 184, 0.08) !important;
+    opacity: 0.75;
   }
   .app-minimal-icon-box {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    border-radius: 14px !important;
-    padding: 5px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
     margin-bottom: 0 !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: none !important;
     flex-shrink: 0;
   }
   .app-minimal-meta {
@@ -4851,7 +4858,7 @@ html, body {
     gap: 3px;
   }
   .app-minimal-name {
-    font-size: clamp(1rem, 4.2vw, 1.22rem) !important;
+    font-size: clamp(1.02rem, 4.4vw, 1.25rem) !important;
     font-weight: 700 !important;
     color: #ffffff !important;
     line-height: 1.25 !important;
@@ -4862,7 +4869,7 @@ html, body {
   }
   .app-minimal-tagline {
     font-family: var(--font-mono);
-    font-size: clamp(0.7rem, 2.7vw, 0.8rem) !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
     color: var(--text-muted) !important;
     line-height: 1.3 !important;
     white-space: nowrap;
@@ -4878,63 +4885,78 @@ html, body {
     margin-left: auto;
     flex-shrink: 0;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 800;
+    font-size: 0.95rem;
+    font-weight: 700;
     color: var(--neon-mint);
-    letter-spacing: 0.05em;
-    padding: 6px 10px;
-    border-radius: 8px;
-    background: rgba(0, 245, 184, 0.08);
-    border: 1px solid rgba(0, 245, 184, 0.22);
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .app-minimal-chevron span {
+    display: none;
   }
   .app-minimal-chevron svg {
     stroke: var(--neon-mint);
+    width: 18px;
+    height: 18px;
   }
 
-  /* --- Philosophy Cards: Sleek Android Principle Cards --- */
+  /* --- Box-Free Principles: Inspiring Editorial Stream --- */
   .philosophy-grid {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 0 !important;
   }
   .philosophy-card {
-    padding: 16px 16px !important;
-    border-radius: 16px !important;
-    border-left: 3px solid var(--neon-mint) !important;
-    background: rgba(255, 255, 255, 0.025) !important;
-    border-top: 1px solid var(--border-glass) !important;
-    border-right: 1px solid var(--border-glass) !important;
-    border-bottom: 1px solid var(--border-glass) !important;
+    padding: 20px 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
   .philosophy-num {
-    font-size: clamp(0.68rem, 2.5vw, 0.76rem) !important;
+    font-size: clamp(0.7rem, 2.6vw, 0.78rem) !important;
+    color: var(--neon-mint) !important;
+    font-weight: 800;
     letter-spacing: 0.12em !important;
     margin-bottom: 6px !important;
-    display: inline-block !important;
+    display: block !important;
   }
   .philosophy-title {
-    font-size: clamp(1.05rem, 4.4vw, 1.25rem) !important;
+    font-size: clamp(1.12rem, 4.8vw, 1.35rem) !important;
     font-weight: 700 !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
     line-height: 1.3 !important;
+    color: #ffffff !important;
   }
   .philosophy-desc {
-    font-size: clamp(0.82rem, 3.2vw, 0.92rem) !important;
-    line-height: 1.55 !important;
+    font-size: clamp(0.85rem, 3.4vw, 0.95rem) !important;
+    line-height: 1.65 !important;
     color: var(--text-muted) !important;
+    margin: 0 !important;
   }
 
-  /* --- Studio Newswire: Chronicle Feed Mobile Cards --- */
+  /* --- Box-Free Studio Newswire: Clean Editorial Article Flow --- */
   .chronicles-feed-grid, .chronicles-grid {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 0 !important;
   }
   .chronicle-card {
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    border: 1px solid var(--border-glass) !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 0 24px 0 !important;
+    margin-bottom: 24px !important;
   }
   .chronicle-thumb-box {
-    height: clamp(140px, 42vw, 175px) !important;
+    height: clamp(160px, 48vw, 200px) !important;
+    width: 100% !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    margin-bottom: 14px !important;
   }
   .chronicle-tag-overlay {
     top: 10px !important;
@@ -4944,41 +4966,65 @@ html, body {
     border-radius: 6px !important;
   }
   .chronicle-content {
-    padding: 14px 14px !important;
+    padding: 0 !important;
   }
   .chronicle-date {
     font-size: clamp(0.68rem, 2.5vw, 0.76rem) !important;
+    color: var(--neon-mint) !important;
+    font-weight: 700;
     margin-bottom: 6px !important;
+    font-family: var(--font-mono);
   }
   .chronicle-title {
-    font-size: clamp(0.98rem, 4.2vw, 1.15rem) !important;
+    font-size: clamp(1.05rem, 4.6vw, 1.25rem) !important;
+    font-weight: 700 !important;
     line-height: 1.35 !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
+    color: #ffffff !important;
   }
   .chronicle-summary {
-    font-size: clamp(0.8rem, 3.2vw, 0.88rem) !important;
-    line-height: 1.5 !important;
+    font-size: clamp(0.84rem, 3.3vw, 0.94rem) !important;
+    line-height: 1.6 !important;
+    color: var(--text-muted) !important;
     margin: 0 !important;
   }
 
-  /* --- About Us Monolith & Generic Cards --- */
+  /* --- Box-Free About Us & Monolith Flow --- */
   .about-monolith-card, .about-card, .pillar-card {
-    padding: 18px 14px !important;
-    border-radius: 18px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   .about-lead-quote {
-    font-size: clamp(1.02rem, 4.4vw, 1.3rem) !important;
-    line-height: 1.5 !important;
+    font-size: clamp(1.15rem, 5vw, 1.5rem) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 16px !important;
+  }
+  .about-body-text {
+    font-size: clamp(0.86rem, 3.4vw, 0.96rem) !important;
+    line-height: 1.65 !important;
     margin-bottom: 14px !important;
   }
-  .about-paragraph {
-    font-size: clamp(0.84rem, 3.3vw, 0.94rem) !important;
-    line-height: 1.6 !important;
-    margin-bottom: 12px !important;
+  .about-creed-bar {
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 14px 0 !important;
+    margin: 20px 0 !important;
+  }
+  .about-signoff {
+    border: none !important;
+    padding-top: 8px !important;
   }
   .pillars-grid {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 0 !important;
   }
   .popular-section-title, .chronicles-heading {
     font-size: clamp(1.35rem, 6vw, 2rem) !important;
@@ -4987,7 +5033,7 @@ html, body {
     font-size: clamp(0.66rem, 2.6vw, 0.76rem) !important;
   }
 
-  /* --- Login & Admin Dashboard Mobile Cards --- */
+  /* --- Clean Box-Free Form Panels on Mobile --- */
   .login-hud-card {
     padding: 24px 18px !important;
     border-radius: 20px !important;
@@ -4998,6 +5044,8 @@ html, body {
   }
   .admin-kpi-card {
     padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
     border-radius: 16px !important;
   }
   .footer-matrix {
@@ -5314,6 +5362,40 @@ html, body {
 }
 [data-theme='light'] .chronicle-summary {
   color: #475569 !important;
+}
+
+/* Light Mode Overrides for Box-Free Mobile Stream */
+@media (max-width: 820px) {
+  [data-theme='light'] .flagship-console-rig,
+  [data-theme='light'] .flagship-card,
+  [data-theme='light'] .popular-spotlight-monolith,
+  [data-theme='light'] .about-monolith-card,
+  [data-theme='light'] .popular-quad-card,
+  [data-theme='light'] .philosophy-card,
+  [data-theme='light'] .chronicle-card,
+  [data-theme='light'] .app-minimal-card {
+    background: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+  }
+  [data-theme='light'] .app-minimal-card,
+  [data-theme='light'] .popular-quad-card,
+  [data-theme='light'] .philosophy-card,
+  [data-theme='light'] .chronicle-card {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  }
+  [data-theme='light'] .popular-app-icon-link,
+  [data-theme='light'] .teleport-icon-anchor,
+  [data-theme='light'] .app-minimal-icon-box {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+  }
+  [data-theme='light'] .popular-quad-icon {
+    background: rgba(0, 184, 130, 0.08) !important;
+    border-color: rgba(0, 184, 130, 0.2) !important;
+  }
 }
 
 

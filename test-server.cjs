@@ -268,6 +268,15 @@ async function runTests() {
     assert(js.data.includes('initThemeEngine') && js.data.includes('initMobileDrawer'),
       '14.4 GET /quantum-engine.js includes unified theme engine and mobile drawer controller');
 
+    // Test 14.5: Android Mobile Card Types & Responsive Font Sizes
+    assert(appStudios.data.includes('app-minimal-meta') &&
+           appStudios.data.includes('app-minimal-chevron') &&
+           index.data.includes('popular-quad-content') &&
+           css.data.includes('clamp(') &&
+           css.data.includes('.app-minimal-chevron') &&
+           css.data.includes('.popular-quad-content'),
+      '14.5 Mobile card types (horizontal tiles, action chevrons) and fluid responsive font sizes (clamp) verified');
+
   } catch (err) {
     console.error('Test execution error:', err);
     failed++;

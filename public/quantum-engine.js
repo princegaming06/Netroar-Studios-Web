@@ -514,12 +514,20 @@ async function initMinimalAppsGrid() {
       grid.innerHTML = data.apps.map(app => {
         const safeName = escapeQuantumHtml(app.name || 'Netroar App');
         const safeIcon = escapeQuantumHtml(app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png');
+        const safeTagline = escapeQuantumHtml(app.tagline || app.category || 'Official Studio Application');
         return `
         <div class="app-minimal-card" role="button" tabindex="0" title="Tap to enter ${safeName} Console">
           <div class="app-minimal-icon-box">
             <img src="${safeIcon}" alt="${safeName} Icon" class="app-minimal-icon-img" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
           </div>
-          <h3 class="app-minimal-name">${safeName}</h3>
+          <div class="app-minimal-meta">
+            <h3 class="app-minimal-name">${safeName}</h3>
+            <span class="app-minimal-tagline">${safeTagline}</span>
+          </div>
+          <div class="app-minimal-chevron" aria-hidden="true">
+            <span>ENTER</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </div>
         </div>
       `;
       }).join('');

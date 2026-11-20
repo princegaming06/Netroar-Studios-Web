@@ -9,6 +9,25 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <!-- Instant Zero-FOUC Theme & Dynamic Favicon / Logo Pre-detection -->
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('netroar-theme');
+        var th = t || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', th);
+        var fav = localStorage.getItem('netroar_site_favicon');
+        if (fav) {
+          var l = document.querySelector("link[rel~='icon']");
+          if (l) l.href = fav;
+          var a = document.querySelector("link[rel='apple-touch-icon']");
+          if (a) a.href = fav;
+        }
+      } catch(e) {}
+    })();
+  </script>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/style.css">
@@ -74,7 +93,7 @@
         <span class="console-corner-bracket bracket-br"></span>
 
         <div style="margin: 0 auto 20px; display: flex; justify-content: center;">
-          <div class="brand-logo-round" title="Netroar Studios">
+          <div class="admin-logo-block admin-logo-modal brand-logo-round" title="Netroar Studios">
             <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios">
           </div>
         </div>
@@ -96,7 +115,7 @@
                 </svg>
               </button>
             </div>
-            <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 6px; display: block;">Default setup passcode: netroar@admin2026</span>
+            <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 6px; display: block;">Protected Administrative Environment</span>
           </div>
 
           <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 12px; height: 46px;" id="btn-login-submit">
@@ -120,7 +139,7 @@
       <div class="admin-header-row">
         <div style="display: flex; align-items: center; gap: 16px;">
           <a href="/" title="Netroar Studios Public Site" style="display: flex; align-items: center;">
-            <div class="brand-logo-round" style="width: 46px; height: 46px; padding: 5px;">
+            <div class="admin-logo-block brand-logo-round" title="Netroar Studios">
               <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Studios Emblem">
             </div>
           </a>
@@ -228,6 +247,9 @@
           <span>Apps &amp; Software</span>
           <span class="admin-tab-badge" id="admin-apps-count">0</span>
         </button>
+        <button class="admin-tab-btn" data-tab="icons">
+          <span>Icons &amp; Favicon</span>
+        </button>
         <button class="admin-tab-btn" data-tab="settings">Studio Settings</button>
         <button class="admin-tab-btn" data-tab="feeds">Google Merchant &amp; Backups</button>
       </nav>
@@ -265,7 +287,231 @@
         </div>
       </div>
 
-      <!-- Tab 2: Studio Settings -->
+      <!-- Tab 2: Icons & Branding Manager (Netroar To-Do Architecture) -->
+      <div id="tab-icons" class="admin-tab-content" style="display: none;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 36px; max-width: 1040px; box-shadow: var(--shadow-spatial);">
+          
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span class="status-dot-pulse"></span>
+                <span style="font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; color: var(--neon-mint); text-transform: uppercase; font-weight: 700;">VISUAL ASSETS // ZERO-FOUC BROADCAST</span>
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 1.85rem; font-weight: 800; margin: 0; color: var(--text-primary); line-height: 1.2;">Brand Logos &amp; Web Favicon Suite</h3>
+              <p style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 4px; max-width: 720px;">
+                Upload independent logos for Light and Dark themes, calibrate display scale, and configure a dedicated browser tab favicon with in-browser crop and real-time disk persistence.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <span class="status-badge status-live" style="display: inline-flex; align-items: center; gap: 6px;">
+                <span class="status-dot-pulse" style="width: 6px; height: 6px;"></span>
+                <span>Zero-FOUC Active</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Logo Size Adjuster Box -->
+          <div class="logo-size-adjuster-box">
+            <div class="logo-adjuster-header">
+              <span class="logo-adjuster-title">
+                <span>📐 Header Logo Display Scale</span>
+              </span>
+              <span class="logo-adjuster-val-badge" id="logo-adjuster-val-badge">100%</span>
+            </div>
+            <div class="logo-slider-row">
+              <button type="button" class="logo-step-btn" id="btn-logo-scale-minus" title="Decrease logo scale by 5%">−</button>
+              <input type="range" class="logo-range-slider" id="logo-range-slider" min="50" max="150" step="5" value="100">
+              <button type="button" class="logo-step-btn" id="btn-logo-scale-plus" title="Increase logo scale by 5%">+</button>
+            </div>
+            <div class="logo-presets-row">
+              <span style="font-size: 0.74rem; color: var(--text-muted); font-family: var(--font-mono); margin-right: 4px;">Scale Presets:</span>
+              <button type="button" class="icon-preset-chip" data-scale="75">75% Compact</button>
+              <button type="button" class="icon-preset-chip active" data-scale="100">100% Standard</button>
+              <button type="button" class="icon-preset-chip" data-scale="125">125% Prominent</button>
+              <button type="button" class="icon-preset-chip reset" data-scale="reset">Reset Scale</button>
+            </div>
+          </div>
+
+          <form id="icons-manager-form">
+            <!-- 3-Card Branding Grid -->
+            <div class="branding-logos-grid">
+              
+              <!-- 1. Light Mode Logo Box -->
+              <div class="branding-logo-box">
+                <div class="branding-logo-box-head">
+                  <span class="branding-theme-tag light">
+                    ☀️ Light Mode Logo
+                  </span>
+                  <span class="branding-status-chip" id="status-chip-light">
+                    Standby
+                  </span>
+                </div>
+                <p class="branding-logo-desc">Tap icon to upload. Used across navigation header and hero when Light Theme is active.</p>
+
+                <div class="current-logo-display light-canvas interactive-upload-display" id="display-light-logo" title="Tap to upload new Light Mode Logo">
+                  <img id="preview-light-logo-img" src="/assets/logo/netroar-studios-logo-light.png" alt="Light Mode Logo" class="branding-logo-preview" onerror="this.src='/assets/logo/netroar-studios-logo-light.png'">
+                  <div class="interactive-upload-overlay">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <span>Tap to Upload Icon</span>
+                  </div>
+                </div>
+
+                <input type="file" id="file-light-logo" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/x-icon" style="display: none;">
+
+                <div class="form-group" style="width: 100%; text-align: left; margin-bottom: 12px;">
+                  <label class="form-label" for="setting-logo-light" style="font-size: 0.78rem;">Light Logo URL / Path</label>
+                  <input type="text" id="setting-logo-light" class="form-control" style="font-size: 0.8rem; padding: 7px 10px;" placeholder="/assets/logo/... or https://">
+                </div>
+
+                <div style="width: 100%; text-align: left; margin-bottom: 14px;">
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 6px;">Presets:</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <button type="button" class="icon-preset-chip" data-target="lightLogo" data-value="/assets/logo/netroar-studios-logo-light.png">Netroar Light</button>
+                    <button type="button" class="icon-preset-chip" data-target="lightLogo" data-value="/assets/logo/Netroar_To_Do_light_v2.png">TaskFlow Light</button>
+                    <button type="button" class="icon-preset-chip" data-target="lightLogo" data-value="/assets/logo/Netroar_To_Do_light_v2_square.png">Square Light</button>
+                  </div>
+                </div>
+
+                <div class="branding-card-footer">
+                  <button type="button" class="btn-card-outline" id="btn-edit-light-logo" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    ✏️ Edit
+                  </button>
+                  <button type="button" class="btn-card-outline" id="btn-reset-light-logo" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    🔄 Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2. Dark Mode Logo Box -->
+              <div class="branding-logo-box">
+                <div class="branding-logo-box-head">
+                  <span class="branding-theme-tag dark">
+                    🌙 Dark Mode Logo
+                  </span>
+                  <span class="branding-status-chip active" id="status-chip-dark">
+                    ● Displaying Now
+                  </span>
+                </div>
+                <p class="branding-logo-desc">Tap icon to upload. Used across navigation header and hero when Dark Theme is active.</p>
+
+                <div class="current-logo-display dark-canvas interactive-upload-display" id="display-dark-logo" title="Tap to upload new Dark Mode Logo">
+                  <img id="preview-dark-logo-img" src="/assets/logo/netroar-studios-logo-dark.png" alt="Dark Mode Logo" class="branding-logo-preview" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
+                  <div class="interactive-upload-overlay">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <span>Tap to Upload Icon</span>
+                  </div>
+                </div>
+
+                <input type="file" id="file-dark-logo" accept="image/png, image/jpeg, image/svg+xml, image/webp, image/x-icon" style="display: none;">
+
+                <div class="form-group" style="width: 100%; text-align: left; margin-bottom: 12px;">
+                  <label class="form-label" for="setting-logo-dark" style="font-size: 0.78rem;">Dark Logo URL / Path</label>
+                  <input type="text" id="setting-logo-dark" class="form-control" style="font-size: 0.8rem; padding: 7px 10px;" placeholder="/assets/logo/... or https://">
+                </div>
+
+                <div style="width: 100%; text-align: left; margin-bottom: 14px;">
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 6px;">Presets:</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <button type="button" class="icon-preset-chip" data-target="darkLogo" data-value="/assets/logo/netroar-studios-logo-dark.png">Dark Emblem</button>
+                    <button type="button" class="icon-preset-chip" data-target="darkLogo" data-value="/assets/logo/netroars-logo.png">Netroar Symbol</button>
+                    <button type="button" class="icon-preset-chip" data-target="darkLogo" data-value="/assets/logo/Netroar_To_Do_dark_v2.png">TaskFlow Dark</button>
+                  </div>
+                </div>
+
+                <div class="branding-card-footer">
+                  <button type="button" class="btn-card-outline" id="btn-edit-dark-logo" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    ✏️ Edit
+                  </button>
+                  <button type="button" class="btn-card-outline" id="btn-reset-dark-logo" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    🔄 Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. Website Favicon Box -->
+              <div class="branding-logo-box">
+                <div class="branding-logo-box-head">
+                  <span class="branding-theme-tag favicon">
+                    🌐 Website Favicon
+                  </span>
+                  <span class="branding-status-chip">
+                    Tabs &amp; Bookmarks
+                  </span>
+                </div>
+                <p class="branding-logo-desc">Tap icon to upload. Displayed in browser address bars, tab titles, shortcuts, and mobile web app docks.</p>
+
+                <div class="current-logo-display favicon-canvas interactive-upload-display" id="display-favicon" title="Tap to upload new Favicon">
+                  <img id="preview-favicon-img" src="/favicon.png" alt="Favicon Preview" class="branding-logo-preview favicon-clean-preview" onerror="this.src='/favicon.png'">
+                  <div class="interactive-upload-overlay">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <span>Tap to Upload Icon</span>
+                  </div>
+                </div>
+
+                <!-- Browser Tab Mockup -->
+                <div class="browser-tab-mockup">
+                  <div class="browser-tab-shell">
+                    <img id="preview-favicon-tab-img" class="browser-tab-favicon-preview" src="/favicon.png" alt="Favicon" onerror="this.src='/favicon.png'">
+                    <span class="browser-tab-title">Netroar Studios</span>
+                    <span class="browser-tab-close">&times;</span>
+                  </div>
+                </div>
+
+                <input type="file" id="file-favicon" accept="image/png, image/x-icon, image/svg+xml, image/webp, image/jpeg" style="display: none;">
+
+                <div class="form-group" style="width: 100%; text-align: left; margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label class="form-label" for="setting-favicon" style="font-size: 0.78rem; margin-bottom: 0;">Favicon URL / Path</label>
+                    <button type="button" class="feed-copy-btn" id="btn-sync-logo-to-favicon" style="padding: 1px 8px; font-size: 0.72rem;">
+                      ⚡ Sync Dark Logo
+                    </button>
+                  </div>
+                  <input type="text" id="setting-favicon" class="form-control" style="font-size: 0.8rem; padding: 7px 10px;" placeholder="/favicon.png or https://">
+                </div>
+
+                <div style="width: 100%; text-align: left; margin-bottom: 14px;">
+                  <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 6px;">Presets:</span>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <button type="button" class="icon-preset-chip" data-target="favicon" data-value="/assets/logo/Netroar_Favicon_Clean.png">Clean Favicon</button>
+                    <button type="button" class="icon-preset-chip" data-target="favicon" data-value="/favicon.png">Default Favicon</button>
+                    <button type="button" class="icon-preset-chip" data-target="favicon" data-value="/assets/logo/netroar-studios-logo-dark.png">Dark Emblem</button>
+                    <button type="button" class="icon-preset-chip" data-target="favicon" data-value="/assets/logo/Netroar_To_Do_dark_v2.png">TaskFlow</button>
+                  </div>
+                </div>
+
+                <div class="branding-card-footer">
+                  <button type="button" class="btn-card-outline" id="btn-edit-favicon" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    ✏️ Edit
+                  </button>
+                  <button type="button" class="btn-card-outline" id="btn-reset-favicon" style="height: 32px; padding: 0 12px; font-size: 0.78rem;">
+                    🔄 Reset
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Action Bar -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid var(--border-glass); flex-wrap: wrap; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <button type="submit" class="btn-primary" id="btn-save-icons-all" style="height: 46px; padding: 0 28px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                  <span>Save Branding Suite</span>
+                </button>
+                <button type="button" class="btn-secondary" id="btn-reset-icons-defaults" style="height: 46px; padding: 0 20px;">
+                  <span>Reset All to Defaults</span>
+                </button>
+              </div>
+              <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+                Broadcasts instantly across / · /apps · /admin · /login
+              </span>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+      <!-- Tab 3: Studio Settings -->
       <div id="tab-settings" class="admin-tab-content" style="display: none;">
         <div style="background: var(--bg-surface); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); backdrop-filter: blur(28px); padding: 36px; max-width: 860px; box-shadow: var(--shadow-spatial);">
           <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; color: var(--text-primary);">Studio Profile &amp; Customization</h3>
@@ -348,6 +594,22 @@
                   <button type="button" class="accent-swatch" data-accent="#ff3366" style="background: #ff3366; width: 26px; height: 26px;" title="Crimson Velocity"></button>
                 </div>
               </div>
+            </div>
+
+            <!-- Webpage Icons & Favicon Quick Access -->
+            <div style="margin-top: 18px; padding: 18px 22px; background: rgba(0, 245, 184, 0.04); border: 1px solid var(--border-glass); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div class="admin-logo-block" style="width: 44px; height: 44px; border-radius: 10px; padding: 5px;">
+                  <img src="/assets/logo/netroar-studios-logo-dark.png" id="settings-quick-logo-preview" alt="Current Logo" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
+                </div>
+                <div>
+                  <div style="font-weight: 800; color: var(--text-primary); font-size: 0.95rem;">Webpage Brand Icon &amp; Favicon Block</div>
+                  <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">Manage global site emblems, browser tab icons, and favicon files.</div>
+                </div>
+              </div>
+              <button type="button" class="btn-card-outline" onclick="document.querySelector('[data-tab=\'icons\']').click()" style="height: 36px; padding: 0 14px;">
+                <span>Open Icons Manager ❯</span>
+              </button>
             </div>
 
             <h4 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin: 28px 0 16px; color: var(--accent-rockstar);">Security Passcode</h4>
@@ -630,6 +892,112 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Interactive Image & Icon Editor Modal (Crop, Pan, Zoom, Border Radius, Rotate) -->
+  <div class="modal-overlay image-editor-backdrop" id="admin-image-editor-modal" aria-hidden="true" style="display: none;">
+    <div class="modal-card image-editor-card">
+      <div class="image-editor-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="image-editor-header-icon" style="width: 36px; height: 36px; border-radius: 10px; background: rgba(0, 245, 184, 0.12); color: var(--neon-mint); display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: var(--text-primary); line-height: 1.2;">
+              Custom Icon &amp; Logo Studio
+            </h3>
+            <span style="font-size: 0.76rem; color: var(--neon-mint); font-family: var(--font-mono);" id="editor-target-label">
+              Editing: Dark Mode Logo
+            </span>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-image-editor" style="position: static; font-size: 1.6rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div class="image-editor-body">
+        <!-- Stage Viewport Column -->
+        <div class="image-editor-stage-col">
+          <div class="image-editor-bg-bar">
+            <span class="image-editor-bg-label" style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted);">Canvas Preview:</span>
+            <div class="image-editor-bg-toggles">
+              <button type="button" class="bg-toggle-chip" data-bg="checkered">Checkered</button>
+              <button type="button" class="bg-toggle-chip active" data-bg="dark">Dark</button>
+              <button type="button" class="bg-toggle-chip" data-bg="light">Light</button>
+            </div>
+          </div>
+
+          <div class="image-editor-viewport bg-dark" id="image-editor-viewport" title="Click &amp; Drag to Pan image position">
+            <div class="image-editor-mask" id="image-editor-mask">
+              <img id="image-editor-target-img" class="image-editor-target-img" src="/assets/logo/netroar-studios-logo-dark.png" alt="Edit Source">
+            </div>
+            <div class="image-editor-crosshair-h"></div>
+            <div class="image-editor-crosshair-v"></div>
+          </div>
+          <p class="image-editor-stage-hint" style="font-size: 0.72rem; color: var(--text-muted); text-align: center; margin: 0; display: flex; align-items: center; justify-content: center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M19 9l3 3-3 3M9 19l3 3 3-3M2 12h20M12 2v20"/></svg>
+            Click and drag inside frame to reposition
+          </p>
+        </div>
+
+        <!-- Controls Column -->
+        <div class="image-editor-controls-col" style="display: flex; flex-direction: column; gap: 14px;">
+          
+          <!-- Zoom -->
+          <div class="form-group" style="margin-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" for="editor-zoom-slider" style="margin-bottom: 0;">Zoom &amp; Scale</label>
+              <span class="logo-adjuster-val-badge" id="editor-zoom-val">100%</span>
+            </div>
+            <input type="range" class="logo-range-slider" id="editor-zoom-slider" min="30" max="250" step="2" value="100">
+          </div>
+
+          <!-- Border Radius (Squircle to Circle) -->
+          <div class="form-group" style="margin-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" for="editor-radius-slider" style="margin-bottom: 0;">Corner Radius / Shape</label>
+              <span class="logo-adjuster-val-badge" id="editor-radius-val">22%</span>
+            </div>
+            <input type="range" class="logo-range-slider" id="editor-radius-slider" min="0" max="50" step="1" value="22">
+            <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+              <button type="button" class="icon-preset-chip" data-radius="0">Square (0%)</button>
+              <button type="button" class="icon-preset-chip" data-radius="22">Squircle (22%)</button>
+              <button type="button" class="icon-preset-chip" data-radius="50">Full Circle (50%)</button>
+            </div>
+          </div>
+
+          <!-- Rotation -->
+          <div class="form-group" style="margin-bottom: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" for="editor-rotate-slider" style="margin-bottom: 0;">Angle / Orientation</label>
+              <span class="logo-adjuster-val-badge" id="editor-rotate-val">0°</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <button type="button" class="logo-step-btn" id="btn-rotate-ccw" title="Rotate -90°">↺</button>
+              <input type="range" class="logo-range-slider" id="editor-rotate-slider" min="-180" max="180" step="5" value="0">
+              <button type="button" class="logo-step-btn" id="btn-rotate-cw" title="Rotate +90°">↻</button>
+            </div>
+          </div>
+
+          <!-- Position Reset -->
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 4px;">
+            <button type="button" class="feed-copy-btn" id="btn-editor-center-pos" style="font-size: 0.74rem;">
+              🎯 Center Position
+            </button>
+            <button type="button" class="feed-copy-btn" id="btn-editor-reset-transforms" style="font-size: 0.74rem;">
+              ↺ Reset Transforms
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="image-editor-footer">
+        <button type="button" class="btn-secondary" id="btn-cancel-image-editor">Cancel</button>
+        <button type="button" class="btn-primary" id="btn-apply-image-editor">
+          <span>Apply &amp; Save Asset ❯</span>
+        </button>
+      </div>
     </div>
   </div>
 

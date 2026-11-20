@@ -7,6 +7,16 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Automatically load local .env file if present (Native in Node.js 20+)
+try {
+  const envPath = path.join(__dirname, '.env');
+  if (fs.existsSync(envPath) && typeof process.loadEnvFile === 'function') {
+    process.loadEnvFile(envPath);
+  }
+} catch (envErr) {
+  // Silent fallback if .env is missing or invalid
+}
+
 const PORT = Number(process.env.PORT) || 3000;
 const STORAGE_DIR = process.env.STORAGE_DIR ? path.resolve(process.env.STORAGE_DIR) : path.join(__dirname, 'data');
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -26,6 +36,12 @@ const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 // Default fallback data
 const DEFAULT_SETTINGS = {
   studioName: "Netroar Studios",
+  brandLogo: "/assets/logo/netroar-studios-logo-dark.png",
+  logoDarkUrl: "/assets/logo/netroar-studios-logo-dark.png",
+  logoLightUrl: "/assets/logo/netroar-studios-logo-light.png",
+  favicon: "/favicon.png",
+  faviconUrl: "/favicon.png",
+  logoScale: 100,
   slogan: "Beyond Technology. Beyond Imagination.",
   heroTitle: "Beyond Technology. Beyond Imagination.",
   heroDescription: "Netroar Studios began with an ambition: to create technology rather than simply consume it. An independent technology brand exploring software engineering, digital products, artificial intelligence, and interactive experiences.",
@@ -130,6 +146,134 @@ function extractBearerToken(req) {
   return null;
 }
 
+// Security: Client IP extractor (supports standard reverse proxies like Cloudflare/Nginx/Render)
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.socket?.remoteAddress || '127.0.0.1';
+}
+
+// Security: Host header sanitizer to prevent host-header injection and cache poisoning
+function sanitizeHost(rawHost) {
+  if (!rawHost || typeof rawHost !== 'string') return 'localhost';
+  const clean = rawHost.trim().toLowerCase();
+  if (/^[a-z0-9.-]+(:[0-9]{1,5})?$/.test(clean)) {
+    return clean;
+  }
+  return 'localhost';
+}
+
+// Security: Timing-Safe String Comparison to prevent timing attacks
+function secureCompare(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  const hashA = crypto.createHash('sha256').update(a).digest();
+  const hashB = crypto.createHash('sha256').update(b).digest();
+  return crypto.timingSafeEqual(hashA, hashB);
+}
+
+// Security: Dynamic Passcode Resolution with ENV override
+function getEffectivePasscode() {
+  if (process.env.ADMIN_PASSCODE) {
+    return process.env.ADMIN_PASSCODE;
+  }
+  const settings = readSettings();
+  return settings.adminPasscode || DEFAULT_SETTINGS.adminPasscode;
+}
+
+// Security: In-Memory IP Brute-Force Rate Limiter
+const loginRateLimiter = new Map(); // ip -> { count: number, lockedUntil: number }
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes lockout
+
+function checkLoginRateLimit(ip) {
+  const record = loginRateLimiter.get(ip);
+  if (!record) return { allowed: true };
+  const now = Date.now();
+  if (record.lockedUntil && now < record.lockedUntil) {
+    const remainingSeconds = Math.ceil((record.lockedUntil - now) / 1000);
+    return { allowed: false, remainingSeconds };
+  }
+  if (record.lockedUntil && now >= record.lockedUntil) {
+    loginRateLimiter.delete(ip);
+    return { allowed: true };
+  }
+  return { allowed: true };
+}
+
+function recordLoginFailure(ip) {
+  const record = loginRateLimiter.get(ip) || { count: 0, lockedUntil: 0 };
+  record.count += 1;
+  if (record.count >= MAX_LOGIN_ATTEMPTS) {
+    record.lockedUntil = Date.now() + LOCKOUT_DURATION_MS;
+  }
+  loginRateLimiter.set(ip, record);
+}
+
+function recordLoginSuccess(ip) {
+  loginRateLimiter.delete(ip);
+}
+
+// Security: File Upload Validation & Sanitization
+const ALLOWED_IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.ico', '.svg', '.gif']);
+
+function validateImageBuffer(buffer, ext) {
+  if (!buffer || buffer.length === 0) return { valid: false, error: 'Empty file buffer.' };
+  if (buffer.length > 5 * 1024 * 1024) return { valid: false, error: 'File exceeds 5MB size limit.' };
+
+  const normalizedExt = (ext || '').toLowerCase();
+  if (!ALLOWED_IMAGE_EXTS.has(normalizedExt)) {
+    return { valid: false, error: `Disallowed file extension "${ext}". Allowed: png, jpg, jpeg, webp, ico, svg, gif` };
+  }
+
+  // Magic byte checks
+  if (normalizedExt === '.png') {
+    if (buffer.length < 8 || buffer[0] !== 0x89 || buffer[1] !== 0x50 || buffer[2] !== 0x4e || buffer[3] !== 0x47) {
+      return { valid: false, error: 'Corrupt or invalid PNG signature.' };
+    }
+  } else if (normalizedExt === '.jpg' || normalizedExt === '.jpeg') {
+    if (buffer.length < 3 || buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) {
+      return { valid: false, error: 'Corrupt or invalid JPEG signature.' };
+    }
+  } else if (normalizedExt === '.webp') {
+    const head = buffer.toString('utf-8', 0, 12);
+    if (!head.startsWith('RIFF') || !head.includes('WEBP')) {
+      return { valid: false, error: 'Corrupt or invalid WebP signature.' };
+    }
+  } else if (normalizedExt === '.ico') {
+    if (buffer.length < 4 || buffer[0] !== 0x00 || buffer[1] !== 0x00 || buffer[2] !== 0x01 || buffer[3] !== 0x00) {
+      return { valid: false, error: 'Corrupt or invalid ICO signature.' };
+    }
+  } else if (normalizedExt === '.svg') {
+    const svgStr = buffer.toString('utf-8').toLowerCase();
+    if (svgStr.includes('<script') || svgStr.includes('javascript:') || svgStr.includes('onload=') || svgStr.includes('onerror=')) {
+      return { valid: false, error: 'SVG contains disallowed executable scripts or event handlers.' };
+    }
+    if (!svgStr.includes('<svg')) {
+      return { valid: false, error: 'Invalid SVG content.' };
+    }
+  }
+
+  return { valid: true };
+}
+
+// Periodic Session & Rate Limiter Cleanup (Avoids memory leaks during long uptimes)
+const sessionCleanupTimer = setInterval(() => {
+  const now = Date.now();
+  for (const [token, session] of activeSessions.entries()) {
+    if (now > session.expiresAt) {
+      activeSessions.delete(token);
+    }
+  }
+  for (const [ip, record] of loginRateLimiter.entries()) {
+    if (record.lockedUntil && now > record.lockedUntil) {
+      loginRateLimiter.delete(ip);
+    }
+  }
+}, 30 * 60 * 1000);
+sessionCleanupTimer.unref();
+
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -150,8 +294,8 @@ function parseBody(req) {
     let body = '';
     req.on('data', chunk => {
       body += chunk;
-      if (body.length > 20 * 1024 * 1024) { // 20 MB limit
-        reject(new Error('Payload too large'));
+      if (body.length > 5 * 1024 * 1024) { // Hardened 5 MB limit
+        reject(new Error('Payload too large (Max 5MB)'));
       }
     });
     req.on('end', () => {
@@ -230,21 +374,43 @@ function generateGoogleMerchantFeed(apps, settings, host) {
 
 // Server Creation
 const server = http.createServer(async (req, res) => {
-  // CORS & Security headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  try {
+    const clientIp = getClientIp(req);
+    const host = sanitizeHost(req.headers.host);
+    const urlObj = new URL(req.url, `http://${host}`);
+    const pathname = urlObj.pathname;
 
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204;
-    return res.end();
-  }
+    // Security: Block directory traversal attempts and null byte injections upfront
+    if (req.url.includes('..') || req.url.includes('\0') || req.url.toLowerCase().includes('%2e%2e')) {
+      res.statusCode = 403;
+      return res.end('Access denied');
+    }
 
-  const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  const pathname = urlObj.pathname;
-  const host = req.headers.host || 'localhost';
+    // Hardened HTTP Security Headers
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com; frame-src 'self' https://*.firebaseapp.com;");
+
+    // Dynamic CORS: allow * for public GET, reflect Origin for admin
+    if (pathname.startsWith('/api/admin/')) {
+      const origin = req.headers.origin;
+      if (origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+      }
+    } else {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    if (req.method === 'OPTIONS') {
+      res.statusCode = 204;
+      return res.end();
+    }
 
   // ---------------------------------------------------------------------------
   // PUBLIC API ENDPOINTS
@@ -354,11 +520,24 @@ Sitemap: https://${host}/sitemap.xml
 
   if (req.method === 'POST' && pathname === '/api/admin/login') {
     try {
+      const rateCheck = checkLoginRateLimit(clientIp);
+      if (!rateCheck.allowed) {
+        res.setHeader('Retry-After', String(rateCheck.remainingSeconds));
+        return sendJson(res, 429, {
+          success: false,
+          error: `Too many failed login attempts. Locked for ${rateCheck.remainingSeconds} seconds.`
+        });
+      }
+
       const { passcode } = await parseBody(req);
-      const settings = readSettings();
-      if (!passcode || passcode !== settings.adminPasscode) {
+      const expectedPasscode = getEffectivePasscode();
+
+      if (!passcode || !secureCompare(String(passcode), String(expectedPasscode))) {
+        recordLoginFailure(clientIp);
         return sendJson(res, 401, { success: false, error: 'Invalid admin passcode.' });
       }
+
+      recordLoginSuccess(clientIp);
       const token = generateSessionToken();
       return sendJson(res, 200, {
         success: true,
@@ -373,7 +552,7 @@ Sitemap: https://${host}/sitemap.xml
 
   if (req.method === 'POST' && pathname === '/api/admin/firebase-auth') {
     try {
-      const { email, uid } = await parseBody(req);
+      const { email, uid, idToken } = await parseBody(req);
       if (!email) {
         return sendJson(res, 400, { success: false, error: 'Email required.' });
       }
@@ -383,8 +562,8 @@ Sitemap: https://${host}/sitemap.xml
         'princegaming5555@gmail.com',
         'admin@netroar.dev'
       ];
-      const isAdmin = adminList.includes(cleanEmail) || cleanEmail.endsWith('@netroar.dev');
-      if (!isAdmin) {
+      const isConfiguredAdmin = adminList.includes(cleanEmail) || cleanEmail.endsWith('@netroar.dev');
+      if (!isConfiguredAdmin) {
         return sendJson(res, 200, {
           success: true,
           isAdmin: false,
@@ -392,6 +571,27 @@ Sitemap: https://${host}/sitemap.xml
           message: 'Authenticated as standard user.'
         });
       }
+
+      // Security: Cryptographic validation of Firebase ID token if present or in production
+      if (idToken) {
+        try {
+          const verifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+          if (!verifyRes.ok) {
+            return sendJson(res, 401, { success: false, error: 'Cryptographic identity verification failed.' });
+          }
+          const tokenData = await verifyRes.json();
+          if (tokenData.email && tokenData.email.toLowerCase() !== cleanEmail) {
+            return sendJson(res, 401, { success: false, error: 'Token email mismatch.' });
+          }
+        } catch (fetchErr) {
+          if (process.env.NODE_ENV === 'production') {
+            return sendJson(res, 502, { success: false, error: 'Identity verification service unreachable.' });
+          }
+        }
+      } else if (process.env.NODE_ENV === 'production') {
+        return sendJson(res, 401, { success: false, error: 'ID token required for administrative elevation in production.' });
+      }
+
       const token = generateSessionToken();
       return sendJson(res, 200, {
         success: true,
@@ -399,7 +599,7 @@ Sitemap: https://${host}/sitemap.xml
         role: 'admin',
         token,
         expiresIn: SESSION_TTL_MS / 1000,
-        message: 'Admin authorization granted via Firebase identity.'
+        message: 'Admin authorization granted via verified Firebase identity.'
       });
     } catch (err) {
       return sendJson(res, 400, { success: false, error: err.message });
@@ -515,10 +715,41 @@ Sitemap: https://${host}/sitemap.xml
           ...payload,
           updatedAt: new Date().toISOString()
         };
-        // Preserve passcode if empty in update
-        if (!payload.adminPasscode) {
+        // Validate & update passcode
+        if (payload.adminPasscode) {
+          if (typeof payload.adminPasscode !== 'string' || payload.adminPasscode.trim().length < 8) {
+            return sendJson(res, 400, { success: false, error: 'New admin passcode must be at least 8 characters long.' });
+          }
+          updated.adminPasscode = payload.adminPasscode.trim();
+        } else {
           updated.adminPasscode = current.adminPasscode;
         }
+
+        // Harmonize logo and favicon aliases
+        if (payload.logoDarkUrl && !payload.brandLogo) updated.brandLogo = payload.logoDarkUrl;
+        if (payload.brandLogo && !payload.logoDarkUrl) updated.logoDarkUrl = payload.brandLogo;
+        if (payload.faviconUrl && !payload.favicon) updated.favicon = payload.faviconUrl;
+        if (payload.favicon && !payload.faviconUrl) updated.faviconUrl = payload.favicon;
+
+        // If favicon is changed and points to a local file, synchronize to public/favicon.png securely
+        const effectiveFavicon = payload.faviconUrl || payload.favicon;
+        if (effectiveFavicon && typeof effectiveFavicon === 'string' && effectiveFavicon.startsWith('/')) {
+          try {
+            const rawSubPath = effectiveFavicon.split('?')[0].replace(/^\//, '');
+            const cleanFaviconPath = path.normalize(rawSubPath);
+            // Security: Prevent path traversal in favicon file synchronization
+            if (!cleanFaviconPath.includes('..') && !cleanFaviconPath.includes('\0')) {
+              const sourceFavPath = path.resolve(PUBLIC_DIR, cleanFaviconPath);
+              const targetFavPath = path.resolve(PUBLIC_DIR, 'favicon.png');
+              if (sourceFavPath.startsWith(PUBLIC_DIR) && fs.existsSync(sourceFavPath) && sourceFavPath !== targetFavPath) {
+                fs.copyFileSync(sourceFavPath, targetFavPath);
+              }
+            }
+          } catch (syncErr) {
+            console.error('Could not sync favicon to /favicon.png:', syncErr);
+          }
+        }
+
         writeSettings(updated);
         const { adminPasscode, ...safeSettings } = updated;
         return sendJson(res, 200, { success: true, settings: safeSettings });
@@ -527,7 +758,7 @@ Sitemap: https://${host}/sitemap.xml
       }
     }
 
-    // Upload image (Data URL or base64 binary)
+    // Upload image (Data URL or base64 binary) with validation & sanitization
     if (req.method === 'POST' && pathname === '/api/admin/upload-image') {
       try {
         const { filename, base64Data } = await parseBody(req);
@@ -536,8 +767,15 @@ Sitemap: https://${host}/sitemap.xml
         }
         const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, '');
         const buffer = Buffer.from(cleanBase64, 'base64');
-        const ext = path.extname(filename || 'image.png') || '.png';
-        const safeName = `upload_${Date.now()}_${crypto.randomBytes(4).toString('hex')}${ext}`;
+        const ext = (path.extname(filename || 'image.png') || '.png').toLowerCase();
+
+        // Security: Validate buffer against whitelist, size limit, and magic bytes
+        const validation = validateImageBuffer(buffer, ext);
+        if (!validation.valid) {
+          return sendJson(res, 400, { success: false, error: validation.error });
+        }
+
+        const safeName = `upload_${Date.now()}_${crypto.randomBytes(8).toString('hex')}${ext}`;
         const filePath = path.join(UPLOADS_DIR, safeName);
         fs.writeFileSync(filePath, buffer);
         const fileUrl = `/assets/uploads/${safeName}`;
@@ -560,7 +798,15 @@ Sitemap: https://${host}/sitemap.xml
   // STATIC FILE SERVING
   // ---------------------------------------------------------------------------
 
-  let safePath = path.normalize(decodeURIComponent(pathname));
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent(pathname);
+  } catch (err) {
+    res.statusCode = 400;
+    return res.end('Bad Request: Malformed URI');
+  }
+
+  let safePath = path.normalize(decodedPath);
   if (safePath === '/' || safePath === '\\') safePath = '/index.html';
   if (safePath === '/admin' || safePath === '\\admin' || safePath === '/admin/' || safePath === '\\admin\\') {
     safePath = '/admin.html';
@@ -575,7 +821,7 @@ Sitemap: https://${host}/sitemap.xml
     safePath = '/apps.html';
   }
 
-  // Block path traversal
+  // Block path traversal and null bytes
   if (safePath.includes('..') || safePath.includes('\0')) {
     res.statusCode = 403;
     return res.end('Access denied');
@@ -607,6 +853,13 @@ Sitemap: https://${host}/sitemap.xml
 
   res.statusCode = 404;
   res.end('Not Found');
+  } catch (unhandledErr) {
+    console.error('Unhandled request processing error:', unhandledErr);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.end('Internal Server Error');
+    }
+  }
 });
 
 server.listen(PORT, '0.0.0.0', () => {
@@ -614,4 +867,12 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🌐 Public Catalog: http://localhost:${PORT}/`);
   console.log(`⚡ Admin Control:  http://localhost:${PORT}/admin`);
   console.log(`📦 Merchant Feed:  http://localhost:${PORT}/feed/products.xml`);
+
+  const effectivePass = getEffectivePasscode();
+  if (effectivePass === 'netroar@admin2026') {
+    console.warn(`⚠️  SECURITY ADVISORY: Server is using the default admin passcode.`);
+    console.warn(`⚠️  For live production, configure the ADMIN_PASSCODE environment variable.`);
+  } else {
+    console.log(`🔒 Custom admin passcode active (Length: ${effectivePass.length} chars).`);
+  }
 });

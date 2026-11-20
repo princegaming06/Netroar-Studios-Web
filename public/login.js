@@ -250,13 +250,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Call server for admin session token if administrator
+    // Call server for admin session token if administrator (using cryptographic ID token)
     if (isAdmin) {
       try {
+        const idToken = (typeof user.getIdToken === 'function') ? await user.getIdToken() : null;
         const adminRes = await fetch('/api/admin/firebase-auth', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, uid })
+          body: JSON.stringify({ email, uid, idToken })
         });
         const adminData = await adminRes.json();
         if (adminData.success && adminData.token) {

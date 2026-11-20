@@ -1,5 +1,11 @@
 {
   "studioName": "Netroar Studios",
+  "brandLogo": "/assets/logo/netroar-studios-logo-dark.png",
+  "logoDarkUrl": "/assets/logo/netroar-studios-logo-dark.png",
+  "logoLightUrl": "/assets/logo/netroar-studios-logo-light.png",
+  "favicon": "/favicon.png",
+  "faviconUrl": "/favicon.png",
+  "logoScale": 100,
   "slogan": "Beyond Technology. Beyond Imagination.",
   "heroTitle": "Beyond Technology. Beyond Imagination.",
   "heroDescription": "Netroar Studios began with an ambition: to create technology rather than simply consume it. An independent technology brand exploring software engineering, digital products, artificial intelligence, and interactive experiences.",
@@ -24,5 +30,5 @@
     "secondary": "#00a4ef",
     "darkBg": "#05080c"
   },
-  "updatedAt": "2026-11-19T21:15:00.000Z"
+  "updatedAt": "2026-11-20T12:19:19.773Z"
 }

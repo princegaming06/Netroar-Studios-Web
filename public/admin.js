@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTabs();
   setupFilters();
   setupModalActions();
+  setupIconsManager();
   setupSettingsForm();
   setupBackupHandlers();
   setupFeedTools();
@@ -66,6 +67,17 @@ function showToast(message, isError = false) {
       toastNotify.classList.remove('show');
     }, 3500);
   }
+}
+
+// Security: XSS Sanitizer for HTML string interpolation
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // Theme & Cyber Visual Engine
@@ -260,13 +272,15 @@ function showDashboard() {
 
 // Navigation Tabs
 function setupTabs() {
-  tabButtons.forEach(btn => {
+  const currentTabButtons = document.querySelectorAll('.admin-tab-btn');
+  const currentTabContents = document.querySelectorAll('.admin-tab-content');
+  currentTabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
-      tabButtons.forEach(b => b.classList.remove('active'));
+      currentTabButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      tabContents.forEach(c => {
+      currentTabContents.forEach(c => {
         c.style.display = c.id === `tab-${targetTab}` ? 'block' : 'none';
       });
     });
@@ -296,7 +310,7 @@ async function loadApps() {
     appsTableContainer.innerHTML = `
       <div style="padding: 16px;">
         <div style="display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
-          <div class="skeleton-box" style="width: 44px; height: 44px; border-radius: 8px;"></div>
+          <div class="skeleton-box" style="width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;"></div>
           <div style="flex: 1;">
             <div class="skeleton-text" style="width: 140px; height: 16px; margin-bottom: 6px;"></div>
             <div class="skeleton-text" style="width: 90px; height: 12px; margin-bottom: 0;"></div>
@@ -304,7 +318,7 @@ async function loadApps() {
           <div class="skeleton-pill" style="width: 64px; height: 22px;"></div>
         </div>
         <div style="display: flex; align-items: center; gap: 14px; padding: 14px 0;">
-          <div class="skeleton-box" style="width: 44px; height: 44px; border-radius: 8px;"></div>
+          <div class="skeleton-box" style="width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;"></div>
           <div style="flex: 1;">
             <div class="skeleton-text" style="width: 120px; height: 16px; margin-bottom: 6px;"></div>
             <div class="skeleton-text" style="width: 80px; height: 12px; margin-bottom: 0;"></div>
@@ -418,52 +432,62 @@ function renderAdminAppsTable(apps) {
     const statusClass = isLive ? 'status-live' : 'status-beta';
     const publicUrl = app.slug ? `/apps#${app.slug}` : (app.websiteUrl || '#');
 
+    const safeId = escapeHtml(app.id);
+    const safeName = escapeHtml(app.name);
+    const safeSlug = escapeHtml(app.slug);
+    const safeCategory = escapeHtml(app.category || 'App');
+    const safeIcon = escapeHtml(app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png');
+    const safePlatforms = escapeHtml(platformsText);
+    const safeStatus = escapeHtml(app.status || 'Live');
+    const safeVersion = escapeHtml(app.version || '1.0.0');
+    const safePublicUrl = escapeHtml(publicUrl);
+    const escapedRawName = (app.name || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
     return `
       <tr style="border-bottom: 1px solid var(--border-subtle); transition: background 0.2s ease;">
         <td style="padding: 16px 12px;">
           <div style="display: flex; align-items: center; gap: 14px;">
-            <div style="position: relative;">
-              <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" 
-                   alt="${app.name}" 
-                   style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: contain; background: var(--bg-surface-elevated); padding: 4px; border: 1px solid var(--border-glass);"
+            <div class="admin-table-icon-block">
+              <img src="${safeIcon}" 
+                   alt="${safeName}" 
                    onerror="this.src='/assets/logo/Netroar_To_Do_dark_v2.png'">
             </div>
             <div>
-              <div style="font-weight: 800; font-size: 1rem; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-                <span>${app.name}</span>
+              <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                <span>${safeName}</span>
                 <button class="btn-table-star ${app.isFeatured ? 'active' : ''}" 
-                        onclick="toggleAppFeatured('${app.id}')" 
+                        onclick="toggleAppFeatured('${safeId}')" 
                         title="${app.isFeatured ? 'Featured: Click to unstar' : 'Click to feature on front page spotlight'}">
                   ${app.isFeatured ? '★' : '☆'}
                 </button>
               </div>
               <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px;">
-                ${app.slug} · <span style="color: var(--neon-mint);">${app.category || 'App'}</span>
+                ${safeSlug} · <span style="color: var(--neon-mint);">${safeCategory}</span>
               </div>
             </div>
           </div>
         </td>
         <td style="padding: 16px 12px; font-size: 0.88rem; color: var(--text-secondary);">
-          ${platformsText}
+          ${safePlatforms}
         </td>
         <td style="padding: 16px 12px;">
           <span class="status-badge ${statusClass}" style="display: inline-flex; align-items: center; gap: 6px;">
             <span class="status-dot-pulse" style="width: 6px; height: 6px; ${isLive ? '' : 'background: #fbbf24; box-shadow: 0 0 6px #fbbf24;'}"></span>
-            <span>${app.status || 'Live'}</span>
+            <span>${safeStatus}</span>
           </span>
         </td>
         <td style="padding: 16px 12px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">
-          v${app.version || '1.0.0'}
+          v${safeVersion}
         </td>
         <td style="padding: 16px 12px; text-align: right;">
           <div style="display: inline-flex; gap: 8px; align-items: center;">
-            <a href="${publicUrl}" target="_blank" class="btn-card-outline" style="height: 32px; padding: 0 10px; font-size: 0.78rem; text-decoration: none;" title="View public showcase">
+            <a href="${safePublicUrl}" target="_blank" class="btn-card-outline" style="height: 32px; padding: 0 10px; font-size: 0.78rem; text-decoration: none;" title="View public showcase">
               View ↗
             </a>
-            <button class="btn-card-outline" style="height: 32px; padding: 0 12px; font-size: 0.82rem;" onclick="openEditModal('${app.id}')">
+            <button class="btn-card-outline" style="height: 32px; padding: 0 12px; font-size: 0.82rem;" onclick="openEditModal('${safeId}')">
               Edit
             </button>
-            <button class="btn-card-outline" style="height: 32px; padding: 0 10px; font-size: 0.82rem; color: #f87171; border-color: rgba(239, 68, 68, 0.3);" onclick="confirmDeleteApp('${app.id}', '${app.name.replace(/'/g, "\\'")}')">
+            <button class="btn-card-outline" style="height: 32px; padding: 0 10px; font-size: 0.82rem; color: #f87171; border-color: rgba(239, 68, 68, 0.3);" onclick="confirmDeleteApp('${safeId}', '${escapedRawName}')">
               Delete
             </button>
           </div>
@@ -796,6 +820,752 @@ function populateSettingsForm(s) {
   document.getElementById('setting-social-discord').value = socials.discord || '';
   document.getElementById('setting-social-twitter').value = socials.twitter || '';
   document.getElementById('setting-social-youtube').value = socials.youtube || '';
+
+  // Webpage Brand Logo & Favicon inputs and previews (Netroar To-Do Architecture)
+  const logoDarkVal = s.logoDarkUrl || s.brandLogo || '/assets/logo/netroar-studios-logo-dark.png';
+  const logoLightVal = s.logoLightUrl || s.brandLogo || '/assets/logo/netroar-studios-logo-light.png';
+  const faviconVal = s.faviconUrl || s.favicon || '/favicon.png';
+  const logoScaleVal = s.logoScale || 100;
+  
+  const logoDarkInput = document.getElementById('setting-logo-dark');
+  const logoLightInput = document.getElementById('setting-logo-light');
+  const faviconInput = document.getElementById('setting-favicon');
+  const logoScaleSlider = document.getElementById('logo-range-slider');
+  const logoScaleBadge = document.getElementById('logo-adjuster-val-badge');
+
+  const previewDarkLogoImg = document.getElementById('preview-dark-logo-img');
+  const previewLightLogoImg = document.getElementById('preview-light-logo-img');
+  const previewFaviconImg = document.getElementById('preview-favicon-img');
+  const previewFaviconTabImg = document.getElementById('preview-favicon-tab-img');
+  const settingsQuickLogo = document.getElementById('settings-quick-logo-preview');
+
+  if (logoDarkInput) logoDarkInput.value = logoDarkVal;
+  if (logoLightInput) logoLightInput.value = logoLightVal;
+  if (faviconInput) faviconInput.value = faviconVal;
+  if (logoScaleSlider) logoScaleSlider.value = logoScaleVal;
+  if (logoScaleBadge) logoScaleBadge.textContent = `${logoScaleVal}%`;
+
+  if (previewDarkLogoImg) previewDarkLogoImg.src = logoDarkVal;
+  if (previewLightLogoImg) previewLightLogoImg.src = logoLightVal;
+  if (previewFaviconImg) previewFaviconImg.src = faviconVal;
+  if (previewFaviconTabImg) previewFaviconTabImg.src = faviconVal;
+  if (settingsQuickLogo) settingsQuickLogo.src = logoDarkVal;
+
+  updateThemeStatusChips();
+}
+
+function updateThemeStatusChips() {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const chipLight = document.getElementById('status-chip-light');
+  const chipDark = document.getElementById('status-chip-dark');
+  if (chipLight && chipDark) {
+    if (isLight) {
+      chipLight.className = 'branding-status-chip active';
+      chipLight.textContent = '● Displaying Now';
+      chipDark.className = 'branding-status-chip';
+      chipDark.textContent = 'Standby';
+    } else {
+      chipDark.className = 'branding-status-chip active';
+      chipDark.textContent = '● Displaying Now';
+      chipLight.className = 'branding-status-chip';
+      chipLight.textContent = 'Standby';
+    }
+  }
+}
+
+// ==========================================================================
+// WEBPAGE ICONS & BRANDING STUDIO (NETROAR TO-DO ARCHITECTURE)
+// ==========================================================================
+function setupIconsManager() {
+  const logoDarkInput = document.getElementById('setting-logo-dark');
+  const logoLightInput = document.getElementById('setting-logo-light');
+  const faviconInput = document.getElementById('setting-favicon');
+
+  const fileDarkLogo = document.getElementById('file-dark-logo');
+  const fileLightLogo = document.getElementById('file-light-logo');
+  const fileFavicon = document.getElementById('file-favicon');
+
+  const previewDarkLogoImg = document.getElementById('preview-dark-logo-img');
+  const previewLightLogoImg = document.getElementById('preview-light-logo-img');
+  const previewFaviconImg = document.getElementById('preview-favicon-img');
+  const previewFaviconTabImg = document.getElementById('preview-favicon-tab-img');
+  const settingsQuickLogo = document.getElementById('settings-quick-logo-preview');
+
+  const displayLightLogo = document.getElementById('display-light-logo');
+  const displayDarkLogo = document.getElementById('display-dark-logo');
+  const displayFavicon = document.getElementById('display-favicon');
+
+  const btnSyncLogoToFavicon = document.getElementById('btn-sync-logo-to-favicon');
+  const btnResetDefaults = document.getElementById('btn-reset-icons-defaults');
+  const iconsForm = document.getElementById('icons-manager-form');
+
+  // 1. Tap-To-Upload on Interactive Logo Displays
+  if (displayLightLogo && fileLightLogo) {
+    displayLightLogo.addEventListener('click', () => fileLightLogo.click());
+  }
+  if (displayDarkLogo && fileDarkLogo) {
+    displayDarkLogo.addEventListener('click', () => fileDarkLogo.click());
+  }
+  if (displayFavicon && fileFavicon) {
+    displayFavicon.addEventListener('click', () => fileFavicon.click());
+  }
+
+  // 2. Real-Time Text Input Preview Listeners
+  if (logoDarkInput) {
+    logoDarkInput.addEventListener('input', () => {
+      const val = logoDarkInput.value.trim() || '/assets/logo/netroar-studios-logo-dark.png';
+      if (previewDarkLogoImg) previewDarkLogoImg.src = val;
+      if (settingsQuickLogo) settingsQuickLogo.src = val;
+    });
+  }
+
+  if (logoLightInput) {
+    logoLightInput.addEventListener('input', () => {
+      const val = logoLightInput.value.trim() || '/assets/logo/netroar-studios-logo-light.png';
+      if (previewLightLogoImg) previewLightLogoImg.src = val;
+    });
+  }
+
+  if (faviconInput) {
+    faviconInput.addEventListener('input', () => {
+      const val = faviconInput.value.trim() || '/favicon.png';
+      if (previewFaviconImg) previewFaviconImg.src = val;
+      if (previewFaviconTabImg) previewFaviconTabImg.src = val;
+    });
+  }
+
+  // 3. Logo Display Scale Adjuster
+  const logoScaleSlider = document.getElementById('logo-range-slider');
+  const logoScaleBadge = document.getElementById('logo-adjuster-val-badge');
+  const btnScaleMinus = document.getElementById('btn-logo-scale-minus');
+  const btnScalePlus = document.getElementById('btn-logo-scale-plus');
+
+  function updateLogoScale(val) {
+    const clamped = Math.max(50, Math.min(150, parseInt(val, 10) || 100));
+    if (logoScaleSlider) logoScaleSlider.value = clamped;
+    if (logoScaleBadge) logoScaleBadge.textContent = `${clamped}%`;
+    document.documentElement.style.setProperty('--brand-logo-scale', `${clamped / 100}`);
+  }
+
+  if (logoScaleSlider) {
+    logoScaleSlider.addEventListener('input', (e) => updateLogoScale(e.target.value));
+  }
+  if (btnScaleMinus && logoScaleSlider) {
+    btnScaleMinus.addEventListener('click', () => updateLogoScale(parseInt(logoScaleSlider.value, 10) - 5));
+  }
+  if (btnScalePlus && logoScaleSlider) {
+    btnScalePlus.addEventListener('click', () => updateLogoScale(parseInt(logoScaleSlider.value, 10) + 5));
+  }
+
+  const scaleChips = document.querySelectorAll('[data-scale]');
+  scaleChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const sc = chip.getAttribute('data-scale');
+      if (sc === 'reset') updateLogoScale(100);
+      else updateLogoScale(sc);
+      scaleChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // 4. File Upload Handlers (Direct or via Editor)
+  async function uploadAssetFile(file, targetInput, previewImg, successMsg) {
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      const base64Data = evt.target.result;
+      if (previewImg) previewImg.src = base64Data;
+
+      try {
+        const res = await fetch('/api/admin/upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({ filename: file.name, base64Data })
+        });
+        const result = await res.json();
+        if (result.success && result.url) {
+          if (targetInput) targetInput.value = result.url;
+          if (previewImg) previewImg.src = result.url;
+          showToast(successMsg);
+        } else {
+          if (targetInput) targetInput.value = base64Data;
+          showToast('Stored as Data URL.');
+        }
+      } catch (err) {
+        if (targetInput) targetInput.value = base64Data;
+        showToast('Stored as Data URL.');
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (fileLightLogo) {
+    fileLightLogo.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) uploadAssetFile(file, logoLightInput, previewLightLogoImg, 'Light Mode Logo uploaded successfully.');
+    });
+  }
+
+  if (fileDarkLogo) {
+    fileDarkLogo.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        uploadAssetFile(file, logoDarkInput, previewDarkLogoImg, 'Dark Mode Logo uploaded successfully.');
+        if (settingsQuickLogo) settingsQuickLogo.src = URL.createObjectURL(file);
+      }
+    });
+  }
+
+  if (fileFavicon) {
+    fileFavicon.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        uploadAssetFile(file, faviconInput, previewFaviconImg, 'Favicon uploaded successfully.');
+        if (previewFaviconTabImg) previewFaviconTabImg.src = URL.createObjectURL(file);
+      }
+    });
+  }
+
+  // 5. Preset Chips
+  const presetChips = document.querySelectorAll('.icon-preset-chip[data-target]');
+  presetChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const target = chip.getAttribute('data-target');
+      const val = chip.getAttribute('data-value');
+      if (target === 'lightLogo' && logoLightInput) {
+        logoLightInput.value = val;
+        if (previewLightLogoImg) previewLightLogoImg.src = val;
+        showToast(`Selected Light Logo: ${chip.textContent.trim()}`);
+      } else if (target === 'darkLogo' && logoDarkInput) {
+        logoDarkInput.value = val;
+        if (previewDarkLogoImg) previewDarkLogoImg.src = val;
+        if (settingsQuickLogo) settingsQuickLogo.src = val;
+        showToast(`Selected Dark Logo: ${chip.textContent.trim()}`);
+      } else if (target === 'favicon' && faviconInput) {
+        faviconInput.value = val;
+        if (previewFaviconImg) previewFaviconImg.src = val;
+        if (previewFaviconTabImg) previewFaviconTabImg.src = val;
+        showToast(`Selected Favicon: ${chip.textContent.trim()}`);
+      }
+    });
+  });
+
+  // 6. Reset Buttons for Individual Targets
+  const btnResetLight = document.getElementById('btn-reset-light-logo');
+  if (btnResetLight) {
+    btnResetLight.addEventListener('click', () => {
+      const def = '/assets/logo/netroar-studios-logo-light.png';
+      if (logoLightInput) logoLightInput.value = def;
+      if (previewLightLogoImg) previewLightLogoImg.src = def;
+      showToast('Reset Light Logo to default Netroar asset.');
+    });
+  }
+
+  const btnResetDark = document.getElementById('btn-reset-dark-logo');
+  if (btnResetDark) {
+    btnResetDark.addEventListener('click', () => {
+      const def = '/assets/logo/netroar-studios-logo-dark.png';
+      if (logoDarkInput) logoDarkInput.value = def;
+      if (previewDarkLogoImg) previewDarkLogoImg.src = def;
+      if (settingsQuickLogo) settingsQuickLogo.src = def;
+      showToast('Reset Dark Logo to default Netroar asset.');
+    });
+  }
+
+  const btnResetFavicon = document.getElementById('btn-reset-favicon');
+  if (btnResetFavicon) {
+    btnResetFavicon.addEventListener('click', () => {
+      const def = '/assets/logo/Netroar_Favicon_Clean.png';
+      if (faviconInput) faviconInput.value = def;
+      if (previewFaviconImg) previewFaviconImg.src = def;
+      if (previewFaviconTabImg) previewFaviconTabImg.src = def;
+      showToast('Reset Favicon to clean Netroar asset.');
+    });
+  }
+
+  // 7. Sync Dark Logo to Favicon
+  if (btnSyncLogoToFavicon) {
+    btnSyncLogoToFavicon.addEventListener('click', () => {
+      const currentDark = logoDarkInput ? logoDarkInput.value.trim() : '';
+      if (!currentDark) {
+        showToast('Please enter or upload a Dark Logo first.', true);
+        return;
+      }
+      if (faviconInput) {
+        faviconInput.value = currentDark;
+        if (previewFaviconImg) previewFaviconImg.src = currentDark;
+        if (previewFaviconTabImg) previewFaviconTabImg.src = currentDark;
+        showToast('Synced Favicon path to Dark Mode Logo.');
+      }
+    });
+  }
+
+  // 8. Reset All to Studio Defaults
+  if (btnResetDefaults) {
+    btnResetDefaults.addEventListener('click', () => {
+      const defaultDark = '/assets/logo/netroar-studios-logo-dark.png';
+      const defaultLight = '/assets/logo/netroar-studios-logo-light.png';
+      const defaultFav = '/favicon.png';
+      if (logoDarkInput) logoDarkInput.value = defaultDark;
+      if (logoLightInput) logoLightInput.value = defaultLight;
+      if (faviconInput) faviconInput.value = defaultFav;
+      if (previewDarkLogoImg) previewDarkLogoImg.src = defaultDark;
+      if (previewLightLogoImg) previewLightLogoImg.src = defaultLight;
+      if (previewFaviconImg) previewFaviconImg.src = defaultFav;
+      if (previewFaviconTabImg) previewFaviconTabImg.src = defaultFav;
+      if (settingsQuickLogo) settingsQuickLogo.src = defaultDark;
+      updateLogoScale(100);
+      showToast('Reset all icons to studio defaults. Click Save to persist.');
+    });
+  }
+
+  // 9. Save Icons Form Submit
+  if (iconsForm) {
+    iconsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const logoDarkUrl = logoDarkInput.value.trim() || '/assets/logo/netroar-studios-logo-dark.png';
+      const logoLightUrl = logoLightInput.value.trim() || '/assets/logo/netroar-studios-logo-light.png';
+      const faviconUrl = faviconInput.value.trim() || '/favicon.png';
+      const logoScale = parseInt(logoScaleSlider ? logoScaleSlider.value : 100, 10) || 100;
+
+      const payload = {
+        logoDarkUrl,
+        logoLightUrl,
+        faviconUrl,
+        brandLogo: logoDarkUrl,
+        favicon: faviconUrl,
+        logoScale
+      };
+
+      try {
+        const res = await fetch('/api/admin/settings', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success && data.settings) {
+          currentSettings = { ...currentSettings, ...data.settings };
+          if (typeof window.applyLiveBranding === 'function') {
+            window.applyLiveBranding(data.settings);
+          }
+          showToast('Brand logos and favicon successfully saved & broadcasted across all pages!');
+        } else {
+          showToast(data.error || 'Failed to save icon settings.', true);
+        }
+      } catch (saveErr) {
+        showToast('Network error while saving icon settings.', true);
+      }
+    });
+  }
+
+  // 10. In-Browser Image & Icon Editor Modal Implementation
+  setupInBrowserImageEditor();
+}
+
+// In-Browser Image & Icon Editor Modal Engine
+function setupInBrowserImageEditor() {
+  const modal = document.getElementById('admin-image-editor-modal');
+  const btnClose = document.getElementById('btn-close-image-editor');
+  const btnCancel = document.getElementById('btn-cancel-image-editor');
+  const btnApply = document.getElementById('btn-apply-image-editor');
+
+  const targetLabel = document.getElementById('editor-target-label');
+  const targetImg = document.getElementById('image-editor-target-img');
+  const viewport = document.getElementById('image-editor-viewport');
+  const mask = document.getElementById('image-editor-mask');
+
+  const zoomSlider = document.getElementById('editor-zoom-slider');
+  const zoomVal = document.getElementById('editor-zoom-val');
+
+  const radiusSlider = document.getElementById('editor-radius-slider');
+  const radiusVal = document.getElementById('editor-radius-val');
+
+  const rotateSlider = document.getElementById('editor-rotate-slider');
+  const rotateVal = document.getElementById('editor-rotate-val');
+  const btnRotateCcw = document.getElementById('btn-rotate-ccw');
+  const btnRotateCw = document.getElementById('btn-rotate-cw');
+
+  const btnCenterPos = document.getElementById('btn-editor-center-pos');
+  const btnResetTransforms = document.getElementById('btn-editor-reset-transforms');
+
+  const bgChips = document.querySelectorAll('.bg-toggle-chip');
+
+  let editorState = {
+    target: 'darkLogo',
+    imageSrc: '',
+    zoom: 100,
+    panX: 0,
+    panY: 0,
+    borderRadius: 22,
+    rotation: 0,
+    bgMode: 'dark',
+    isDragging: false,
+    dragStart: { x: 0, y: 0, initPanX: 0, initPanY: 0 }
+  };
+
+  function updateTransformCSS() {
+    if (targetImg) {
+      targetImg.style.transform = `translate(${editorState.panX}px, ${editorState.panY}px) scale(${editorState.zoom / 100}) rotate(${editorState.rotation}deg)`;
+    }
+    if (mask) {
+      mask.style.borderRadius = `${editorState.borderRadius}%`;
+    }
+  }
+
+  function openEditor(target) {
+    editorState.target = target;
+    const labelMap = {
+      lightLogo: 'Light Mode Logo',
+      darkLogo: 'Dark Mode Logo',
+      favicon: 'Website Favicon'
+    };
+
+    let src = '';
+    if (target === 'lightLogo') {
+      src = document.getElementById('setting-logo-light')?.value || '/assets/logo/netroar-studios-logo-light.png';
+      editorState.bgMode = 'light';
+    } else if (target === 'darkLogo') {
+      src = document.getElementById('setting-logo-dark')?.value || '/assets/logo/netroar-studios-logo-dark.png';
+      editorState.bgMode = 'dark';
+    } else if (target === 'favicon') {
+      src = document.getElementById('setting-favicon')?.value || '/assets/logo/Netroar_Favicon_Clean.png';
+      editorState.bgMode = 'dark';
+    }
+
+    editorState.imageSrc = src;
+    editorState.zoom = 100;
+    editorState.panX = 0;
+    editorState.panY = 0;
+    editorState.borderRadius = target === 'favicon' ? 22 : 20;
+    editorState.rotation = 0;
+
+    if (targetLabel) targetLabel.textContent = `Editing: ${labelMap[target] || 'Logo'}`;
+    if (targetImg) targetImg.src = src;
+
+    if (zoomSlider) zoomSlider.value = 100;
+    if (zoomVal) zoomVal.textContent = '100%';
+
+    if (radiusSlider) radiusSlider.value = editorState.borderRadius;
+    if (radiusVal) radiusVal.textContent = `${editorState.borderRadius}%`;
+
+    if (rotateSlider) rotateSlider.value = 0;
+    if (rotateVal) rotateVal.textContent = '0°';
+
+    // Set background
+    if (viewport) {
+      viewport.className = `image-editor-viewport bg-${editorState.bgMode}`;
+    }
+    bgChips.forEach(c => {
+      c.classList.toggle('active', c.getAttribute('data-bg') === editorState.bgMode);
+    });
+
+    updateTransformCSS();
+
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeEditor() {
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Wire trigger buttons
+  const btnEditLight = document.getElementById('btn-edit-light-logo');
+  if (btnEditLight) btnEditLight.addEventListener('click', () => openEditor('lightLogo'));
+
+  const btnEditDark = document.getElementById('btn-edit-dark-logo');
+  if (btnEditDark) btnEditDark.addEventListener('click', () => openEditor('darkLogo'));
+
+  const btnEditFavicon = document.getElementById('btn-edit-favicon');
+  if (btnEditFavicon) btnEditFavicon.addEventListener('click', () => openEditor('favicon'));
+
+  if (btnClose) btnClose.addEventListener('click', closeEditor);
+  if (btnCancel) btnCancel.addEventListener('click', closeEditor);
+
+  // Viewport Drag-to-Pan Handlers
+  if (viewport) {
+    const handleStart = (clientX, clientY) => {
+      editorState.isDragging = true;
+      viewport.classList.add('dragging');
+      editorState.dragStart = {
+        x: clientX,
+        y: clientY,
+        initPanX: editorState.panX,
+        initPanY: editorState.panY
+      };
+    };
+
+    const handleMove = (clientX, clientY) => {
+      if (!editorState.isDragging) return;
+      const dx = clientX - editorState.dragStart.x;
+      const dy = clientY - editorState.dragStart.y;
+      editorState.panX = Math.round(editorState.dragStart.initPanX + dx);
+      editorState.panY = Math.round(editorState.dragStart.initPanY + dy);
+      updateTransformCSS();
+    };
+
+    const handleEnd = () => {
+      editorState.isDragging = false;
+      viewport.classList.remove('dragging');
+    };
+
+    viewport.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+    window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', handleEnd);
+
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches[0]) handleStart(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    window.addEventListener('touchend', handleEnd);
+  }
+
+  // Sliders
+  if (zoomSlider) {
+    zoomSlider.addEventListener('input', (e) => {
+      editorState.zoom = parseInt(e.target.value, 10) || 100;
+      if (zoomVal) zoomVal.textContent = `${editorState.zoom}%`;
+      updateTransformCSS();
+    });
+  }
+
+  if (radiusSlider) {
+    radiusSlider.addEventListener('input', (e) => {
+      editorState.borderRadius = parseInt(e.target.value, 10) || 0;
+      if (radiusVal) radiusVal.textContent = `${editorState.borderRadius}%`;
+      updateTransformCSS();
+    });
+  }
+
+  const radiusChips = document.querySelectorAll('[data-radius]');
+  radiusChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const r = parseInt(chip.getAttribute('data-radius'), 10);
+      editorState.borderRadius = r;
+      if (radiusSlider) radiusSlider.value = r;
+      if (radiusVal) radiusVal.textContent = `${r}%`;
+      updateTransformCSS();
+    });
+  });
+
+  if (rotateSlider) {
+    rotateSlider.addEventListener('input', (e) => {
+      editorState.rotation = parseInt(e.target.value, 10) || 0;
+      if (rotateVal) rotateVal.textContent = `${editorState.rotation}°`;
+      updateTransformCSS();
+    });
+  }
+
+  if (btnRotateCcw && rotateSlider) {
+    btnRotateCcw.addEventListener('click', () => {
+      let r = (editorState.rotation - 90) % 360;
+      if (r < -180) r += 360;
+      editorState.rotation = r;
+      rotateSlider.value = r;
+      if (rotateVal) rotateVal.textContent = `${r}°`;
+      updateTransformCSS();
+    });
+  }
+
+  if (btnRotateCw && rotateSlider) {
+    btnRotateCw.addEventListener('click', () => {
+      let r = (editorState.rotation + 90) % 360;
+      if (r > 180) r -= 360;
+      editorState.rotation = r;
+      rotateSlider.value = r;
+      if (rotateVal) rotateVal.textContent = `${r}°`;
+      updateTransformCSS();
+    });
+  }
+
+  if (btnCenterPos) {
+    btnCenterPos.addEventListener('click', () => {
+      editorState.panX = 0;
+      editorState.panY = 0;
+      updateTransformCSS();
+    });
+  }
+
+  if (btnResetTransforms) {
+    btnResetTransforms.addEventListener('click', () => {
+      editorState.zoom = 100;
+      editorState.panX = 0;
+      editorState.panY = 0;
+      editorState.rotation = 0;
+      editorState.borderRadius = editorState.target === 'favicon' ? 22 : 20;
+
+      if (zoomSlider) zoomSlider.value = 100;
+      if (zoomVal) zoomVal.textContent = '100%';
+      if (radiusSlider) radiusSlider.value = editorState.borderRadius;
+      if (radiusVal) radiusVal.textContent = `${editorState.borderRadius}%`;
+      if (rotateSlider) rotateSlider.value = 0;
+      if (rotateVal) rotateVal.textContent = '0°';
+
+      updateTransformCSS();
+    });
+  }
+
+  // Background Mode Toggles
+  bgChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const mode = chip.getAttribute('data-bg');
+      editorState.bgMode = mode;
+      bgChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      if (viewport) {
+        viewport.className = `image-editor-viewport bg-${mode}`;
+      }
+    });
+  });
+
+  // Apply Changes via HTML5 Canvas Render & Export
+  if (btnApply) {
+    btnApply.addEventListener('click', async () => {
+      if (!editorState.imageSrc) {
+        closeEditor();
+        return;
+      }
+
+      btnApply.disabled = true;
+      btnApply.textContent = 'Processing & Saving...';
+
+      try {
+        const exportDim = editorState.target === 'favicon' ? 192 : 384;
+        const canvas = document.createElement('canvas');
+        canvas.width = exportDim;
+        canvas.height = exportDim;
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = () => {
+            const fallbackImg = new Image();
+            fallbackImg.onload = resolve;
+            fallbackImg.onerror = reject;
+            fallbackImg.src = editorState.imageSrc;
+          };
+          img.src = editorState.imageSrc;
+        });
+
+        // 1. Clear transparent
+        ctx.clearRect(0, 0, exportDim, exportDim);
+
+        // 2. Border Radius clip
+        const maxRadius = exportDim / 2;
+        const r = Math.max(0, Math.min(maxRadius, (editorState.borderRadius / 100) * maxRadius));
+        ctx.beginPath();
+        if (typeof ctx.roundRect === 'function') {
+          ctx.roundRect(0, 0, exportDim, exportDim, r);
+        } else {
+          ctx.moveTo(r, 0);
+          ctx.lineTo(exportDim - r, 0);
+          ctx.quadraticCurveTo(exportDim, 0, exportDim, r);
+          ctx.lineTo(exportDim, exportDim - r);
+          ctx.quadraticCurveTo(exportDim, exportDim, exportDim - r, exportDim);
+          ctx.lineTo(r, exportDim);
+          ctx.quadraticCurveTo(0, exportDim, 0, exportDim - r);
+          ctx.lineTo(0, r);
+          ctx.quadraticCurveTo(0, 0, r, 0);
+          ctx.closePath();
+        }
+        ctx.clip();
+
+        // 3. Transform mapping (280px viewport stage -> exportDim)
+        const stageSize = 280;
+        const scaleFactor = exportDim / stageSize;
+        const renderZoom = editorState.zoom / 100;
+        const renderPanX = editorState.panX * scaleFactor;
+        const renderPanY = editorState.panY * scaleFactor;
+
+        ctx.save();
+        ctx.translate(exportDim / 2 + renderPanX, exportDim / 2 + renderPanY);
+        ctx.rotate((editorState.rotation * Math.PI) / 180);
+        ctx.scale(renderZoom, renderZoom);
+
+        // Draw image keeping aspect ratio
+        const imgAspect = (img.width || 1) / (img.height || 1);
+        let drawW, drawH;
+        if (imgAspect >= 1) {
+          drawW = exportDim;
+          drawH = exportDim / imgAspect;
+        } else {
+          drawH = exportDim;
+          drawW = exportDim * imgAspect;
+        }
+        ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+        ctx.restore();
+
+        const base64Data = canvas.toDataURL('image/png');
+
+        // Upload to server
+        const filename = `${editorState.target}_edited_${Date.now()}.png`;
+        const res = await fetch('/api/admin/upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: JSON.stringify({ filename, base64Data })
+        });
+        const uploadResult = await res.json();
+        const savedUrl = (uploadResult.success && uploadResult.url) ? uploadResult.url : base64Data;
+
+        // Update target input and previews
+        if (editorState.target === 'lightLogo') {
+          const inp = document.getElementById('setting-logo-light');
+          if (inp) inp.value = savedUrl;
+          const prev = document.getElementById('preview-light-logo-img');
+          if (prev) prev.src = savedUrl;
+        } else if (editorState.target === 'darkLogo') {
+          const inp = document.getElementById('setting-logo-dark');
+          if (inp) inp.value = savedUrl;
+          const prev = document.getElementById('preview-dark-logo-img');
+          if (prev) prev.src = savedUrl;
+          const qk = document.getElementById('settings-quick-logo-preview');
+          if (qk) qk.src = savedUrl;
+        } else if (editorState.target === 'favicon') {
+          const inp = document.getElementById('setting-favicon');
+          if (inp) inp.value = savedUrl;
+          const prev = document.getElementById('preview-favicon-img');
+          if (prev) prev.src = savedUrl;
+          const tabPrev = document.getElementById('preview-favicon-tab-img');
+          if (tabPrev) tabPrev.src = savedUrl;
+        }
+
+        closeEditor();
+        showToast('Asset cropped, processed, and saved to server.');
+
+        // Trigger immediate persistence
+        const form = document.getElementById('icons-manager-form');
+        if (form) form.requestSubmit();
+
+      } catch (err) {
+        console.error('Error applying image edit:', err);
+        showToast('Failed to apply edit. Try again.', true);
+      } finally {
+        btnApply.disabled = false;
+        btnApply.innerHTML = '<span>Apply &amp; Save Asset ❯</span>';
+      }
+    });
+  }
 }
 
 function setupSettingsForm() {

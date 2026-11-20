@@ -53,7 +53,11 @@ function populateAppInfo(app) {
   if (appIconLink) appIconLink.href = officialWebUrl;
   if (appNameLink) {
     appNameLink.href = officialWebUrl;
-    appNameLink.innerHTML = `${app.name} <span style="font-size: 0.8em;">↗</span>`;
+    appNameLink.textContent = (app.name || 'Netroar App') + ' ';
+    const arrowSpan = document.createElement('span');
+    arrowSpan.style.fontSize = '0.8em';
+    arrowSpan.textContent = '↗';
+    appNameLink.appendChild(arrowSpan);
   }
   if (appIconImg && app.icon) {
     appIconImg.src = app.icon;

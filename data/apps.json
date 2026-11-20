@@ -95,41 +95,5 @@
     "reviewCount": 142,
     "sku": "NETROAR-TASKFLOW-01",
     "updatedAt": "2026-11-20T00:00:00.000Z"
-  },
-  {
-    "id": "app_veil_mindfall",
-    "slug": "veil-mindfall-protocol",
-    "name": "VEIL: Mindfall Protocol",
-    "tagline": "Interactive Digital Experience & Creative World Exploration",
-    "description": "Game development provides an opportunity to combine programming, storytelling, design, artificial intelligence and creativity. Projects such as VEIL: Mindfall Protocol represent the type of ambitious creative exploration that can exist alongside conventional software development.",
-    "category": "Interactive & Gaming",
-    "platforms": [
-      "Windows",
-      "Web"
-    ],
-    "status": "In Development",
-    "isFeatured": false,
-    "version": "0.1.0-alpha",
-    "pricing": "Free",
-    "icon": "/assets/logo/netroar-studios-logo-dark.png",
-    "websiteUrl": "/apps#veil",
-    "downloadUrl": "",
-    "windowsDownloadUrl": "",
-    "androidDownloadUrl": "",
-    "repoUrl": "",
-    "docsUrl": "",
-    "features": [
-      "Combines systems programming, storytelling, design, and artificial intelligence",
-      "Immersive narrative worldbuilding and interactive psychological mechanics",
-      "Pioneering digital experience engineered by Netroar Studios"
-    ],
-    "screenshots": {
-      "windows": [],
-      "android": []
-    },
-    "rating": 5,
-    "reviewCount": 28,
-    "sku": "NETROAR-VEIL-01",
-    "updatedAt": "2026-11-20T00:00:00.000Z"
   }
 ]

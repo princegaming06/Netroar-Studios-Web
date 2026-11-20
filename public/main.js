@@ -9,6 +9,17 @@ let currentScreenshotIndex = 0;
 let currentScreenshotList = [];
 let userDetectedOS = 'windows';
 
+// Security: XSS sanitizer for HTML string rendering
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // DOM Elements
 const flagshipSlot = document.getElementById('flagship-app-slot');
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -191,13 +202,21 @@ function renderFlagshipCard() {
     </div>
   `).join('');
 
-  // Features list
+  // Features list (escaped)
   const featuresHtml = (app.features || []).map(f => `
     <div class="feature-pill-card">
       <span style="color: var(--accent-primary); font-weight: 800; font-size: 1.1rem;">✓</span>
-      <div>${f}</div>
+      <div>${escapeHtml(f)}</div>
     </div>
   `).join('');
+
+  const safeAppName = escapeHtml(app.name || 'Netroar App');
+  const safeAppTagline = escapeHtml(app.tagline || 'The Next-Gen Cyber-Acrylic Productivity & Gamified Task Ecosystem');
+  const safeAppDescription = escapeHtml(app.description || '');
+  const safeAppIcon = escapeHtml(app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png');
+  const safeAppVersion = escapeHtml(app.version || '1.2.0');
+  const safeAppRating = escapeHtml(String(app.rating || '4.9'));
+  const safeAppReviewCount = escapeHtml(String(app.reviewCount || 142));
 
   flagshipSlot.innerHTML = `
     <article class="flagship-card" id="taskflow-card">
@@ -205,8 +224,8 @@ function renderFlagshipCard() {
       <!-- 1. Top Section: Large Icon + App Title & Metadata -->
       <div class="flagship-header-row">
         <div class="flagship-icon-box">
-          <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" 
-               alt="${app.name} Icon" 
+          <img src="${safeAppIcon}" 
+               alt="${safeAppName} Icon" 
                class="flagship-icon-img"
                onerror="this.src='/assets/logo/netroars-logo.png'">
         </div>
@@ -214,22 +233,22 @@ function renderFlagshipCard() {
         <div class="flagship-title-area">
           <div class="flagship-tag-row">
             <span class="flagship-publisher-tag">Netroar Studios Flagship</span>
-            <span class="flagship-rating-badge">★ ${app.rating || '4.9'} (${app.reviewCount || 142} Verified Reviews)</span>
+            <span class="flagship-rating-badge">★ ${safeAppRating} (${safeAppReviewCount} Verified Reviews)</span>
             <span class="status-badge status-live">OFFICIAL STABLE</span>
           </div>
 
-          <h2 class="flagship-name">${app.name}</h2>
-          <div class="flagship-category-subtitle">${app.tagline || 'The Next-Gen Cyber-Acrylic Productivity & Gamified Task Ecosystem'}</div>
+          <h2 class="flagship-name">${safeAppName}</h2>
+          <div class="flagship-category-subtitle">${safeAppTagline}</div>
         </div>
       </div>
 
       <!-- 2. Middle Section: Description + Tags & CTAs -->
       <div class="flagship-middle-section">
-        <p class="flagship-description-text">${app.description}</p>
+        <p class="flagship-description-text">${safeAppDescription}</p>
 
         <div class="flagship-pills-row">
           <span class="flagship-pill detected-device">${detectedLabel}</span>
-          <span class="flagship-pill platform-win">🪟 Windows 10/11 (v${app.version || '1.2.0'})</span>
+          <span class="flagship-pill platform-win">🪟 Windows 10/11 (v${safeAppVersion})</span>
           <span class="flagship-pill platform-droid">🤖 Android 8.0+ (APK)</span>
           <span class="flagship-pill platform-web">🌐 Web Cloud Sync</span>
           <span class="flagship-pill" style="color: #fff;">💎 100% Free & Open</span>

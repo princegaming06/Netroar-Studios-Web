@@ -186,6 +186,68 @@ async function runTests() {
     const deleteRes = await request('DELETE', `/api/admin/apps/${testAppId}`, { 'Authorization': `Bearer ${token}` });
     assert(deleteRes.status === 200 && deleteRes.json?.success, '8.3 DELETE /api/admin/apps/:id removes app');
 
+    // Test 9: Icons & Favicon Settings Update & Hardening
+    const updateIconsRes = await request('PUT', '/api/admin/settings', { 'Authorization': `Bearer ${token}` }, {
+      brandLogo: '/assets/logo/netroar-studios-logo-dark.png',
+      favicon: '/favicon.png'
+    });
+    assert(updateIconsRes.status === 200 && updateIconsRes.json?.settings?.brandLogo === '/assets/logo/netroar-studios-logo-dark.png' && updateIconsRes.json?.settings?.favicon === '/favicon.png',
+      '9.1 PUT /api/admin/settings persists brandLogo and favicon');
+
+    const weakPassRes = await request('PUT', '/api/admin/settings', { 'Authorization': `Bearer ${token}` }, {
+      adminPasscode: '12345'
+    });
+    assert(weakPassRes.status === 400 && weakPassRes.json?.error?.includes('at least 8 characters'),
+      '9.2 PUT /api/admin/settings enforces minimum 8 characters for admin passcode');
+
+    // Test 10: Live Production HTTP Security Headers
+    const secHeaders = index.headers;
+    assert(secHeaders['x-content-type-options'] === 'nosniff' &&
+           secHeaders['x-frame-options'] === 'SAMEORIGIN' &&
+           secHeaders['strict-transport-security']?.includes('max-age=31536000') &&
+           secHeaders['referrer-policy'] === 'strict-origin-when-cross-origin' &&
+           secHeaders['permissions-policy']?.includes('camera=()') &&
+           secHeaders['content-security-policy']?.includes("default-src 'self'"),
+      '10.1 HTTP responses include full suite of hardened security headers (HSTS, CSP, X-Frame, Nosniff, Referrer, Permissions)');
+
+    // Test 11: Path Traversal & Malformed URI Protection
+    const pathTraversalRes = await request('GET', '/../../package.json');
+    assert(pathTraversalRes.status === 403, '11.1 Directory traversal GET /../../package.json blocked with 403 Forbidden');
+
+    const malformedUriRes = await request('GET', '/%99');
+    assert(malformedUriRes.status === 400, '11.2 Malformed URI GET /%99 safely handled with 400 Bad Request');
+
+    // Test 12: File Upload Safety & Extension Filtering
+    const badExtUpload = await request('POST', '/api/admin/upload-image', { 'Authorization': `Bearer ${token}` }, {
+      filename: 'exploit.js',
+      base64Data: 'dmFyIHggPSAxOw=='
+    });
+    assert(badExtUpload.status === 400 && badExtUpload.json?.error?.includes('Disallowed file extension'),
+      '12.1 POST /api/admin/upload-image rejects unauthorized executable extensions');
+
+    const corruptPngUpload = await request('POST', '/api/admin/upload-image', { 'Authorization': `Bearer ${token}` }, {
+      filename: 'fake.png',
+      base64Data: 'bm90YXBuZw==' // "notapng"
+    });
+    assert(corruptPngUpload.status === 400 && corruptPngUpload.json?.error?.includes('Corrupt or invalid PNG signature'),
+      '12.2 POST /api/admin/upload-image rejects fake binary masquerading as PNG');
+
+    const validPngUpload = await request('POST', '/api/admin/upload-image', { 'Authorization': `Bearer ${token}` }, {
+      filename: 'valid.png',
+      base64Data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+    });
+    assert(validPngUpload.status === 200 && validPngUpload.json?.url?.startsWith('/assets/uploads/upload_'),
+      '12.3 POST /api/admin/upload-image accepts and saves verified PNG magic bytes');
+
+    // Test 13: Brute-Force Rate Limiting on Login
+    // Send 5 failed attempts to reach lockout threshold (5 consecutive failures)
+    for (let i = 0; i < 5; i++) {
+      await request('POST', '/api/admin/login', {}, { passcode: 'wrongagain' });
+    }
+    const lockedOutLogin = await request('POST', '/api/admin/login', {}, { passcode: 'netroar@admin2026' });
+    assert(lockedOutLogin.status === 429 && lockedOutLogin.headers['retry-after'] !== undefined && lockedOutLogin.json?.error?.includes('Locked'),
+      '13.1 POST /api/admin/login triggers 429 Too Many Requests lockout on 5 consecutive failures');
+
   } catch (err) {
     console.error('Test execution error:', err);
     failed++;

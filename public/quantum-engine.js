@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   initQuantumCanvas();
+  initBrandingAndIcons();
   initAudioSystem();
   initTelemetryClock();
   syncActiveNav();
@@ -75,6 +76,123 @@ document.addEventListener('DOMContentLoaded', () => {
     resetScrollToTop();
   }, 160);
 });
+
+// ==========================================================================
+// DYNAMIC BRANDING & FAVICON SYNCHRONIZER (NETROAR TO-DO SUITE)
+// Automatically broadcasts global brand logos and browser tab favicons with zero-FOUC
+// ==========================================================================
+let currentGlobalSettings = null;
+
+function applyLiveBranding(settings) {
+  if (!settings) return;
+  currentGlobalSettings = settings;
+
+  // 1. Synchronize Browser Tab Favicon
+  const faviconUrl = settings.faviconUrl || settings.favicon;
+  if (faviconUrl) {
+    try {
+      localStorage.setItem('netroar_site_favicon', faviconUrl);
+    } catch(e) {}
+
+    let favLink = document.querySelector("link[rel*='icon']");
+    if (!favLink) {
+      favLink = document.createElement('link');
+      favLink.rel = 'icon';
+      favLink.type = 'image/png';
+      document.head.appendChild(favLink);
+    }
+    const bust = settings.updatedAt ? `?v=${new Date(settings.updatedAt).getTime()}` : '';
+    favLink.href = `${faviconUrl}${bust}`;
+
+    const appleTouchLink = document.querySelector("link[rel='apple-touch-icon']");
+    if (appleTouchLink) appleTouchLink.href = `${faviconUrl}${bust}`;
+  }
+
+  // 2. Cache Logos & Scale in LocalStorage for Zero-FOUC
+  const darkLogo = settings.logoDarkUrl || settings.brandLogo || '/assets/logo/netroar-studios-logo-dark.png';
+  const lightLogo = settings.logoLightUrl || settings.brandLogo || '/assets/logo/netroar-studios-logo-light.png';
+  const scale = settings.logoScale || 100;
+
+  try {
+    localStorage.setItem('netroar_site_logo_dark', darkLogo);
+    localStorage.setItem('netroar_site_logo_light', lightLogo);
+    localStorage.setItem('netroar_site_logo_scale', scale);
+  } catch(e) {}
+
+  // 3. Apply Logo Scale
+  document.documentElement.style.setProperty('--brand-logo-scale', `${scale / 100}`);
+
+  // 4. Synchronize Webpage Brand Logos based on Active Theme
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  const activeLogo = isLight ? (lightLogo || darkLogo) : (darkLogo || lightLogo);
+
+  const brandImages = document.querySelectorAll(
+    '.brand-logo-badge, .brand-logo-round img, .admin-logo-block img, .auth-brand-logo'
+  );
+  brandImages.forEach(img => {
+    // Avoid modifying app catalog icons, tables, form previews, or editor stages
+    if (
+      !img.closest('.app-minimal-icon-box') &&
+      !img.closest('.admin-table-icon-block') &&
+      !img.closest('.admin-icon-preview-box') &&
+      !img.closest('#form-icon-preview') &&
+      !img.closest('.browser-tab-simulation') &&
+      !img.closest('.browser-tab-mockup') &&
+      !img.closest('.current-logo-display') &&
+      !img.closest('.image-editor-viewport') &&
+      img.id !== 'preview-web-icon-img' &&
+      img.id !== 'preview-light-logo-img' &&
+      img.id !== 'preview-dark-logo-img' &&
+      img.id !== 'preview-favicon-img' &&
+      img.id !== 'preview-favicon-tab-img'
+    ) {
+      img.src = activeLogo;
+    }
+  });
+}
+window.applyLiveBranding = applyLiveBranding;
+
+// Theme Mutation Observer for Auto-Switching Logos
+function setupThemeLogoObserver() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'data-theme') {
+        if (currentGlobalSettings) {
+          applyLiveBranding(currentGlobalSettings);
+        } else {
+          try {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const logoDark = localStorage.getItem('netroar_site_logo_dark');
+            const logoLight = localStorage.getItem('netroar_site_logo_light');
+            const active = isLight ? (logoLight || logoDark) : (logoDark || logoLight);
+            if (active) {
+              const brandImages = document.querySelectorAll('.brand-logo-badge, .brand-logo-round img, .admin-logo-block img, .auth-brand-logo');
+              brandImages.forEach(img => {
+                if (!img.closest('.app-minimal-icon-box') && !img.closest('.admin-table-icon-block') && !img.closest('.current-logo-display')) {
+                  img.src = active;
+                }
+              });
+            }
+          } catch(e) {}
+        }
+      }
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
+async function initBrandingAndIcons() {
+  setupThemeLogoObserver();
+  try {
+    const res = await fetch('/api/settings');
+    const data = await res.json();
+    if (data.success && data.settings) {
+      applyLiveBranding(data.settings);
+    }
+  } catch (err) {
+    // Fail silently, default markup remains intact
+  }
+}
 
 // ==========================================================================
 // ACTIVE PAGE NAVIGATION CONTROLLER
@@ -373,6 +491,16 @@ function initAppsPageRouting() {
 // ==========================================================================
 // 0.1 MINIMAL APPS GRID (ICON + NAME ONLY)
 // ==========================================================================
+function escapeQuantumHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 async function initMinimalAppsGrid() {
   const grid = document.getElementById('apps-minimal-grid');
   if (!grid) return;
@@ -381,14 +509,18 @@ async function initMinimalAppsGrid() {
     const res = await fetch('/api/apps');
     const data = await res.json();
     if (data.success && Array.isArray(data.apps) && data.apps.length > 0) {
-      grid.innerHTML = data.apps.map(app => `
-        <div class="app-minimal-card" role="button" tabindex="0" title="Tap to enter ${app.name} Console">
+      grid.innerHTML = data.apps.map(app => {
+        const safeName = escapeQuantumHtml(app.name || 'Netroar App');
+        const safeIcon = escapeQuantumHtml(app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png');
+        return `
+        <div class="app-minimal-card" role="button" tabindex="0" title="Tap to enter ${safeName} Console">
           <div class="app-minimal-icon-box">
-            <img src="${app.icon || '/assets/logo/Netroar_To_Do_dark_v2.png'}" alt="${app.name} Icon" class="app-minimal-icon-img" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
+            <img src="${safeIcon}" alt="${safeName} Icon" class="app-minimal-icon-img" onerror="this.src='/assets/logo/netroar-studios-logo-dark.png'">
           </div>
-          <h3 class="app-minimal-name">${app.name}</h3>
+          <h3 class="app-minimal-name">${safeName}</h3>
         </div>
-      `).join('');
+      `;
+      }).join('');
 
       // Wire tap-to-open console on cards
       grid.querySelectorAll('.app-minimal-card').forEach(card => {

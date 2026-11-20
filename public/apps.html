@@ -8,6 +8,25 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <!-- Instant Zero-FOUC Theme & Dynamic Favicon / Logo Pre-detection -->
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('netroar-theme');
+        var th = t || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', th);
+        var fav = localStorage.getItem('netroar_site_favicon');
+        if (fav) {
+          var l = document.querySelector("link[rel~='icon']");
+          if (l) l.href = fav;
+          var a = document.querySelector("link[rel='apple-touch-icon']");
+          if (a) a.href = fav;
+        }
+      } catch(e) {}
+    })();
+  </script>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/style.css">
@@ -118,7 +137,7 @@
         </div>
 
         <div class="app-minimal-card" id="veil-card" role="button" tabindex="0" title="VEIL: Mindfall Protocol (In Development)">
-          <div class="app-minimal-icon-box" style="padding: 12px;">
+          <div class="app-minimal-icon-box">
             <img src="/assets/logo/netroar-studios-logo-dark.png" alt="VEIL: Mindfall Protocol" class="app-minimal-icon-img">
           </div>
           <h3 class="app-minimal-name">VEIL: Mindfall</h3>

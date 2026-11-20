@@ -62,10 +62,12 @@ Then open your browser:
 
 ---
 
-## 🔒 Admin Credentials
+## 🔒 Admin Credentials & Security
 
-- **Default Master Passcode:** `netroar@admin2026`
-- Once logged in, you can update this passcode at any time under the **Studio Settings** tab.
+- **Default Master Passcode (Local Dev):** `netroar@admin2026`
+- **Production Passcode Configuration:** Set the `ADMIN_PASSCODE` environment variable in your production hosting dashboard (e.g. Render / Railway / Docker).
+- **Brute Force Protection:** Automatic IP-based rate limiting (5 consecutive failed attempts trigger an automatic 15-minute lockout).
+- Once logged in, you can also update the stored passcode under the **Studio Settings** tab (minimum 8 characters).
 
 ---
 

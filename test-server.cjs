@@ -248,6 +248,26 @@ async function runTests() {
     assert(lockedOutLogin.status === 429 && lockedOutLogin.headers['retry-after'] !== undefined && lockedOutLogin.json?.error?.includes('Locked'),
       '13.1 POST /api/admin/login triggers 429 Too Many Requests lockout on 5 consecutive failures');
 
+    // Test 14: Android & Mobile Responsiveness + Theme Architecture
+    assert(index.data.includes('name="theme-color"') && 
+           index.data.includes('viewport-fit=cover') &&
+           index.data.includes('mobile-nav-drawer') && 
+           index.data.includes('theme-toggle-btn'),
+      '14.1 GET / includes Android system theme-color, viewport-fit, mobile drawer, and theme toggle');
+
+    assert(appStudios.data.includes('name="theme-color"') &&
+           appStudios.data.includes('mobile-nav-drawer') &&
+           appStudios.data.includes('theme-toggle-btn'),
+      '14.2 GET /apps includes Android theme-color, mobile drawer, and theme toggle');
+
+    assert(css.data.includes('.mobile-nav-drawer') && 
+           css.data.includes('.theme-toggle-pill') && 
+           css.data.includes("[data-theme='light'] body"),
+      '14.3 GET /style.css includes mobile drawer navigation and full light theme overrides');
+
+    assert(js.data.includes('initThemeEngine') && js.data.includes('initMobileDrawer'),
+      '14.4 GET /quantum-engine.js includes unified theme engine and mobile drawer controller');
+
   } catch (err) {
     console.error('Test execution error:', err);
     failed++;

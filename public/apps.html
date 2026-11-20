@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#05080c" id="android-theme-color">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Apps — Netroar Studios</title>
   <meta name="description" content="Netroar Studios Apps. Explore Netroar TaskFlow and dedicated flagship consoles.">
 
@@ -14,9 +17,11 @@
   <script>
     (function() {
       try {
-        var t = localStorage.getItem('netroar-theme');
+        var t = localStorage.getItem('netroar-theme') || localStorage.getItem('netroar_theme');
         var th = t || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', th);
+        var metaTheme = document.getElementById('android-theme-color');
+        if (metaTheme) metaTheme.setAttribute('content', th === 'light' ? '#f5f7fb' : '#05080c');
         var fav = localStorage.getItem('netroar_site_favicon');
         if (fav) {
           var l = document.querySelector("link[rel~='icon']");
@@ -102,6 +107,11 @@
       </nav>
 
       <div class="header-utility-cluster">
+        <button class="theme-toggle-pill" id="theme-toggle-btn" aria-label="Toggle Light / Dark Cyber Theme" title="Toggle Light / Dark Mode">
+          <span class="theme-toggle-icon">🌙</span>
+          <span class="theme-toggle-label">DARK</span>
+        </button>
+
         <a href="/apps" class="apps-nav-pill active" title="Netroar Apps Showcase">
           <svg class="apps-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor">
             <rect x="2" y="2" width="4.5" height="4.5" rx="1" stroke-width="1.5" />
@@ -112,9 +122,52 @@
           <span>APPS</span>
           <span class="page-arrow">↗</span>
         </a>
+
+        <!-- Mobile Drawer Trigger (Android / Small Screens) -->
+        <button class="mobile-menu-trigger" id="mobile-menu-btn" aria-label="Open Navigation Menu" aria-expanded="false">
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Slide-Over Drawer -->
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop" aria-hidden="true"></div>
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <div class="mobile-drawer-brand">
+        <img src="/assets/logo/netroar-studios-logo-dark.png" alt="Netroar Emblem" class="brand-logo-badge">
+        <span class="mobile-drawer-title">NETROAR STUDIOS</span>
+      </div>
+      <button class="mobile-drawer-close" id="mobile-drawer-close" aria-label="Close Navigation Menu">✕</button>
+    </div>
+
+    <nav class="mobile-drawer-nav">
+      <ul class="mobile-nav-list">
+        <li><a href="/" class="mobile-nav-link"><span>🏠</span><span>HOME</span></a></li>
+        <li><a href="/apps" class="mobile-nav-link active"><span>🚀</span><span>STUDIO APPS</span><span class="mobile-link-badge">POPULAR</span></a></li>
+        <li><a href="/#philosophy" class="mobile-nav-link"><span>🧬</span><span>PHILOSOPHY</span></a></li>
+        <li><a href="/#chronicles" class="mobile-nav-link"><span>📰</span><span>NEWSWIRE</span></a></li>
+        <li><a href="/#about" class="mobile-nav-link"><span>🪐</span><span>ABOUT NETROAR</span></a></li>
+        <li><a href="/login" class="mobile-nav-link"><span>⚡</span><span>PILOT / ADMIN PORTAL</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="mobile-drawer-footer">
+      <div class="mobile-drawer-theme-row">
+        <span class="mobile-theme-label">Cyber Appearance:</span>
+        <button class="theme-toggle-pill" id="mobile-theme-toggle-btn" aria-label="Toggle Appearance">
+          <span class="theme-toggle-icon">🌙</span>
+          <span class="theme-toggle-label">DARK</span>
+        </button>
+      </div>
+      <div class="mobile-drawer-telemetry">
+        <span class="live-beacon"></span>
+        <span>SYS KERNEL // NOMINAL</span>
+      </div>
+    </div>
+  </aside>
 
   <main style="position: relative; z-index: 20; padding: 40px 0 100px;">
     <!-- 1. Minimalist Apps Section (Icon + Name Only) -->

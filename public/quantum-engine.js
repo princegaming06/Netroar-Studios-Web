@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
       history.replaceState(null, null, window.location.pathname);
     }
   }
+  initThemeEngine();
+  initMobileDrawer();
   initQuantumCanvas();
   initBrandingAndIcons();
   initAudioSystem();
@@ -562,22 +564,42 @@ function initQuantumCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  // Track mouse coordinates for canvas & CSS spotlight
+  // Track coordinates for canvas & CSS spotlight (Mouse + Touch for Android)
   let mouseX = width / 2;
   let mouseY = height / 2;
   let isMouseOver = false;
 
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+  function updateInputCoords(x, y) {
+    mouseX = x;
+    mouseY = y;
     isMouseOver = true;
     document.documentElement.style.setProperty('--mouse-x', `${mouseX}px`);
     document.documentElement.style.setProperty('--mouse-y', `${mouseY}px`);
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    updateInputCoords(e.clientX, e.clientY);
   });
+
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+      updateInputCoords(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+      updateInputCoords(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
 
   window.addEventListener('mouseleave', () => {
     isMouseOver = false;
   });
+
+  window.addEventListener('touchend', () => {
+    isMouseOver = false;
+  }, { passive: true });
 
   // Track scroll velocity for kinetic particle drift
   let lastScrollY = window.scrollY;
@@ -654,17 +676,20 @@ function initQuantumCanvas() {
       if (p.y > height) p.y = 0;
 
       // Draw particle with hyperdrive streak on fast scroll (extended silky streak)
+      const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+      const rgbBase = isLightMode ? '0, 155, 110' : '0, 245, 184';
+
       if (Math.abs(scrollVelocity) > 0.2) {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(p.x, p.y - scrollVelocity * 5.8);
-        ctx.strokeStyle = `rgba(0, 245, 184, ${p.baseAlpha * 0.95})`;
+        ctx.strokeStyle = `rgba(${rgbBase}, ${p.baseAlpha * 0.95})`;
         ctx.lineWidth = p.radius * 0.95;
         ctx.stroke();
       } else {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 245, 184, ${p.baseAlpha})`;
+        ctx.fillStyle = `rgba(${rgbBase}, ${p.baseAlpha})`;
         ctx.fill();
       }
 
@@ -700,7 +725,7 @@ function initQuantumCanvas() {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(0, 245, 184, ${0.12 * (1 - dist / 120)})`;
+          ctx.strokeStyle = `rgba(${rgbBase}, ${0.12 * (1 - dist / 120)})`;
           ctx.lineWidth = 0.75;
           ctx.stroke();
         }
@@ -1422,4 +1447,127 @@ function initSpatialScrollEffects() {
   window.netroarConcatenate = () => showToast('🔗 [SPATIAL SCROLL] Center Monolithic Focus Locked');
   window.netroarConcinnate = window.netroarConcatenate;
   window.netroarCycle = () => showToast('↺ [SPATIAL SCROLL] Continuous Parallax Scrub Active');
+}
+
+// ==========================================================================
+// 10. UNIFIED THEME ENGINE (DESKTOP & ANDROID MOBILE)
+// ==========================================================================
+function initThemeEngine() {
+  function getPreferredTheme() {
+    const saved = localStorage.getItem('netroar-theme') || localStorage.getItem('netroar_theme');
+    if (saved) return saved;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  function applyTheme(theme, notify = false) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('netroar-theme', theme);
+      localStorage.setItem('netroar_theme', theme);
+    } catch (e) {}
+
+    // Synchronize Android system status bar theme-color
+    const metaTheme = document.getElementById('android-theme-color');
+    if (metaTheme) {
+      metaTheme.setAttribute('content', theme === 'light' ? '#f5f7fb' : '#05080c');
+    }
+
+    // Update all theme toggle pills on page
+    const toggleButtons = document.querySelectorAll('.theme-toggle-pill, #theme-toggle, #theme-toggle-dash');
+    toggleButtons.forEach(btn => {
+      const icon = btn.querySelector('.theme-toggle-icon');
+      const label = btn.querySelector('.theme-toggle-label');
+      if (icon) icon.textContent = theme === 'light' ? '☀️' : '🌙';
+      if (label) label.textContent = theme === 'light' ? 'LIGHT' : 'DARK';
+    });
+
+    if (notify && typeof showToast === 'function') {
+      showToast(`Switched to ${theme === 'light' ? 'Prism Holographic (Light)' : 'Cyber Obsidian (Dark)'} theme.`);
+    }
+
+    window.dispatchEvent(new CustomEvent('netroarThemeChanged', { detail: { theme } }));
+  }
+
+  // Initial apply
+  const currentTheme = getPreferredTheme();
+  applyTheme(currentTheme, false);
+
+  // Bind click handlers to all theme buttons
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.theme-toggle-pill, #theme-toggle, #theme-toggle-dash');
+    if (btn) {
+      e.preventDefault();
+      const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+      const nxt = cur === 'dark' ? 'light' : 'dark';
+      applyTheme(nxt, true);
+    }
+  });
+
+  // System appearance listener
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+      const userSaved = localStorage.getItem('netroar-theme') || localStorage.getItem('netroar_theme');
+      if (!userSaved) {
+        applyTheme(e.matches ? 'light' : 'dark', false);
+      }
+    });
+  }
+}
+
+// ==========================================================================
+// 11. ANDROID & MOBILE NAVIGATION DRAWER
+// ==========================================================================
+function initMobileDrawer() {
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const backdrop = document.getElementById('mobile-nav-backdrop');
+  const closeBtn = document.getElementById('mobile-drawer-close');
+
+  if (!drawer) return;
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    if (backdrop) backdrop.classList.add('open');
+    if (menuBtn) {
+      menuBtn.classList.add('active');
+      menuBtn.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('open');
+    if (menuBtn) {
+      menuBtn.classList.remove('active');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  menuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (drawer.classList.contains('open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  });
+
+  backdrop?.addEventListener('click', closeDrawer);
+  closeBtn?.addEventListener('click', closeDrawer);
+
+  // Close on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
+
+  // Close when clicking any nav link inside drawer
+  drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      closeDrawer();
+    });
+  });
 }

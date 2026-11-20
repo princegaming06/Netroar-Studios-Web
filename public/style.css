@@ -3438,9 +3438,7 @@ select.form-control option {
     grid-template-columns: 1fr;
   }
   .telemetry-ticker-bar {
-    display: block !important;
-    padding: 6px 14px;
-    font-size: 0.65rem;
+    display: none !important;
   }
 }
 
@@ -4557,6 +4555,9 @@ html, body {
 
 /* Tablets & Mobile Navigation Breakpoints */
 @media (max-width: 820px) {
+  .telemetry-ticker-bar {
+    display: none !important;
+  }
   .spatial-header {
     top: 10px;
     padding: 0 14px;

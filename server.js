@@ -479,6 +479,14 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
+  // Google Site Verification
+  if (req.method === 'GET' && (pathname === '/google01dcbf8124219bdc.html' || pathname === '/google01dcbf8124219bdc%20(2).html')) {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    return res.end('google-site-verification: google01dcbf8124219bdc.html');
+  }
+
   // Lightweight ping endpoint for keep-alive monitors (UptimeRobot, etc.)
   if (req.method === 'GET' && pathname === '/ping') {
     res.statusCode = 200;

@@ -1,0 +1,28 @@
+User-agent: Googlebot
+Allow: /
+Allow: /apps
+Allow: /apps/
+Allow: /feed/products.xml
+Allow: /feed/products.json
+Disallow: /admin
+Disallow: /api/admin/
+
+User-agent: Google-InspectionTool
+Allow: /
+Allow: /apps
+Allow: /apps/
+Allow: /feed/products.xml
+Allow: /feed/products.json
+Disallow: /admin
+Disallow: /api/admin/
+
+User-agent: *
+Allow: /
+Allow: /apps
+Allow: /apps/
+Allow: /feed/products.xml
+Allow: /feed/products.json
+Disallow: /admin
+Disallow: /api/admin/
+
+Sitemap: https://netroar-studios.onrender.com/sitemap.xml

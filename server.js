@@ -479,14 +479,22 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // Dynamic Sitemap
+  // Lightweight ping endpoint for keep-alive monitors (UptimeRobot, etc.)
+  if (req.method === 'GET' && pathname === '/ping') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    return res.end('pong');
+  }
+
+  // Dynamic Clean Sitemap (Excludes /admin, avoids invalid '#' fragments)
   if (req.method === 'GET' && pathname === '/sitemap.xml') {
     const apps = readApps();
     const baseUrl = `https://${host}`;
     const urlsXml = [
       `<url><loc>${baseUrl}/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>`,
-      `<url><loc>${baseUrl}/admin</loc><priority>0.3</priority><changefreq>monthly</changefreq></url>`,
-      ...apps.map(app => `<url><loc>${escapeXml(`${baseUrl}/#${app.slug || app.id}`)}</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>`)
+      `<url><loc>${baseUrl}/apps</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>`,
+      ...apps.map(app => `<url><loc>${escapeXml(`${baseUrl}/apps/${app.slug || app.id}`)}</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>`)
     ].join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -495,13 +503,34 @@ const server = http.createServer(async (req, res) => {
 </urlset>`;
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     return res.end(sitemap);
   }
 
-  // Robots.txt
+  // Hardened Robots.txt with Explicit Googlebot & Google-InspectionTool Directives
   if (req.method === 'GET' && pathname === '/robots.txt') {
-    const robots = `User-agent: *
+    const robots = `User-agent: Googlebot
 Allow: /
+Allow: /apps
+Allow: /apps/
+Allow: /feed/products.xml
+Allow: /feed/products.json
+Disallow: /admin
+Disallow: /api/admin/
+
+User-agent: Google-InspectionTool
+Allow: /
+Allow: /apps
+Allow: /apps/
+Allow: /feed/products.xml
+Allow: /feed/products.json
+Disallow: /admin
+Disallow: /api/admin/
+
+User-agent: *
+Allow: /
+Allow: /apps
+Allow: /apps/
 Allow: /feed/products.xml
 Allow: /feed/products.json
 Disallow: /admin
@@ -511,6 +540,7 @@ Sitemap: https://${host}/sitemap.xml
 `;
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
     return res.end(robots);
   }
 
